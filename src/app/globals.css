@@ -66,11 +66,4 @@
   --color-blue-50: #2eb4ff;
   --color-blue-100: #0085ff;
 
-  /* 반응형추가 */
-  screens: {
-    pc: '1200px',
-    tablet: { max: '1199px' },
-    mobile: { max: '767px' },
-  };
-
 }
