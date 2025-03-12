@@ -5,7 +5,7 @@ import QueryClientProvider from '@/components/provider/queryProvider';
 
 export const metadata: Metadata = {
   title: 'GlobalNomad',
-  description: '여러종류의 체험을 예약하세요',
+  description: '여러 종류의 체험을 예약하세요',
 };
 
 export default function RootLayout({

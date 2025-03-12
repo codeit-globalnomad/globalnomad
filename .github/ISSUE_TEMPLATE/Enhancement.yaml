@@ -1,0 +1,14 @@
+name: "🚀 Enhancement"
+description: "UX 및 성능 개선"
+labels: ["Type: Enhancement 🚀"]
+body:
+  - type: textarea
+    attributes:
+      label: ✅ 작업할 내용
+      description: 작업 내용을 체크 박스 형태로 작성해 주세요.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: ✏️ 추가 설명
+      description: 필요한 설명이 있다면 작성해 주세요.
