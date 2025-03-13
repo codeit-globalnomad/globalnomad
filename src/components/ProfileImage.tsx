@@ -13,7 +13,7 @@ const profileImageVariants = cva('relative rounded-full', {
       large: 'w-[160px] h-[160px]',
     },
     clickable: {
-      true: 'cursor-pointer',
+      true: 'cursor-pointer hover:brightness-80',
       false: 'cursor-default',
     },
   },
