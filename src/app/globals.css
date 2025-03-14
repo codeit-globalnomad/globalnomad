@@ -65,5 +65,8 @@
   --color-blue-10: #e5f3ff;
   --color-blue-50: #2eb4ff;
   --color-blue-100: #0085ff;
+}
 
+body {
+  min-width: 375px;
 }
