@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build --output-dir ./storybook-static",
+    "chromatic": "npx chromatic --project-token=chpt_c40e30f577a69fc"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.67.2",
