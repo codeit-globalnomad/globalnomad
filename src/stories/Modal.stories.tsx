@@ -27,24 +27,38 @@ export const Default: Story = {
   args: {
     title: '모달 제목',
     children: <p>모달 내용입니다.</p>,
+    fullScreen: false,
   },
   decorators: [
     (Story) => {
-      const [isOpen, setIsOpen] = useState(true);
+      const [isOpen, setIsOpen] = useState(false);
+      const [isFullScreen, setIsFullScreen] = useState(false);
 
       return (
         <>
-          {isOpen && (
+          {isOpen ? (
             <Story
               args={{
                 setModal: () => setIsOpen(false),
+                fullScreen: isFullScreen,
               }}
             />
-          )}
-          {!isOpen && (
-            <Button size='save' onClick={() => setIsOpen(true)} className='!bg-green-100'>
-              모달 제목
-            </Button>
+          ) : (
+            <div className='flex gap-4'>
+              <Button size='save' onClick={() => setIsOpen(true)} className='!bg-green-100'>
+                모달 열기
+              </Button>
+
+              <Button
+                size='save'
+                onClick={() => {
+                  setIsOpen(true);
+                  setIsFullScreen(true);
+                }}
+              >
+                전체 화면용 모달 열기
+              </Button>
+            </div>
           )}
         </>
       );
