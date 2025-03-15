@@ -1,5 +1,6 @@
 import { useQuery, useMutation } from '@tanstack/react-query';
 import { getMyActivities, getReservationDashboard, getReservedSchedule, getReservations, updateReservationStatus, deleteActivity, updateActivity } from '../apis/myActivities';
+import { UpdateActivityRequest } from '../types/myActivities';
 
 // 내 체험 리스트 조회 훅
 export const useMyActivities = (cursorId?: number, size: number = 20) => {
@@ -67,6 +68,6 @@ export const useDeleteActivity = () => {
 // 내 체험 수정 훅
 export const useUpdateActivity = () => {
     return useMutation({
-      mutationFn: (params: { activityId: number, data: any }) => updateActivity(params.activityId, params.data),
+      mutationFn: (params: { activityId: number, data: UpdateActivityRequest }) => updateActivity(params.activityId, params.data),
     });
   };
