@@ -4,7 +4,7 @@ import { MyActivitiesResponse, myActivitiesResponseSchema, ReservationDashboardR
 
 /*
  * 내 체험 리스트 조회 API
- * https://sp-globalnomad-api.vercel.app/docs/#/MyActivities/Get-my-activities
+ * https://sp-globalnomad-api.vercel.app/docs/#/MyActivities/FindByUserId
  */
 export const getMyActivities = async (
   cursorId?: number,
@@ -19,7 +19,7 @@ export const getMyActivities = async (
 
 /*
  * 내 체험 월별 예약 현황 조회 API
- * https://sp-globalnomad-api.vercel.app/docs/#/MyActivities/Get-reservation-dashboard
+ * https://sp-globalnomad-api.vercel.app/docs/#/MyActivities/FindReservationsByMonth
  */
 export const getReservationDashboard = async (
     activityId: number,
@@ -35,7 +35,7 @@ export const getReservationDashboard = async (
 
 /*
  * 내 체험 날짜별 예약 정보(신청, 승인, 거절)가 있는 스케쥴 조회 API
- * https://sp-globalnomad-api.vercel.app/docs/#/MyActivities/Get-reserved-schedule
+ * https://sp-globalnomad-api.vercel.app/docs/#/MyActivities/FindReservedSchedule
  */
 export const getReservedSchedule = async (
     activityId: number,
@@ -50,7 +50,7 @@ export const getReservedSchedule = async (
 
 /*
  * 내 체험 예약 시간대별 예약 내역 조회 API
- * https://sp-globalnomad-api.vercel.app/docs/#/MyActivities/Get-reservations
+ * https://sp-globalnomad-api.vercel.app/docs/#/MyActivities/FindReservations
  */
 export const getReservations = async (
     activityId: number,
@@ -71,7 +71,7 @@ export const getReservations = async (
 
 /*
  * 내 체험 예약 상태(승인, 거절) 업데이트 API
- * https://sp-globalnomad-api.vercel.app/docs/#/MyActivities/Patch-reservationStatus
+ * https://sp-globalnomad-api.vercel.app/docs/#/MyActivities/UpdateReservations
  */
 export const updateReservationStatus = async (
     activityId: number,
@@ -99,7 +99,7 @@ export const deleteActivity = async (
 
 /*
  * 내 체험 수정 API
- * https://sp-globalnomad-api.vercel.app/docs/#/MyActivities/Patch-myActivities
+ * https://sp-globalnomad-api.vercel.app/docs/#/MyActivities/Update
  */
 export const updateActivity = async (
     activityId: number,
