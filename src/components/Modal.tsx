@@ -1,14 +1,27 @@
 'use client';
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 interface ModalProps {
   title?: string;
-  setModal: () => void;
+  onClose: () => void;
   children?: React.ReactNode;
   fullScreen?: boolean;
 }
 
-const Modal = ({ title, setModal, children, fullScreen = false }: ModalProps) => {
+const Modal = ({ title, onClose, children, fullScreen = false }: ModalProps) => {
+  const modalRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        onClose();
+      }
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [onClose]);
+
   const preventOffModal = (event: React.MouseEvent) => {
     event.stopPropagation();
   };
@@ -23,7 +36,7 @@ const Modal = ({ title, setModal, children, fullScreen = false }: ModalProps) =>
   return (
     <div
       id='모달 외부'
-      onClick={setModal}
+      onClick={onClose}
       className='pointer-events-auto fixed inset-0 flex h-full w-full items-center justify-center bg-gray-500/50'
     >
       <div

@@ -39,7 +39,7 @@ export const Default: Story = {
           {isOpen ? (
             <Story
               args={{
-                setModal: () => setIsOpen(false),
+                onClose: () => setIsOpen(false),
                 fullScreen: isFullScreen,
               }}
             />

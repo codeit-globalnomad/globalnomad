@@ -18,7 +18,7 @@ export default function Page() {
         </Button>
       </div>
       {modalStatus && (
-        <Modal title='모달' setModal={onHandleModalStatus}>
+        <Modal title='모달' onClose={onHandleModalStatus} fullScreen>
           <button onClick={onHandleModalStatus}>닫기</button>
         </Modal>
       )}
