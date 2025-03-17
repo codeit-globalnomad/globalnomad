@@ -3,7 +3,6 @@
 import Image from 'next/image';
 import logoLg from '@/assets/logo/logo-lg.svg';
 import SocialButtons from '../../signup/_components/SocialButtons';
-import Button from '@/components/Buttons';
 
 export default function SigninForm() {
   return (

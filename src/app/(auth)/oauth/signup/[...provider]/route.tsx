@@ -9,16 +9,14 @@ export interface User {
   email: string;
   nickname: string;
   profileImageUrl: string;
-  createdAt: string; // ISO 형식의 날짜 문자열
-  updatedAt: string; // ISO 형식의 날짜 문자열
+  createdAt: string;
+  updatedAt: string;
 }
 
 export const GET = async (req: NextRequest) => {
   const { provider, code } = await extractProviderAndCode(req.url);
 
   try {
-    console.log('OAuth 로그인 시도:', provider, code);
-
     const apiResponse = await axios.post<{ user: User; accessToken: string; refreshToken: string }>(
       `${process.env.NEXT_PUBLIC_API_URL}/oauth/sign-in/${provider}`,
       {
@@ -27,6 +25,7 @@ export const GET = async (req: NextRequest) => {
             ? process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI
             : process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI,
         token: code,
+        nickname: '코드잇',
       },
     );
 
@@ -51,14 +50,9 @@ export const GET = async (req: NextRequest) => {
       expires: refreshTokenExp || undefined,
     });
 
-    console.log('로그인 성공:', apiResponse.data.user);
     return response;
-  } catch (error: any) {
-    console.error('로그인 실패:', error);
-
-    if (error.response?.status === 403) {
-      console.log('404 상태 → 회원가입 시도');
-
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error) && error.response?.status === 403) {
       try {
         const signupResponse = await axios.post<{ user: User; accessToken: string; refreshToken: string }>(
           `${process.env.NEXT_PUBLIC_API_URL}/oauth/sign-up/${provider}`,
@@ -68,7 +62,7 @@ export const GET = async (req: NextRequest) => {
                 ? process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI
                 : process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI,
             token: code,
-            nickname: '코드잇', // 기본 닉네임 설정
+            nickname: '코드잇',
           },
         );
 
@@ -93,11 +87,8 @@ export const GET = async (req: NextRequest) => {
           expires: refreshTokenExp || undefined,
         });
 
-        console.log('회원가입 성공:', signupResponse.data.user);
         return response;
       } catch (signupError) {
-        console.error('회원가입 실패:', signupError);
-
         const errorMessage = getErrorMessage(signupError);
         return NextResponse.redirect(new URL(`/login?error=${encodeURIComponent(errorMessage)}`, req.url));
       }

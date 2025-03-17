@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 
 interface ModalProps {
   title?: string;
@@ -9,7 +9,6 @@ interface ModalProps {
 }
 
 const Modal = ({ title, onClose, children, fullScreen = false }: ModalProps) => {
-  const modalRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {

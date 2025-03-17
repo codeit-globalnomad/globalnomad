@@ -1,13 +1,10 @@
 'use client';
 
 import Image from 'next/image';
-import { useSearchParams } from 'next/navigation';
 import google from '@/assets/icons/login-google.svg';
 import kakao from '@/assets/icons/login-kakao.svg';
 
 export default function SocialButtons() {
-  const searchParams = useSearchParams();
-
   // 구글 또는 카카오 로그인 처리 함수
   const handleSocialLogin = (provider: 'google' | 'kakao') => {
     if (provider === 'kakao') {
