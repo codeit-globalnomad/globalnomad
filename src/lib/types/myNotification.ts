@@ -1,24 +1,38 @@
 import { z } from 'zod';
 
-export const myNotifictaionSchema = z.object({
-  cursorId: z.number(),
-  notification: z.object({
-    id: z.number(),
-    teamId: z.string(),
-    userId: z.number(),
-    content: z.string(),
-    createdAt: z.union([z.string(), z.date()]),
-    updatedAt: z.union([z.string(), z.date()]),
-    deleteAt: z.union([z.string(), z.date()]),
-  }),
+export const myNotificationsSchema = z.object({
+  cursorId: z.number().nullable(),
+  notifications: z.array(
+    z.object({
+      id: z.number(),
+      teamId: z.string(),
+      userId: z.number(),
+      content: z.string(),
+      createdAt: z.string(),
+      updatedAt: z.string(),
+      deletedAt: z.string().nullable().optional(),
+    }),
+  ),
   totalCount: z.number(),
 });
 
-export type myNotifictaion = z.infer<typeof myNotifictaionSchema>;
+export type MyNotifications = z.infer<typeof myNotificationsSchema>;
 
-export const getMyNotifictaionParamsSchema = z.object({
+export const getMyNotificationsParamsSchema = z.object({
   cursorId: z.number().optional(),
-  size: z.number().optional(),
+  size: z.number().default(10),
 });
 
-export type GetMynotificationsParams = z.infer<typeof getMyNotifictaionParamsSchema>;
+export type GetMyNotificationsParams = z.infer<typeof getMyNotificationsParamsSchema>;
+
+export const deleteMyNotificationsParamsSchema = z.object({
+  notificationId: z.number(),
+});
+
+export type DeleteMyNotificationsParams = z.infer<typeof deleteMyNotificationsParamsSchema>;
+
+export const deleteMyNotificationResponseSchema = z.object({
+  success: z.boolean(),
+});
+
+export type DeleteMyNotificationResponse = z.infer<typeof deleteMyNotificationResponseSchema>;
