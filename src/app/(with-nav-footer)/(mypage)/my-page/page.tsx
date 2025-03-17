@@ -1,5 +1,5 @@
 'use client';
-import Button from '@/components/Buttons';
+import Button from '@/components/Button';
 import Modal from '@/components/Modal';
 import React, { useState } from 'react';
 
@@ -13,9 +13,7 @@ export default function Page() {
   return (
     <>
       <div>
-        <Button size='save' variant='default' onClick={onHandleModalStatus}>
-          모달 띄우기
-        </Button>
+        <Button text='모달 띄우기' variant='default' onClick={onHandleModalStatus} />
       </div>
       {modalStatus && (
         <Modal title='모달' onClose={onHandleModalStatus} fullScreen>
