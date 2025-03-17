@@ -21,18 +21,26 @@ const buttonVariants = cva('cursor-pointer transition-all duration-200 flex item
 });
 
 interface ButtonProps extends VariantProps<typeof buttonVariants> {
-  text: string;
+  type?: 'button' | 'submit' | 'reset';
+  children: React.ReactNode;
   onClick?: () => void;
   className?: string;
   disabled?: boolean;
 }
 
-export default function Button({ text, onClick, disabled = false, className, variant }: ButtonProps) {
+export default function Button({
+  type = 'button',
+  children,
+  onClick,
+  disabled = false,
+  className,
+  variant,
+}: ButtonProps) {
   const finalClassName = cn(buttonVariants({ variant, disabled }), className || '');
 
   return (
-    <button onClick={!disabled ? onClick : undefined} disabled={disabled} className={finalClassName}>
-      {text}
+    <button type={type} onClick={!disabled ? onClick : undefined} disabled={disabled} className={finalClassName}>
+      {children}
     </button>
   );
 }

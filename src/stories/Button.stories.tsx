@@ -7,7 +7,6 @@ const meta: Meta<typeof Button> = {
   component: Button,
   tags: ['autodocs'],
   argTypes: {
-    text: { control: 'text' },
     variant: { control: 'radio', options: ['default', 'outline'] },
     disabled: { control: 'boolean' },
     onClick: { action: 'clicked' },
@@ -26,7 +25,7 @@ type Story = StoryObj<typeof Button>;
 
 export const Default: Story = {
   args: {
-    text: '로그인 하기',
+    children: '로그인 하기',
     variant: 'default',
     disabled: false,
     className: 'px-[138px] py-[11px]',
@@ -35,7 +34,7 @@ export const Default: Story = {
 
 export const Outline: Story = {
   args: {
-    text: '로그인 하기',
+    children: '로그인 하기',
     variant: 'outline',
     disabled: false,
     className: 'px-[138px] py-[11px]',
@@ -44,7 +43,7 @@ export const Outline: Story = {
 
 export const Disabled: Story = {
   args: {
-    text: '수정 완료',
+    children: '수정 완료',
     variant: 'default',
     disabled: true,
     className: 'px-[24px] py-[11px]',
@@ -53,7 +52,7 @@ export const Disabled: Story = {
 
 export const Custom: Story = {
   args: {
-    text: '검색하기',
+    children: '검색하기',
     className: 'rounded-sm px-[20px] py-[15px] md:px-[90px] md:py-[15px]',
     variant: 'default',
     disabled: false,
