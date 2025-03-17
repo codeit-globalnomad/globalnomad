@@ -2,6 +2,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { getMyNotifications, deleteMyNotification } from '../apis/myNotifications';
 import { GetMyNotificationsParams, MyNotifications } from '../types/myNotification';
 
+// 내 알림 리스트 조회 훅
 export const useMyNotifications = (params: GetMyNotificationsParams) => {
   return useQuery<MyNotifications>({
     queryKey: ['myNotifications', params],
@@ -13,16 +14,13 @@ export const useMyNotifications = (params: GetMyNotificationsParams) => {
   });
 };
 
+// 내 알림 삭제 훅
 export const useDeleteMyNotification = () => {
   const queryClient = useQueryClient();
-
   return useMutation({
-    mutationFn: (notificationId: number) => deleteMyNotification({ notificationId }),
+    mutationFn: (notificationId: number) => deleteMyNotification(notificationId),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['myNotifications'] });
-    },
-    onError: (error) => {
-      console.error('Failed to delete notification:', error);
-    },
+    }
   });
 };

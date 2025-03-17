@@ -31,6 +31,15 @@ export const getActivities = async (params: GetActivitiesParams) => {
 };
 
 /*
+ * 체험 등록 API
+ * https://sp-globalnomad-api.vercel.app/docs/#/Activities/Create
+ */
+export const createActivity = async (data: CreateActivityParams) => {
+  const response = await axiosClientHelper.post<CreateActivityResponse>('/activities', data);
+  return safeResponse(response.data, createActivityResponseSchema);
+};
+
+/*
  * 체험 상세 조회 API
  * https://sp-globalnomad-api.vercel.app/docs/#/Activities/GetById
  */
@@ -40,7 +49,7 @@ export const getActivityDetail = async (activityId: number) => {
 };
 
 /*
- * 체험예약 가능일 조회 API
+ * 체험 예약 가능일 조회 API
  * https://sp-globalnomad-api.vercel.app/docs/#/Activities/FindAvailableSchedule
  */
 export const getAvailableSchedule = async (activityId: number, year: string, month: string) => {
@@ -63,15 +72,6 @@ export const getActivityReviews = async (activityId: number, page = 1, size = 3)
 };
 
 /*
- * 체험등록 API
- * https://sp-globalnomad-api.vercel.app/docs/#/Activities/Create
- */
-export const createActivity = async (data: CreateActivityParams) => {
-  const response = await axiosClientHelper.post<CreateActivityResponse>('/activities', data);
-  return safeResponse(response.data, createActivityResponseSchema);
-};
-
-/*
  * 체험 예약 신청  API
  * https://sp-globalnomad-api.vercel.app/docs/#/Activities/CreatReservation
  */
@@ -81,7 +81,7 @@ export const createReservation = async (activityId: number, data: CreateReservat
 };
 
 /*
- * 체험 이미지 업로드 API
+ * 체험 이미지 URL 생성(업로드) API
  * https://sp-globalnomad-api.vercel.app/docs/#/Activities/UploadActivityImage
  */
 export const uploadActivityImage = async (formData: FormData) => {

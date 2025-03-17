@@ -1,6 +1,13 @@
 import axiosClientHelper from '../network/axiosClientHelper';
 import { safeResponse } from '../network/safeResponse';
-import { GetMyReservationsResponse, getMyReservationsResponseSchema, ReservationUpdateResponse, ReviewResponse, reservationUpdateResponseSchema, reviewResponseSchema } from '../types/myReservation';
+import { 
+  GetMyReservationsResponse, 
+  getMyReservationsResponseSchema,
+  ReservationUpdateResponse,
+  ReviewResponse,
+  reservationUpdateResponseSchema,
+  reviewResponseSchema 
+} from '../types/myReservation';
 
 /*
  * 내 예약 리스트 조회 API 
@@ -17,21 +24,16 @@ export const getMyReservations = async (
   return safeResponse(response.data, getMyReservationsResponseSchema);
 };
 
-
 /*
- * 내 예약 수정 (취소) API
+ * 내 예약 수정(취소) API
  * https://sp-globalnomad-api.vercel.app/docs/#/MyReservations/Update
  */
-export const cancelMyReservation = async (
-  reservationId: number,
-  status: 'canceled'
-): Promise<ReservationUpdateResponse> => {
+export const cancelMyReservation = async (reservationId: number, status: 'canceled'): Promise<ReservationUpdateResponse> => {
   const response = await axiosClientHelper.patch<ReservationUpdateResponse>(`/my-reservations/${reservationId}`, {
     status,
   });
   return safeResponse(response.data, reservationUpdateResponseSchema);
 };
-
 
 /*
  * 내 예약 리뷰 작성 API

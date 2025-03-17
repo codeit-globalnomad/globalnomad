@@ -49,7 +49,7 @@ import {
   ActivityImageUploadResponse,
 } from '@/lib/types/activities';
 
-// 1. 체험 리스트 조회 훅
+// 체험 리스트 조회 훅
 export const useActivities = (params: GetActivitiesParams) => {
   return useQuery<ActivitiesResponse>({
     queryKey: ['activities', params],
@@ -58,7 +58,14 @@ export const useActivities = (params: GetActivitiesParams) => {
   });
 };
 
-// 2. 체험 상세 조회 훅
+// 체험 등록 훅 (Mutation)
+export const useCreateActivity = () => {
+  return useMutation<CreateActivityResponse, unknown, CreateActivityParams>({
+    mutationFn: createActivity,
+  });
+};
+
+// 체험 상세 조회 훅
 export const useActivityDetail = (activityId?: number) => {
   return useQuery<ActivityDetailResponse>({
     queryKey: ['activityDetail', activityId],
@@ -67,7 +74,7 @@ export const useActivityDetail = (activityId?: number) => {
   });
 };
 
-//  3. 체험 예약 가능일 조회 훅
+// 체험 예약 가능일 조회 훅
 export const useAvailableSchedule = (activityId?: number, year?: string, month?: string) => {
   return useQuery<AvailableScheduleResponse>({
     queryKey: ['availableSchedule', activityId, year, month],
@@ -76,7 +83,7 @@ export const useAvailableSchedule = (activityId?: number, year?: string, month?:
   });
 };
 
-//  4. 체험 리뷰 조회 훅
+// 체험 리뷰 조회 훅
 export const useActivityReviews = (activityId?: number, page = 1, size = 3) => {
   return useQuery<ActivityReviewsResponse>({
     queryKey: ['activityReviews', activityId, page, size],
@@ -85,21 +92,14 @@ export const useActivityReviews = (activityId?: number, page = 1, size = 3) => {
   });
 };
 
-//  5. 체험 등록 훅 (Mutation)
-export const useCreateActivity = () => {
-  return useMutation<CreateActivityResponse, unknown, CreateActivityParams>({
-    mutationFn: createActivity,
-  });
-};
-
-//  6. 체험 예약 신청 훅 (Mutation)
+// 체험 예약 신청 훅 (Mutation)
 export const useCreateReservation = (activityId: number) => {
   return useMutation<ReservationResponse, unknown, CreateReservationParams>({
     mutationFn: (data) => createReservation(activityId, data),
   });
 };
 
-//  7. 체험 이미지 업로드 훅 (Mutation)
+// 체험 이미지 URL 생성(업로드) 훅 (Mutation)
 export const useUploadActivityImage = () => {
   return useMutation<ActivityImageUploadResponse, unknown, FormData>({
     mutationFn: uploadActivityImage,

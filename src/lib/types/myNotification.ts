@@ -1,5 +1,6 @@
 import { z } from 'zod';
 
+// 내 알림 리스트 조회 API 타입
 export const myNotificationsSchema = z.object({
   cursorId: z.number().nullable(),
   notifications: z.array(
@@ -8,9 +9,9 @@ export const myNotificationsSchema = z.object({
       teamId: z.string(),
       userId: z.number(),
       content: z.string(),
-      createdAt: z.string(),
-      updatedAt: z.string(),
-      deletedAt: z.string().nullable().optional(),
+      createdAt: z.string().datetime(),
+      updatedAt: z.string().datetime(),
+      deletedAt: z.string().datetime().nullable(),
     }),
   ),
   totalCount: z.number(),
@@ -25,14 +26,7 @@ export const getMyNotificationsParamsSchema = z.object({
 
 export type GetMyNotificationsParams = z.infer<typeof getMyNotificationsParamsSchema>;
 
-export const deleteMyNotificationsParamsSchema = z.object({
-  notificationId: z.number(),
-});
-
-export type DeleteMyNotificationsParams = z.infer<typeof deleteMyNotificationsParamsSchema>;
-
-export const deleteMyNotificationResponseSchema = z.object({
-  success: z.boolean(),
-});
+// 내 알림 삭제 API 타입
+export const deleteMyNotificationResponseSchema = z.object({});
 
 export type DeleteMyNotificationResponse = z.infer<typeof deleteMyNotificationResponseSchema>;

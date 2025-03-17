@@ -2,7 +2,7 @@ import { useMutation } from '@tanstack/react-query';
 import { OauthAppParams, OauthAppResponse, OauthParams, OauthResponse } from '../types/oauth';
 import { postOauthApps, postOauthLogin, postOauthSignup } from '../apis/oauth';
 
-// 간편 로그인 App 등록/수정 훅
+// 간편 로그인 APP 등록,수정 훅
 export const useOauthApps = (params: OauthAppParams) => {
   return useMutation<OauthAppResponse, Error, OauthAppParams>({
     mutationFn: () => postOauthApps(params),

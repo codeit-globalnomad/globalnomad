@@ -10,14 +10,12 @@ export const useMyReservations = (cursorId?: number, size: number = 10, status?:
   });
 };
 
-
-// 내 예약 취소 훅
+// 내 예약 수정(취소) 훅
 export const useCancelMyReservation = () => {
   return useMutation({
     mutationFn: (reservationId: number) => cancelMyReservation(reservationId, 'canceled'),
   });
 };
-
 
 // 내 예약 리뷰 작성 훅
 export const useWriteReviewForReservation = () => {

@@ -11,7 +11,7 @@ import {
 } from '../types/oauth';
 
 /**
- * 간편 로그인 App 등록/수정 API
+ * 간편 로그인 App 등록, 수정 API
  * https://sp-globalnomad-api.vercel.app/docs/#/Oauth/UpsertOauthApp
  */
 export const postOauthApps = async (params: OauthAppParams) => {
