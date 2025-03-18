@@ -1,8 +1,9 @@
-export default function ActivitiePage() {
+import Banner from './_components/Banner';
+
+export default function Page() {
   return (
     <>
-      <div> 메인 페이지 입니다</div>
+      <Banner />
     </>
-    // 휘송님 메인페이지
   );
 }
