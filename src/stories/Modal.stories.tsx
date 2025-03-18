@@ -45,21 +45,20 @@ export const Default: Story = {
             />
           ) : (
             <div className='flex gap-4'>
+              <Button type='button' variant='default' onClick={() => setIsOpen(true)} className='px-[20px] py-[10px]'>
+                모달열기
+              </Button>
               <Button
-                text='모달 열기'
-                variant='default'
-                onClick={() => setIsOpen(true)}
-                className='px-[20px] py-[10px]'
-              />
-              <Button
-                text='전체 화면용 모달 열기'
+                type='button'
                 variant='default'
                 onClick={() => {
                   setIsOpen(true);
                   setIsFullScreen(true);
                 }}
                 className='px-[20px] py-[10px]'
-              />
+              >
+                전체화면모달열기
+              </Button>
             </div>
           )}
         </>
