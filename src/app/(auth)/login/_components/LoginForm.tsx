@@ -48,7 +48,7 @@ export default function LoginForm() {
             </a>
           </p>
         </div>
-        <SocialButtons mode='signin' />
+        <SocialButtons />
       </div>
     </div>
   );

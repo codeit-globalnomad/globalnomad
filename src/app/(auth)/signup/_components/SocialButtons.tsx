@@ -4,11 +4,7 @@ import Image from 'next/image';
 import google from '@/assets/icons/login-google.svg';
 import kakao from '@/assets/icons/login-kakao.svg';
 
-interface SocialButtonsProps {
-  mode: 'signin' | 'signup';
-}
-
-export default function SocialButtons({ mode }: SocialButtonsProps) {
+export default function SocialButtons() {
   // 구글 또는 카카오 로그인 처리 함수
   const handleSocialLogin = (provider: 'google' | 'kakao') => {
     if (provider === 'kakao') {
@@ -17,8 +13,7 @@ export default function SocialButtons({ mode }: SocialButtonsProps) {
         `client_id=${process.env.NEXT_PUBLIC_KAKAO_API_KEY}` +
         `&redirect_uri=${process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI}` +
         `&response_type=code` +
-        `&state=${provider}` +
-        `&mode=${mode}`;
+        `&state=${provider}`;
 
       window.location.href = KAKAO_OAUTH_URL;
     } else {
@@ -28,8 +23,7 @@ export default function SocialButtons({ mode }: SocialButtonsProps) {
         `redirect_uri=${process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI}&` +
         `response_type=code&` +
         `scope=openid%20profile%20email&` +
-        `state=${provider}&` +
-        `mode=${mode}`;
+        `state=${provider}&`;
       window.location.href = GOOGLE_OAUTH_URL;
     }
   };
@@ -38,9 +32,7 @@ export default function SocialButtons({ mode }: SocialButtonsProps) {
     <div>
       <div className='mb-10 flex items-center gap-4'>
         <div className='flex-1 border-t border-gray-300' />
-        <p className='text-center text-xl text-gray-800'>
-          {mode === 'signup' ? 'SNS 계정으로 회원가입하기' : 'SNS 계정으로 로그인하기'}
-        </p>
+        <p className='text-center text-xl text-gray-800'>SNS 계정으로 회원가입하기</p>
         <div className='flex-1 border-t border-gray-300' />
       </div>
       <div className='mt-2 flex justify-center space-x-4'>

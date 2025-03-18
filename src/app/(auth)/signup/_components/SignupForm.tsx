@@ -65,7 +65,7 @@ export default function SignupForm() {
             </a>
           </p>
         </div>
-        <SocialButtons mode='signup' />
+        <SocialButtons />
       </div>
     </div>
   );
