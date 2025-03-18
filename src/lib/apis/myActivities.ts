@@ -15,7 +15,8 @@ import {
   deleteActivityResponseSchema, 
   UpdatedActivityResponse, 
   updatedActivityResponseSchema, 
-  UpdateActivityRequest
+  UpdateActivityRequest,
+  GetReservationsParams
  } from '../types/myActivities';
 
 /*
@@ -59,19 +60,9 @@ export const getReservedSchedule = async (activityId: number, date: string): Pro
  * 내 체험 예약 시간대별 예약 내역 조회 API
  * https://sp-globalnomad-api.vercel.app/docs/#/MyActivities/FindReservations
  */
-export const getReservations = async (
-  activityId: number,
-  scheduleId: number,
-  status: 'declined' | 'pending' | 'confirmed',
-  cursorId?: number,
-  size: number = 10,
-): Promise<ReservationResponse> => {
-  const params = { scheduleId, status, cursorId, size };
-
+export const getReservations = async (activityId: number, params: GetReservationsParams): Promise<ReservationResponse> => {
   const response = await axiosClientHelper.get<ReservationResponse>(
-      `/my-activities/${activityId}/reservations`,
-      { params }
-  );
+      `/my-activities/${activityId}/reservations`,{ params });
   return safeResponse(response.data, reservationResponseSchema);
 };
 

@@ -57,12 +57,14 @@ export const reservedScheduleResponseSchema = z.array(
 export type ReservedScheduleResponse = z.infer<typeof reservedScheduleResponseSchema>;
 
 // 내 체험 예약 시간대별 예약 내역 조회 API 타입
-export type GetReservationsParams = {
-  scheduleId: number;
-  status: 'declined' | 'pending' | 'confirmed';
-  cursorId?: number;
-  size: number;
-};
+export const getReservationsParams = z.object({
+  scheduleId: z.number(),
+  status: z.enum(['declined', 'pending', 'confirmed']),
+  cursorId: z.number().optional(),
+  size: z.number().optional(),
+})
+
+export type GetReservationsParams = z.infer<typeof getReservationsParams>;
 
 export const reservationResponseSchema = z.object({
   cursorId: z.number().nullable(),

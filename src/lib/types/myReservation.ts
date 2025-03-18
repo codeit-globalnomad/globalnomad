@@ -1,6 +1,14 @@
 import { z } from 'zod';
 
 // 내 예약 리스트 조회 API 타입
+export const getMyReservationsParams = z.object({
+  cursorId: z.number().optional(),
+  size: z.number().optional(),
+  status: z.enum(['pending', 'confirmed', 'declined', 'canceled', 'completed']).optional(),  
+})
+
+export type GetMyReservationsParams = z.infer<typeof getMyReservationsParams>;
+
 export const reservationWithActivitySchema = z.object({
   id: z.number(),
   teamId: z.string(),
@@ -59,7 +67,7 @@ export const reservationUpdateResponseSchema = z.object({
 export type ReservationUpdateResponse = z.infer<typeof reservationUpdateResponseSchema>;
   
 // 내 예약 리뷰 작성 API 타입
-export const createReviewRequestSchema = z.object({
+export const writeReviewForReservationParams = z.object({
   rating: z.number()
     .int({ message: '별점은 정수로 입력해주세요.' })
     .min(1, { message: '별점은 1 이상이어야 합니다.' }),
@@ -69,7 +77,7 @@ export const createReviewRequestSchema = z.object({
     .regex(/^[a-zA-Z0-9가-힣\s\.,!?]+$/, { message: '후기 내용에는 문자, 숫자, 공백, 일부 특수문자(HTML 코드 문자 제외)만 입력할 수 있습니다.' })
 });
   
-export type CreateReviewRequest = z.infer<typeof createReviewRequestSchema>;
+export type WriteReviewForReservationParams = z.infer<typeof writeReviewForReservationParams>;
 
 export const reviewResponseSchema = z.object({
     deletedAt: z.string().nullable(),
