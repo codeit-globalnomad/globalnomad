@@ -8,11 +8,7 @@ const AFTER_LOGIN_DOMAIN = [
   '/my-reservations',
 ] satisfies readonly string[];
 
-<<<<<<< HEAD
-const BEFORE_LOGIN_DOMAIN = ['/login', '/signup'] satisfies readonly string[];
-=======
 const BEFORE_LOGIN_DOMAIN = ['/', '/login', '/signup'] satisfies readonly string[];
->>>>>>> afbe47e (feat: 간편로그인 및 회원가입 로직 완성)
 
 export const middleware = async (request: NextRequest) => {
   const cookieStore = await cookies();
@@ -20,11 +16,10 @@ export const middleware = async (request: NextRequest) => {
   const refreshToken = cookieStore.get('refreshToken')?.value;
 
   const pathname = request.nextUrl.pathname;
-  const isLoggedIn = accessToken || refreshToken;
 
-<<<<<<< HEAD
-  const isAfterLoginRoute = pathname !== '/' && AFTER_LOGIN_DOMAIN.some((route) => pathname.startsWith(route));
+  const isAfterLoginRoute = AFTER_LOGIN_DOMAIN.some((route) => pathname.startsWith(route));
   const isBeforeLoginRoute = BEFORE_LOGIN_DOMAIN.includes(pathname);
+  const isLoggedIn = accessToken || refreshToken;
 
   if (pathname === '/') {
     if (isLoggedIn) {
@@ -41,19 +36,6 @@ export const middleware = async (request: NextRequest) => {
     }
     return NextResponse.next();
   }
-
-=======
-  const isAfterLoginRoute = AFTER_LOGIN_DOMAIN.some((route) => pathname.startsWith(route));
-  const isBeforeLoginRoute = BEFORE_LOGIN_DOMAIN.includes(pathname);
-  const isLoggedIn = accessToken || refreshToken;
-
-  if (isBeforeLoginRoute) {
-    if (isLoggedIn) {
-      return NextResponse.redirect(new URL('/activities', request.nextUrl));
-    }
-    return NextResponse.next();
-  }
->>>>>>> afbe47e (feat: 간편로그인 및 회원가입 로직 완성)
   if (isAfterLoginRoute) {
     if (!isLoggedIn) {
       return NextResponse.redirect(new URL('/login', request.nextUrl));
