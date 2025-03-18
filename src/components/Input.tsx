@@ -59,14 +59,14 @@ export default function Input({
       <label
         htmlFor={id}
         className={cn(
-          'font-norma text-black-100 inline-block cursor-pointer bg-red-50 bg-clip-text text-base leading-[26px]',
+          'font-norma text-black-100 inline-block cursor-pointer bg-clip-text text-base leading-[26px]',
           isEvent &&
             'absolute top-1/2 z-10 -translate-y-1/2 transform px-5 text-gray-500 transition-all duration-200 ease-in-out',
           (isFocused || value) && isEvent && 'top-1/2 -translate-y-10 transform text-[14px]',
           className,
         )}
       >
-        <span className={disabled ? 'bg-gray-200' : 'bg-white'}>{label}</span>
+        <span className={disabled && isEvent ? 'bg-gray-200' : 'bg-white'}>{label}</span>
       </label>
       <input
         id={id}
