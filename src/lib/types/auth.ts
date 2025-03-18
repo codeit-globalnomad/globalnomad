@@ -3,8 +3,11 @@ import { z } from 'zod';
 // 로그인 요청 API 타입
 export const loginSchema = z.object({
   email: z.string()
-  .email({ message: '이메일 형식으로 작성해주세요.' })
-  .min(1, { message: '이메일을 입력해주세요.' }), 
+  .min(1, { message: '이메일을 입력해주세요.' })
+  .email({ message: '유효한 이메일 주소를 입력하세요.' })
+  .regex(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, {
+    message: '올바른 이메일 형식이 아닙니다.',
+  }),
   password: z.string()
   .min(1, { message: '비밀번호를 입력해주세요.' })
   .min(8, { message: '8자 이상 입력해주세요.' })

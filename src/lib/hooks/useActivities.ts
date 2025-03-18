@@ -25,7 +25,7 @@
  * ================================================================
  */
 
-import { useQuery, useMutation } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   getActivities,
   getActivityDetail,
@@ -54,23 +54,25 @@ export const useActivities = (params: GetActivitiesParams) => {
   return useQuery<ActivitiesResponse>({
     queryKey: ['activities', params],
     queryFn: () => getActivities(params),
-    enabled: !!params, // params 없을 때 자동 비활성화
   });
 };
 
 // 체험 등록 훅 (Mutation)
 export const useCreateActivity = () => {
+  const queryClient = useQueryClient();
   return useMutation<CreateActivityResponse, unknown, CreateActivityParams>({
     mutationFn: createActivity,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['activities'] });
+    },
   });
 };
 
 // 체험 상세 조회 훅
-export const useActivityDetail = (activityId?: number) => {
+export const useActivityDetail = (activityId: number) => {
   return useQuery<ActivityDetailResponse>({
     queryKey: ['activityDetail', activityId],
     queryFn: () => getActivityDetail(activityId!),
-    enabled: !!activityId, // id가 없으면 호출 안 함
   });
 };
 
@@ -79,7 +81,6 @@ export const useAvailableSchedule = (activityId?: number, year?: string, month?:
   return useQuery<AvailableScheduleResponse>({
     queryKey: ['availableSchedule', activityId, year, month],
     queryFn: () => getAvailableSchedule(activityId!, year!, month!),
-    enabled: !!activityId && !!year && !!month, // 모두 있어야 호출
   });
 };
 
@@ -88,14 +89,17 @@ export const useActivityReviews = (activityId?: number, page = 1, size = 3) => {
   return useQuery<ActivityReviewsResponse>({
     queryKey: ['activityReviews', activityId, page, size],
     queryFn: () => getActivityReviews(activityId!, page, size),
-    enabled: !!activityId, // id가 있어야 호출
   });
 };
 
 // 체험 예약 신청 훅 (Mutation)
 export const useCreateReservation = (activityId: number) => {
+  const queryClient = useQueryClient();
   return useMutation<ReservationResponse, unknown, CreateReservationParams>({
     mutationFn: (data) => createReservation(activityId, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['activityDetail', activityId] });
+    },
   });
 };
 

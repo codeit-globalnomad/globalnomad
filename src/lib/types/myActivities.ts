@@ -122,8 +122,7 @@ export const updateActivityRequestSchema = z.object({
   title: z.string()
     .min(1, { message: '제목을 입력해주세요.' })
     .regex(/^[a-zA-Z0-9가-힣\s]+$/, { message: '제목은 문자열로 입력해주세요.' }),
-  category: z.string()
-    .min(1, { message: '카테고리명을 선택해주세요.' }),
+  category: z.enum(['문화 · 예술', '식음료', '스포츠', '투어', '관광', '웰빙'], { message: '카테고리명을 선택해주세요.' }),
   description: z.string()
     .min(1, { message: '설명을 입력해주세요.' })
     .regex(/^[a-zA-Z0-9가-힣\s\.,!?]+$/, { message: '설명에는 문자, 숫자, 공백, 일부 특수문자(HTML 코드 문자 제외)만 입력할 수 있습니다.' }),

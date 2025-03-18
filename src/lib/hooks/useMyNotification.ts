@@ -10,7 +10,6 @@ export const useMyNotifications = (params: GetMyNotificationsParams) => {
       const data = await getMyNotifications(params);
       return data || { cursorId: 0, notifications: [], totalCount: 0 };
     },
-    enabled: true,
   });
 };
 

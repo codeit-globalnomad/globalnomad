@@ -8,14 +8,13 @@ import {
   deleteActivity, 
   updateActivity 
 } from '../apis/myActivities';
-import { UpdateActivityRequest } from '../types/myActivities';
+import { GetReservationsParams, UpdateActivityRequest } from '../types/myActivities';
 
 // 내 체험 리스트 조회 훅
 export const useMyActivities = (cursorId?: number, size: number = 20) => {
   return useQuery({
     queryKey: ['myActivities', cursorId, size],
     queryFn: () => getMyActivities(cursorId, size),
-    staleTime: 30000,
   });
 };
 
@@ -24,7 +23,6 @@ export const useReservationDashboard = (activityId: number, year: string, month:
   return useQuery({
     queryKey: ['reservationDashboard', activityId, year, month],
     queryFn: () => getReservationDashboard(activityId, year, month),
-    staleTime: 30000,
   });
 };
 
@@ -33,30 +31,29 @@ export const useReservedSchedule = (activityId: number, date: string) => {
   return useQuery({
     queryKey: ['reservedSchedule', activityId, date],
     queryFn: () => getReservedSchedule(activityId, date),
-    staleTime: 30000,
   });
 };
 
 // 내 체험 예약 시간대별 예약 내역 조회 훅
 export const useReservations = (
   activityId: number,
-  scheduledId: number,
-  status: 'declined' | 'pending' | 'confirmed',
-  cursorId?: number,
-  size: number = 10,
+  params: GetReservationsParams,
 ) => {
   return useQuery({
-    queryKey: ['reservations', activityId, scheduledId, status, cursorId, size],
-    queryFn: () => getReservations(activityId, scheduledId, status, cursorId, size),
-    staleTime: 30000,
+    queryKey: ['reservations', activityId, params],
+    queryFn: () => getReservations(activityId, params),
   });
 };
 
 // 내 체험 예약 상태(승인, 거절) 업데이트 훅
 export const useUpdateReservationStatus = () => {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (data: { activityId: number; reservationId: number; status: 'declined' | 'confirmed' }) =>
       updateReservationStatus(data.activityId, data.reservationId, data.status),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['reservations'] });
+    }
   });
 };
 
@@ -73,7 +70,11 @@ export const useDeleteActivity = () => {
 
 // 내 체험 수정 훅
 export const useUpdateActivity = () => {
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (params: { activityId: number, data: UpdateActivityRequest }) => updateActivity(params.activityId, params.data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['myActivities'] });
+    },
   });
 };
