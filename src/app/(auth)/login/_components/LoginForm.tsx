@@ -3,13 +3,16 @@
 import Image from 'next/image';
 import logoLg from '@/assets/logo/logo-lg.svg';
 import SocialButtons from '../../signup/_components/SocialButtons';
+import Link from 'next/link';
 
-export default function SigninForm() {
+export default function LoginForm() {
   return (
     <div className='flex min-h-screen items-center justify-center'>
       <div className='w-full max-w-xl px-4'>
         <div className='mb-6 flex justify-center'>
-          <Image src={logoLg} width={340} height={192} alt='로그인창 로고' />
+          <Link href='/'>
+            <Image src={logoLg} width={340} height={192} alt='로그인창 로고' />
+          </Link>
         </div>
 
         <form className='space-y-4'>

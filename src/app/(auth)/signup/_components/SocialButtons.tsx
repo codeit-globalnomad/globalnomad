@@ -31,10 +31,10 @@ export default function SocialButtons() {
     <div>
       <p className='text-center text-gray-500'>SNS 계정으로 회원가입하기</p>
       <div className='mt-2 flex justify-center space-x-4'>
-        <button type='button' onClick={() => handleSocialLogin('google')}>
+        <button type='button' onClick={() => handleSocialLogin('google')} className='cursor-pointer'>
           <Image src={google} width={72} height={72} alt='구글 로그인 아이콘' />
         </button>
-        <button type='button' onClick={() => handleSocialLogin('kakao')}>
+        <button type='button' onClick={() => handleSocialLogin('kakao')} className='cursor-pointer'>
           <Image src={kakao} width={72} height={72} alt='카카오 로그인 아이콘' />
         </button>
       </div>
