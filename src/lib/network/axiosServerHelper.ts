@@ -8,6 +8,7 @@ const axiosServerHelper = axios.create({
 axiosServerHelper.interceptors.request.use(async (config) => {
   const cookieStore = await cookies();
   const accessToken = cookieStore.get('accessToken');
+  const refreshToken = cookieStore.get('refreshToken');
 
   if (accessToken?.value) config.headers.Authorization = `Bearer ${accessToken.value}`;
 

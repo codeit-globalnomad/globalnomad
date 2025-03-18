@@ -13,7 +13,7 @@ export interface User {
   updatedAt: string;
 }
 
-export const GET = async (req: NextRequest) => {
+export const POST = async (req: NextRequest) => {
   const { provider, code } = await extractProviderAndCode(req.url);
 
   try {
