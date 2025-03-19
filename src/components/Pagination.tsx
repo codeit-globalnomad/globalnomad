@@ -15,12 +15,12 @@ export interface PaginationProps extends VariantProps<typeof paginationVariants>
 }
 
 const paginationVariants = cva(
-  'flex items-center justify-center border font-medium transition-colors cursor-pointer disabled:cursor-not-allowed',
+  'flex items-center justify-center border font-regular transition-colors cursor-pointer disabled:cursor-not-allowed',
   {
     variants: {
       size: {
-        sm: 'w-[40px] h-[40px] rounded-[10px] text-2xl', // 작은 버튼 (40px x 40px)
-        md: 'w-[55px] h-[55px] rounded-[15px] text-2xl', // 기본 버튼 (55px x 55px)
+        sm: 'w-[40px] h-[40px] rounded-[10px] text-2lg', // 작은 버튼 (40px x 40px)
+        md: 'w-[55px] h-[55px] rounded-[15px] text-2lg', // 기본 버튼 (55px x 55px)
       },
       variant: {
         default: 'bg-white border-green-100 text-green-100 hover:bg-gray-200',
@@ -81,14 +81,14 @@ const Pagination = ({ currentPage, totalPages, onChange, size }: PaginationProps
         disabled={currentPage === 1}
         aria-label='이전 페이지'
         className={paginationVariants({
-          // ✅ 기존 variants 사용
+          // 기존 variants 사용
           size,
           variant: currentPage === 1 ? 'disabled' : 'default',
         })}
       >
         <div
           className={`flex items-center justify-center ${arrowSizeClasses[size || 'md']} ${
-            // ✅ 변수 사용
+            // 변수 사용
             currentPage === 1 ? 'opacity-50 grayscale' : ''
           }`} // 비활성화 시 그레이스케일 + 투명도 적용
         >
@@ -111,7 +111,7 @@ const Pagination = ({ currentPage, totalPages, onChange, size }: PaginationProps
             size,
             variant: currentPage === page ? 'active' : 'default',
           })}
-          aria-label={`${page} 페이지`} // ✅ 각 페이지 번호 버튼에 aria-label 추가
+          aria-label={`${page} 페이지`} //각 페이지 번호 버튼에 aria-label 추가
         >
           {page}
         </button>
@@ -123,7 +123,7 @@ const Pagination = ({ currentPage, totalPages, onChange, size }: PaginationProps
         disabled={currentPage === totalPages}
         aria-label='다음 페이지'
         className={paginationVariants({
-          // ✅ 기존 variants 사용
+          // 기존 variants 사용
           size,
           variant: currentPage === totalPages ? 'disabled' : 'default',
         })}
