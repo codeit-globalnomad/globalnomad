@@ -24,7 +24,7 @@ const paginationVariants = cva(
       },
       variant: {
         default: 'bg-white border-green-100 text-green-100 hover:bg-gray-200',
-        active: 'bg-green-100 text-white',
+        active: 'bg-green-100 text-white font-medium',
         disabled: 'border-gray-300 text-gray-500 bg-gray-100',
       },
     },
@@ -34,6 +34,12 @@ const paginationVariants = cva(
     },
   },
 );
+
+// 화살표 크기 변수 설정
+const arrowSizeClasses = {
+  sm: 'h-[15.27px] w-[15.27px]',
+  md: 'h-[21px] w-[21px]',
+};
 
 const Pagination = ({ currentPage, totalPages, onChange, size }: PaginationProps) => {
   const pageGroupSize = 5;
@@ -71,20 +77,24 @@ const Pagination = ({ currentPage, totalPages, onChange, size }: PaginationProps
     <div className='flex items-center gap-2'>
       {/*  Prev Button  */}
       <button
-        onClick={handlePrevGroup}
+        onClick={currentPage === 1 ? undefined : handlePrevGroup}
         disabled={currentPage === 1}
-        className={`flex items-center justify-center border ${
-          currentPage === 1
-            ? 'border-gray-300 bg-white' // 비활성화 상태
-            : 'border-green-100 bg-white text-green-100 hover:bg-gray-200'
-        } ${size === 'sm' ? 'h-[40px] w-[40px] rounded-[10px]' : 'h-[55px] w-[55px] rounded-[15px]'}`}
+        aria-label='이전 페이지'
+        className={paginationVariants({
+          // ✅ 기존 variants 사용
+          size,
+          variant: currentPage === 1 ? 'disabled' : 'default',
+        })}
       >
         <div
-          className={`flex items-center justify-center ${size === 'sm' ? 'h-[15.27px] w-[15.27px]' : 'h-[21px] w-[21px]'} ${currentPage === 1 ? 'opacity-50 grayscale' : ''}`} //비활성화 시 그레이스케일 + 투명도 적용
+          className={`flex items-center justify-center ${arrowSizeClasses[size || 'md']} ${
+            // ✅ 변수 사용
+            currentPage === 1 ? 'opacity-50 grayscale' : ''
+          }`} // 비활성화 시 그레이스케일 + 투명도 적용
         >
           <Image
             src={rightArrow} // 오른쪽 화살표를 반전해서 왼쪽 화살표로 사용
-            alt='Previous'
+            alt='이전 페이지로 이동'
             width={size === 'sm' ? 5 : 7}
             height={size === 'sm' ? 3 : 4}
             className='scale-x-[-1] transform object-contain'
@@ -97,7 +107,11 @@ const Pagination = ({ currentPage, totalPages, onChange, size }: PaginationProps
         <button
           key={page}
           onClick={() => handlePageChange(page)}
-          className={paginationVariants({ size, variant: currentPage === page ? 'active' : 'default' })}
+          className={paginationVariants({
+            size,
+            variant: currentPage === page ? 'active' : 'default',
+          })}
+          aria-label={`${page} 페이지`} // ✅ 각 페이지 번호 버튼에 aria-label 추가
         >
           {page}
         </button>
@@ -105,20 +119,23 @@ const Pagination = ({ currentPage, totalPages, onChange, size }: PaginationProps
 
       {/* Next Button */}
       <button
-        onClick={handleNextGroup}
+        onClick={currentPage === totalPages ? undefined : handleNextGroup}
         disabled={currentPage === totalPages}
-        className={`flex items-center justify-center border ${
-          currentPage === totalPages
-            ? 'border-gray-300 bg-white' // 비활성화 상태
-            : 'border-green-100 bg-white text-green-100 hover:bg-gray-200'
-        } ${size === 'sm' ? 'h-[40px] w-[40px] rounded-[10px]' : 'h-[55px] w-[55px] rounded-[15px]'}`}
+        aria-label='다음 페이지'
+        className={paginationVariants({
+          // ✅ 기존 variants 사용
+          size,
+          variant: currentPage === totalPages ? 'disabled' : 'default',
+        })}
       >
         <div
-          className={`flex items-center justify-center ${size === 'sm' ? 'h-[15.27px] w-[15.27px]' : 'h-[21px] w-[21px]'} ${currentPage === totalPages ? 'opacity-50 grayscale' : ''}`} //비활성화 시 그레이스케일 + 투명도 적용
+          className={`flex items-center justify-center ${arrowSizeClasses[size || 'md']} ${
+            currentPage === totalPages ? 'opacity-50 grayscale' : ''
+          }`} // 비활성화 시 그레이스케일 + 투명도 적용
         >
           <Image
             src={rightArrow} // 기본 오른쪽 화살표 그대로 사용
-            alt='Next'
+            alt='다음 페이지로 이동'
             width={size === 'sm' ? 5 : 7}
             height={size === 'sm' ? 3 : 4}
             className='object-contain'
