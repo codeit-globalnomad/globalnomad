@@ -8,6 +8,7 @@ import { Pretendard } from '@/font';
 const meta: Meta<typeof Dropdown> = {
   title: 'Dropdown',
   component: Dropdown,
+  tags: ['autodocs'],
   decorators: [
     (Story) => (
       <div className={Pretendard.className}>

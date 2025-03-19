@@ -5,6 +5,7 @@ import { Pretendard } from '@/font';
 const meta: Meta<typeof FilterDropdown> = {
   title: 'FilterDropdown',
   component: FilterDropdown,
+  tags: ['autodocs'],
   decorators: [
     (Story) => (
       <div className={Pretendard.className}>
