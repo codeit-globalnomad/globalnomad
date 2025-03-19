@@ -82,8 +82,8 @@ export const PasswordType: Story = {
 export const Disabled: Story = {
   args: {
     variant: 'default',
-    value: 'test@eamil.com',
-    type: 'emil',
+    value: 'test@email.com',
+    type: 'email',
     disabled: true,
     onChange: action('changed'),
   },
