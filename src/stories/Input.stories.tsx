@@ -43,7 +43,7 @@ export const Event: Story = {
     variant: 'event',
     id: 'activities',
     label: '내가 원하는 체험은',
-    type: 'password',
+    type: 'text',
     className: 'pl-[48px]',
 
     onChange: action('changed'),
@@ -71,10 +71,10 @@ export const Event: Story = {
 export const PasswordType: Story = {
   args: {
     variant: 'default',
-    id: 'password',
+    id: 'newPassword',
     label: '새 비밀번호',
     placeholder: '새 비밀번호를 한번 더 입력해주세요',
-    type: 'password',
+    type: 'newPassword',
     onChange: action('changed'),
   },
 };
@@ -82,6 +82,7 @@ export const PasswordType: Story = {
 export const Disabled: Story = {
   args: {
     variant: 'default',
+    label: '이메일',
     value: 'test@email.com',
     type: 'email',
     disabled: true,
