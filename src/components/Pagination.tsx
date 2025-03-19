@@ -80,7 +80,7 @@ const Pagination = ({ currentPage, totalPages, onChange, size }: PaginationProps
         } ${size === 'sm' ? 'h-[40px] w-[40px] rounded-[10px]' : 'h-[55px] w-[55px] rounded-[15px]'}`}
       >
         <div
-          className={`flex items-center justify-center ${size === 'sm' ? 'h-[15.27px] w-[15.27px]' : 'h-[21px] w-[21px]'} ${currentPage === 1 ? 'opacity-30 grayscale' : ''}`} //비활성화 시 그레이스케일 + 투명도 적용
+          className={`flex items-center justify-center ${size === 'sm' ? 'h-[15.27px] w-[15.27px]' : 'h-[21px] w-[21px]'} ${currentPage === 1 ? 'opacity-50 grayscale' : ''}`} //비활성화 시 그레이스케일 + 투명도 적용
         >
           <Image
             src={rightArrow} // 오른쪽 화살표를 반전해서 왼쪽 화살표로 사용
