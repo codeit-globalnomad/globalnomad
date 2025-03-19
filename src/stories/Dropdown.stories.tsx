@@ -1,7 +1,7 @@
 import { Meta, StoryObj } from '@storybook/react';
 import Dropdown from '@/components/Dropdown';
 import Image from 'next/image';
-import dropdown from '@/assets/icons/dropdown.svg';
+import kebab from '@/assets/icons/kebab.svg';
 import profileDefault from '@/assets/icons/profile-default.svg';
 import { Pretendard } from '@/font';
 
@@ -25,7 +25,7 @@ const options2 = [{ label: '마이 페이지', onClick: () => console.log('마�
 
 export const EditDeleteDropdown: Story = {
   args: {
-    trigger: <Image src={dropdown} alt='케밥 아이콘' className='h-6 w-6' />,
+    trigger: <Image src={kebab} alt='케밥 아이콘' className='h-6 w-6' />,
     options: options1,
     onSelect: (option) => console.log(`선택된 옵션: ${option.label}`),
   },
