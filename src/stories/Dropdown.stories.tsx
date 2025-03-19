@@ -1,13 +1,13 @@
 import { Meta, StoryObj } from '@storybook/react';
-import KebabDropdown from '@/components/KebabDropdown';
+import Dropdown from '@/components/Dropdown';
 import Image from 'next/image';
 import dropdown from '@/assets/icons/dropdown.svg';
 import profileDefault from '@/assets/icons/profile-default.svg';
 import { Pretendard } from '@/font';
 
-const meta: Meta<typeof KebabDropdown> = {
-  title: 'KebabDropdown',
-  component: KebabDropdown,
+const meta: Meta<typeof Dropdown> = {
+  title: 'Dropdown',
+  component: Dropdown,
   decorators: [
     (Story) => (
       <div className={Pretendard.className}>
@@ -18,7 +18,7 @@ const meta: Meta<typeof KebabDropdown> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof KebabDropdown>;
+type Story = StoryObj<typeof Dropdown>;
 
 const options1 = [{ label: '수정하기' }, { label: '삭제하기' }];
 const options2 = [{ label: '마이 페이지', onClick: () => console.log('마이 페이지 클릭됨') }, { label: '로그아웃' }];

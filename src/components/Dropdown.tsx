@@ -1,18 +1,18 @@
 'use client';
 import { useState, useRef, useEffect } from 'react';
 
-interface KebabDropdownOption {
+interface DropdownOption {
   label: string;
   onClick?: () => void;
 }
 
-interface KebabDropdownProps {
-  options: KebabDropdownOption[];
-  onSelect: (option: KebabDropdownOption) => void;
+interface DropdownProps {
+  options: DropdownOption[];
+  onSelect: (option: DropdownOption) => void;
   trigger: React.ReactNode;
 }
 
-export default function KebabDropdown({ options, onSelect, trigger }: KebabDropdownProps) {
+export default function Dropdown({ options, onSelect, trigger }: DropdownProps) {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const ref = useRef<HTMLDivElement>(null);
 
@@ -28,7 +28,7 @@ export default function KebabDropdown({ options, onSelect, trigger }: KebabDropd
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [isOpen]);
 
-  const handleSelect = (option: KebabDropdownOption) => {
+  const handleSelect = (option: DropdownOption) => {
     option.onClick?.();
     onSelect(option);
     setIsOpen(false);
