@@ -1,5 +1,5 @@
 'use client';
-import { useState, useRef, useEffect, useMemo } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
 import arrowFilterDropdown from '@/assets/icons/arrow-filter-dropdown.svg';
 
@@ -41,7 +41,7 @@ export default function FilterDropdown({ options, onSelect, label, className = '
     setIsOpen(false);
   };
 
-  const updatedOptions = useMemo(() => [{ label: '전체' }, ...options], [options]);
+  const updatedOptions = [{ label: '전체' }, ...options];
 
   return (
     <div ref={ref} className={`relative ${className}`}>
@@ -57,13 +57,13 @@ export default function FilterDropdown({ options, onSelect, label, className = '
 
       {isOpen && (
         <ul className='absolute left-0 z-10 mt-1 w-full rounded-xl border border-gray-300 bg-white drop-shadow-sm'>
-          {updatedOptions.map((option, index) => (
+          {updatedOptions.map((option) => (
             <li
-              key={index}
+              key={option.label}
               onClick={() => handleSelect(option)}
               className={`text-md md:text-2lg h-[40px] cursor-pointer text-center leading-[40px] font-medium text-gray-900 hover:bg-gray-100 md:h-[62px] md:leading-[62px] ${
-                index === 0 ? 'rounded-t-xl' : ''
-              } ${index === updatedOptions.length - 1 ? 'rounded-b-xl' : 'border-b border-gray-300'}`}
+                option.label === '전체' ? 'rounded-t-xl' : ''
+              } ${option.label === updatedOptions[updatedOptions.length - 1].label ? 'rounded-b-xl' : 'border-b border-gray-300'}`}
             >
               {option.label}
             </li>

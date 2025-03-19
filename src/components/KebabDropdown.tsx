@@ -17,6 +17,8 @@ export default function KebabDropdown({ options, onSelect, trigger }: KebabDropd
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    if (!isOpen) return;
+
     const handleClickOutside = (e: MouseEvent) => {
       if (ref.current && !ref.current.contains(e.target as Node)) {
         setIsOpen(false);
@@ -24,7 +26,7 @@ export default function KebabDropdown({ options, onSelect, trigger }: KebabDropd
     };
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
+  }, [isOpen]);
 
   const handleSelect = (option: KebabDropdownOption) => {
     option.onClick?.();
@@ -32,9 +34,11 @@ export default function KebabDropdown({ options, onSelect, trigger }: KebabDropd
     setIsOpen(false);
   };
 
+  const dropdownOpen = () => setIsOpen((prev) => !prev);
+
   return (
     <div ref={ref} className='relative'>
-      <button onClick={() => setIsOpen(!isOpen)} className='cursor-pointer'>
+      <button onClick={dropdownOpen} className='cursor-pointer'>
         {trigger}
       </button>
 
