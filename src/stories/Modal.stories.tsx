@@ -1,4 +1,4 @@
-import Button from '@/components/Buttons';
+import Button from '@/components/Button';
 import Modal from '@/components/Modal';
 import { Pretendard } from '@/font';
 import { Meta, StoryObj } from '@storybook/react';
@@ -45,18 +45,19 @@ export const Default: Story = {
             />
           ) : (
             <div className='flex gap-4'>
-              <Button size='save' onClick={() => setIsOpen(true)} className='!bg-green-100'>
-                모달 열기
+              <Button type='button' variant='default' onClick={() => setIsOpen(true)} className='px-[20px] py-[10px]'>
+                모달열기
               </Button>
-
               <Button
-                size='save'
+                type='button'
+                variant='default'
                 onClick={() => {
                   setIsOpen(true);
                   setIsFullScreen(true);
                 }}
+                className='px-[20px] py-[10px]'
               >
-                전체 화면용 모달 열기
+                전체화면모달열기
               </Button>
             </div>
           )}

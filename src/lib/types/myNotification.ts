@@ -1,24 +1,32 @@
 import { z } from 'zod';
 
-export const myNotifictaionSchema = z.object({
-  cursorId: z.number(),
-  notification: z.object({
-    id: z.number(),
-    teamId: z.string(),
-    userId: z.number(),
-    content: z.string(),
-    createdAt: z.union([z.string(), z.date()]),
-    updatedAt: z.union([z.string(), z.date()]),
-    deleteAt: z.union([z.string(), z.date()]),
-  }),
+// 내 알림 리스트 조회 API 타입
+export const myNotificationsSchema = z.object({
+  cursorId: z.number().nullable(),
+  notifications: z.array(
+    z.object({
+      id: z.number(),
+      teamId: z.string(),
+      userId: z.number(),
+      content: z.string(),
+      createdAt: z.string().datetime(),
+      updatedAt: z.string().datetime(),
+      deletedAt: z.string().datetime().nullable(),
+    }),
+  ),
   totalCount: z.number(),
 });
 
-export type myNotifictaion = z.infer<typeof myNotifictaionSchema>;
+export type MyNotifications = z.infer<typeof myNotificationsSchema>;
 
-export const getMyNotifictaionParamsSchema = z.object({
+export const getMyNotificationsParamsSchema = z.object({
   cursorId: z.number().optional(),
-  size: z.number().optional(),
+  size: z.number().default(10),
 });
 
-export type GetMynotificationsParams = z.infer<typeof getMyNotifictaionParamsSchema>;
+export type GetMyNotificationsParams = z.infer<typeof getMyNotificationsParamsSchema>;
+
+// 내 알림 삭제 API 타입
+export const deleteMyNotificationResponseSchema = z.object({});
+
+export type DeleteMyNotificationResponse = z.infer<typeof deleteMyNotificationResponseSchema>;

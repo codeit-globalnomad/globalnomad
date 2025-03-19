@@ -25,7 +25,7 @@
  * ================================================================
  */
 
-import { useQuery, useMutation } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   getActivities,
   getActivityDetail,
@@ -49,57 +49,61 @@ import {
   ActivityImageUploadResponse,
 } from '@/lib/types/activities';
 
-// 1. 체험 리스트 조회 훅
+// 체험 리스트 조회 훅
 export const useActivities = (params: GetActivitiesParams) => {
   return useQuery<ActivitiesResponse>({
     queryKey: ['activities', params],
     queryFn: () => getActivities(params),
-    enabled: !!params, // params 없을 때 자동 비활성화
   });
 };
 
-// 2. 체험 상세 조회 훅
-export const useActivityDetail = (activityId?: number) => {
+// 체험 등록 훅 (Mutation)
+export const useCreateActivity = () => {
+  const queryClient = useQueryClient();
+  return useMutation<CreateActivityResponse, unknown, CreateActivityParams>({
+    mutationFn: createActivity,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['activities'] });
+    },
+  });
+};
+
+// 체험 상세 조회 훅
+export const useActivityDetail = (activityId: number) => {
   return useQuery<ActivityDetailResponse>({
     queryKey: ['activityDetail', activityId],
     queryFn: () => getActivityDetail(activityId!),
-    enabled: !!activityId, // id가 없으면 호출 안 함
   });
 };
 
-//  3. 체험 예약 가능일 조회 훅
+// 체험 예약 가능일 조회 훅
 export const useAvailableSchedule = (activityId?: number, year?: string, month?: string) => {
   return useQuery<AvailableScheduleResponse>({
     queryKey: ['availableSchedule', activityId, year, month],
     queryFn: () => getAvailableSchedule(activityId!, year!, month!),
-    enabled: !!activityId && !!year && !!month, // 모두 있어야 호출
   });
 };
 
-//  4. 체험 리뷰 조회 훅
+// 체험 리뷰 조회 훅
 export const useActivityReviews = (activityId?: number, page = 1, size = 3) => {
   return useQuery<ActivityReviewsResponse>({
     queryKey: ['activityReviews', activityId, page, size],
     queryFn: () => getActivityReviews(activityId!, page, size),
-    enabled: !!activityId, // id가 있어야 호출
   });
 };
 
-//  5. 체험 등록 훅 (Mutation)
-export const useCreateActivity = () => {
-  return useMutation<CreateActivityResponse, unknown, CreateActivityParams>({
-    mutationFn: createActivity,
-  });
-};
-
-//  6. 체험 예약 신청 훅 (Mutation)
+// 체험 예약 신청 훅 (Mutation)
 export const useCreateReservation = (activityId: number) => {
+  const queryClient = useQueryClient();
   return useMutation<ReservationResponse, unknown, CreateReservationParams>({
     mutationFn: (data) => createReservation(activityId, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['activityDetail', activityId] });
+    },
   });
 };
 
-//  7. 체험 이미지 업로드 훅 (Mutation)
+// 체험 이미지 URL 생성(업로드) 훅 (Mutation)
 export const useUploadActivityImage = () => {
   return useMutation<ActivityImageUploadResponse, unknown, FormData>({
     mutationFn: uploadActivityImage,

@@ -7,7 +7,7 @@ import {
   SignupParams,
   SignupResponse,
   User,
-  UserdataUpdateParams,
+  UserDataUpdateParams,
   userSchema,
 } from '../types/users';
 
@@ -30,7 +30,16 @@ export const getUserData = async () => {
 };
 
 /*
- * 프로필 이미지 url 생성 API
+ * 내 정보 수정 API
+ * https://sp-globalnomad-api.vercel.app/docs/#/Users/UpdateMyInfo
+ */
+export const patchUserdataUpdate = async (params: UserDataUpdateParams) => {
+  const response = await axiosClientHelper.patch<User>('/users/me', params);
+  return safeResponse(response.data, userSchema);
+};
+
+/*
+ * 프로필 이미지 URL 생성(업로드) API
  * https://sp-globalnomad-api.vercel.app/docs/#/Users/UploadProfileImage
  */
 export const postFileImageUrl = async (params: CreateProfileImageParams) => {
@@ -39,15 +48,5 @@ export const postFileImageUrl = async (params: CreateProfileImageParams) => {
       'Content-Type': 'multipart/form-data',
     },
   });
-
   return safeResponse(response.data, profileImageUrlResponseSchema);
-};
-
-/*
- * 내 정보 수정 API
- * https://sp-globalnomad-api.vercel.app/docs/#/Users/UpdateMyInfo
- */
-export const patchUserdataUpdate = async (params: UserdataUpdateParams) => {
-  const response = await axiosClientHelper.patch<User>('/users/me', params);
-  return safeResponse(response.data, userSchema);
 };

@@ -1,20 +1,17 @@
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useQuery } from '@tanstack/react-query';
 import {
   CreateProfileImageParams,
   profileImageUrlSchema,
   SignupParams,
-  UserdataUpdateParams,
-  userdataUpdateSchema,
+  UserDataUpdateParams,
 } from '../types/users';
 import { getUserData, patchUserdataUpdate, postFileImageUrl, signup } from '../apis/users';
 
 // 회원가입 훅
 export const useSignup = () => {
   return useMutation({
-    mutationFn: (params: SignupParams) => {
-      return signup(params);
-    },
+    mutationFn: (params: SignupParams) => signup(params),
   });
 };
 
@@ -26,36 +23,24 @@ export const useMyData = () => {
   });
 };
 
-// 프로필 이미지 url 생성 훅
+// 내 정보 수정 훅
+export const useUserdataUpdate = () => {
+  const queryClient = useQueryClient();
+  return useMutation({  
+    mutationFn: (params: UserDataUpdateParams) => patchUserdataUpdate(params),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['user'] });
+    }, 
+  });
+};
+
+// 프로필 이미지 URL 생성 훅
 export const useProfileImage = () => {
   return useMutation({
     mutationFn: async (params: CreateProfileImageParams) => {
       const { image } = params;
       profileImageUrlSchema.parse(image);
       const response = await postFileImageUrl(params);
-      return response;
-    },
-    onSuccess: (data) => {
-      console.log('업로드된 이미지 Url:', data.profileImageUrl);
-    },
-    onError: (error) => {
-      console.error('이미지 업로드 실패:', error);
-    },
-  });
-};
-
-// 내 정보 수정 훅
-export const useUserdataUpdate = () => {
-  return useMutation({
-    mutationFn: async (params: UserdataUpdateParams) => {
-      if (!params.newPassword) {
-        delete params.newPassword;
-        delete params.confirmPassword;
-      }
-
-      userdataUpdateSchema.parse(params);
-
-      const response = await patchUserdataUpdate(params);
       return response;
     },
   });
