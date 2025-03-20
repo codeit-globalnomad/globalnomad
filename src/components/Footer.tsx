@@ -7,7 +7,7 @@ import instagram from '@/assets/sns/instagram.svg';
 
 export default function Footer() {
   return (
-    <div className='bg-black-200 h-[160px] w-full'>
+    <div className='bg-black-200 mt-[40%] h-[160px] w-full'>
       <div className='grid w-full max-w-[1200px] grid-cols-3 grid-rows-1 px-5 py-[32px] max-[520px]:grid-cols-2 md:w-full md:grid-cols-3 md:px-5 lg:mx-auto lg:grid-cols-3'>
         <p className='cursor-default justify-self-start text-gray-800'>©codeit - 2023</p>
         <div className='flex gap-[30px] justify-self-center max-[520px]:justify-self-end md:justify-self-center lg:justify-self-center'>
