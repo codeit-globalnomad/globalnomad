@@ -44,7 +44,7 @@ export const Event: Story = {
     id: 'activities',
     label: '내가 원하는 체험은',
     type: 'text',
-    className: 'pl-[48px]',
+    className: 'h-[56px] w-[400px] py-[14px] pl-[48px]',
 
     onChange: action('changed'),
   },
@@ -96,7 +96,7 @@ export const Custom: Story = {
     id: 'email',
     label: '이메일',
     type: 'email',
-    className: 'w-[400px] rounded px-7',
+    className: 'h-[56px] w-[400px] py-[14px] pl-[48px]',
     onChange: action('changed'),
   },
   render: (args) => {

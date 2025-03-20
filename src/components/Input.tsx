@@ -61,11 +61,19 @@ export default function Input({
           'text-black-100 inline-block bg-clip-text text-base leading-[26px] font-normal',
           isEvent &&
             'absolute top-1/2 z-10 -translate-y-1/2 transform px-5 text-gray-500 transition-all duration-200 ease-in-out',
-          (isFocused || value) && isEvent && 'top-1/2 -translate-y-10 transform text-[14px]',
+          (isFocused || value) && isEvent && 'top-1/2 -translate-y-13 transform text-[14px]',
           className,
         )}
       >
-        <span className={cn('cursor-pointer px-[8px]', disabled && isEvent ? 'bg-gray-200' : 'bg-white')}>{label}</span>
+        <span
+          className={cn(
+            'text-md cursor-pointer whitespace-nowrap md:text-lg',
+            disabled && isEvent ? 'bg-gray-200' : 'bg-white',
+            isEvent && (isFocused || value) && 'px-2 md:px-[8px]',
+          )}
+        >
+          {label}
+        </span>
       </label>
       <input
         id={id}
