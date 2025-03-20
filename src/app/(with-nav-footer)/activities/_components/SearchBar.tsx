@@ -9,7 +9,7 @@ export default function SearchBar() {
   const [inputValue, setInputValue] = useState('');
 
   return (
-    <div className='px-6'>
+    <div className='w-full min-w-[375px] px-4 md:px-6'>
       <div className='mx-auto h-[129px] w-full max-w-[1200px] min-w-[343px] justify-center rounded-2xl bg-white drop-shadow-md md:h-[184px]'>
         <div className='px-[24px] py-[16px] md:py-[32px]'>
           <div className='text-black-100 text-lg font-bold md:text-xl'>무엇을 체험하고 싶으신가요?</div>
