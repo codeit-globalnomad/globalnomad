@@ -22,10 +22,18 @@ interface MonthReservation {
 
 interface Props {
   monthTotalData?: MonthReservation[];
+  onDateChange: (date: string) => void;
 }
 
-export default function MyCalendar({ monthTotalData }: Props) {
+export default function MyCalendar({ monthTotalData, onDateChange }: Props) {
   const [value, setValue] = useState<Value>(new Date());
+
+  const handleChange = (date: Value) => {
+    setValue(date);
+    if (date instanceof Date) {
+      onDateChange(date.toLocaleDateString('sv-SE'));
+    }
+  };
 
   const renderTile = ({ date, view }: { date: Date; view: string }) => {
     if (view === 'month') {
@@ -64,7 +72,7 @@ export default function MyCalendar({ monthTotalData }: Props) {
 
   return (
     <Calendar
-      onChange={setValue}
+      onChange={handleChange}
       tileContent={renderTile}
       value={value}
       formatShortWeekday={(locale, date) => {
