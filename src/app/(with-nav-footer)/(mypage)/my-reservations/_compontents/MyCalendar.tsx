@@ -44,24 +44,18 @@ export default function MyCalendar({ monthTotalData, onDateChange }: Props) {
         <div>
           {dayData && (
             <div
-              className={`absolute top-[12px] left-[40px] h-[8px] w-[8px] rounded-full ${dayData.reservations.completed ? 'bg-gray-900' : 'bg-blue-100'}`}
+              className={`absolute top-3 left-10 h-2 w-2 rounded-full ${dayData.reservations.completed ? 'bg-gray-900' : 'bg-blue-100'}`}
             ></div>
           )}
           <div className='text-md flex flex-col p-[2px]'>
             {dayData && dayData.reservations.completed !== 0 && (
-              <div className='h-[23px] rounded bg-gray-300 pl-[4px] text-gray-900'>
-                완료 {dayData.reservations.completed}
-              </div>
+              <div className='h-6 rounded bg-gray-300 pl-1 text-gray-900'>완료 {dayData.reservations.completed}</div>
             )}
             {dayData && dayData.reservations.confirmed !== 0 && (
-              <div className='h-[23px] rounded bg-blue-100 pl-[4px] text-white'>
-                예약 {dayData.reservations.confirmed}
-              </div>
+              <div className='h-6 rounded bg-blue-100 pl-1 text-white'>예약 {dayData.reservations.confirmed}</div>
             )}
             {dayData && dayData.reservations.pending !== 0 && (
-              <div className='text-orange-10 h-[23px] rounded bg-orange-100 pl-[4px]'>
-                승인 {dayData.reservations.pending}
-              </div>
+              <div className='text-orange-10 h-6 rounded bg-orange-100 pl-1'>승인 {dayData.reservations.pending}</div>
             )}
           </div>
         </div>
