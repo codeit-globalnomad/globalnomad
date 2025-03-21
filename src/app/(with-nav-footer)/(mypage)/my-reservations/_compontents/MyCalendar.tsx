@@ -27,6 +27,26 @@ export interface Props {
 
 export default function MyCalendar({ monthTotalData, onDateChange }: Props) {
   const [value, setValue] = useState<Value>(new Date());
+  const reservationStatusMap: Record<
+    keyof ReservationStatus,
+    { label: (count: number) => string; bgColor: string; textColor: string }
+  > = {
+    completed: {
+      label: (count) => `완료 ${count}`,
+      bgColor: 'bg-gray-300',
+      textColor: 'text-gray-900',
+    },
+    confirmed: {
+      label: (count) => `예약 ${count}`,
+      bgColor: 'bg-blue-100',
+      textColor: 'text-white',
+    },
+    pending: {
+      label: (count) => `승인 ${count}`,
+      bgColor: 'bg-orange-100',
+      textColor: 'text-orange-10',
+    },
+  };
 
   const handleChange = (date: Value) => {
     setValue(date);
@@ -48,15 +68,18 @@ export default function MyCalendar({ monthTotalData, onDateChange }: Props) {
             ></div>
           )}
           <div className='text-md flex flex-col p-[2px]'>
-            {dayData && dayData.reservations.completed !== 0 && (
-              <div className='h-6 rounded bg-gray-300 pl-1 text-gray-900'>완료 {dayData.reservations.completed}</div>
-            )}
-            {dayData && dayData.reservations.confirmed !== 0 && (
-              <div className='h-6 rounded bg-blue-100 pl-1 text-white'>예약 {dayData.reservations.confirmed}</div>
-            )}
-            {dayData && dayData.reservations.pending !== 0 && (
-              <div className='text-orange-10 h-6 rounded bg-orange-100 pl-1'>승인 {dayData.reservations.pending}</div>
-            )}
+            {dayData &&
+              (Object.keys(reservationStatusMap) as (keyof ReservationStatus)[]).map((key) => {
+                const count = dayData.reservations[key];
+                if (count !== 0) {
+                  const { label, bgColor, textColor } = reservationStatusMap[key];
+                  return (
+                    <div key={key} className={`h-6 rounded pl-1 ${bgColor} ${textColor}`}>
+                      {label(count)}
+                    </div>
+                  );
+                }
+              })}
           </div>
         </div>
       );
