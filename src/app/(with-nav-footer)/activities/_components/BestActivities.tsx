@@ -5,7 +5,7 @@ import leftArrow from '@/assets/icons/left-arrow.svg';
 import rightArrow from '@/assets/icons/right-arrow.svg';
 import Image from 'next/image';
 import { useState } from 'react';
-import useMediaQuery from '../../../utils/useMediaQuery';
+import useMediaQuery from '../../../../lib/utils/useMediaQuery';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Pagination } from 'swiper/modules';
 import 'swiper/css';

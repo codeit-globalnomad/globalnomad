@@ -15,7 +15,7 @@ export default function BestActivityItem({ activity }: BestActivityItemProps) {
           src={activity.bannerImageUrl}
           fill
           className='object-cover transition-transform duration-300 ease-in-out will-change-transform hover:scale-105'
-          alt='체험 배너 이미지'
+          alt={`${activity.title} 배너 이미지`}
           style={{ transformOrigin: 'center' }}
         />
         <div className='pointer-events-none absolute inset-0 bg-gradient-to-t from-black/70 to-transparent/100' />
