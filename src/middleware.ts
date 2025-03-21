@@ -1,14 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { cookies } from 'next/headers';
 
-const AFTER_LOGIN_DOMAIN = [
-  '/activities',
-  '/my-page',
-  '/my-activities',
-  '/my-reservations',
-] satisfies readonly string[];
+const AFTER_LOGIN_DOMAIN = ['/my-page', '/my-activities', '/my-reservations'] satisfies readonly string[];
 
-const BEFORE_LOGIN_DOMAIN = ['/', '/login', '/signup'] satisfies readonly string[];
+const BEFORE_LOGIN_DOMAIN = ['/', '/login', '/signup', '/activities'] satisfies readonly string[];
 
 export const middleware = async (request: NextRequest) => {
   const cookieStore = await cookies();
