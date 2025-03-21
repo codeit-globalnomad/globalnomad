@@ -93,7 +93,7 @@ export default function MyCalendar({ monthTotalData, onDateChange }: Props) {
       tileContent={renderTile}
       value={value}
       formatShortWeekday={(locale, date) => {
-        const weekDays = ['SUN', 'MON', 'TUE', 'WED', 'THUR', 'FRI', 'SAT'];
+        const weekDays = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
         return weekDays[date.getDay()];
       }}
       formatDay={(locale, date) => {
