@@ -24,7 +24,7 @@ const profileImageVariants = cva('relative rounded-full', {
 });
 
 interface ProfileImageProps extends VariantProps<typeof profileImageVariants> {
-  src: StaticImageData | string;
+  src?: StaticImageData | string;
   onClick?: () => void;
 }
 
@@ -35,7 +35,14 @@ export default function ProfileImage({ src, size, onClick }: ProfileImageProps) 
 
   return (
     <div className={cn(profileImageVariants({ size, clickable: !!onClick }))} onClick={onClick}>
-      <Image className='rounded-full object-cover' src={src} alt='프로필 이미지' onError={onErrorImage} fill priority />
+      <Image
+        className='rounded-full object-cover'
+        src={src || profileDefault}
+        alt='프로필 이미지'
+        onError={onErrorImage}
+        fill
+        priority
+      />
     </div>
   );
 }
