@@ -1,18 +1,21 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Pretendard } from '@/font';
 import Input from '@/components/Input';
-import { action } from '@storybook/addon-actions';
-import { useState } from 'react';
+import { Pretendard } from '@/font';
 
 const meta: Meta<typeof Input> = {
   title: 'Input',
   component: Input,
   tags: ['autodocs'],
   argTypes: {
-    variant: { control: 'radio', options: ['default', 'event'] },
-    type: { control: 'radio', options: ['email', 'password', 'text'] },
-    onChange: { action: 'changed' },
+    label: { control: 'text' },
+    error: { control: 'text' },
+    placeholder: { control: 'text' },
+    variant: {
+      control: 'select',
+      options: ['default', 'outlined'],
+    },
     disabled: { control: 'boolean' },
+    required: { control: 'boolean' },
   },
   decorators: [
     (Story) => (
@@ -29,92 +32,43 @@ type Story = StoryObj<typeof Input>;
 
 export const Default: Story = {
   args: {
+    label: '이메일',
+    placeholder: '이메일을 입력하세요',
     variant: 'default',
-    id: 'nickname',
-    label: '닉네임',
-    placeholder: '닉네임을 입력해 주세요',
-    type: 'text',
-    onChange: action('changed'),
   },
 };
 
-export const Event: Story = {
+export const ErrorState: Story = {
   args: {
-    variant: 'event',
-    id: 'activities',
-    label: '내가 원하는 체험은',
-    type: 'text',
-    className: 'h-[56px] w-[400px] py-[14px] pl-[48px]',
-
-    onChange: action('changed'),
-  },
-  render: (args) => {
-    const ActivitiesSearchInput = () => {
-      const [value, setValue] = useState('');
-
-      return (
-        <Input
-          {...args}
-          value={value}
-          onChange={(e) => {
-            setValue(e.target.value);
-            args.onChange(e);
-          }}
-        />
-      );
-    };
-
-    return <ActivitiesSearchInput />;
-  },
-};
-
-export const PasswordType: Story = {
-  args: {
+    label: '이메일',
+    error: '이메일 형식이 잘못되었습니다.',
+    placeholder: '이메일을 입력하세요',
     variant: 'default',
-    id: 'newPassword',
-    label: '새 비밀번호',
-    placeholder: '새 비밀번호를 한번 더 입력해주세요',
-    type: 'newPassword',
-    onChange: action('changed'),
   },
 };
 
 export const Disabled: Story = {
   args: {
-    variant: 'default',
     label: '이메일',
-    value: 'test@email.com',
-    type: 'email',
+    placeholder: '이메일을 입력하세요',
     disabled: true,
-    onChange: action('changed'),
+    variant: 'default',
   },
 };
 
-export const Custom: Story = {
+export const Required: Story = {
   args: {
-    variant: 'event',
-    id: 'email',
     label: '이메일',
-    type: 'email',
-    className: 'h-[56px] w-[400px] py-[14px] pl-[48px]',
-    onChange: action('changed'),
+    placeholder: '이메일을 입력하세요',
+    required: true,
+    variant: 'default',
   },
-  render: (args) => {
-    const ActivitiesSearchInput = () => {
-      const [value, setValue] = useState('');
+};
 
-      return (
-        <Input
-          {...args}
-          value={value}
-          onChange={(e) => {
-            setValue(e.target.value);
-            args.onChange(e);
-          }}
-        />
-      );
-    };
-
-    return <ActivitiesSearchInput />;
+export const Outlined: Story = {
+  args: {
+    label: '이메일',
+    placeholder: '이메일을 입력하세요',
+    variant: 'outlined',
   },
 };

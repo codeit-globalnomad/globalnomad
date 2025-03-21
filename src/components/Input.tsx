@@ -1,91 +1,83 @@
-import { cva, type VariantProps } from 'class-variance-authority';
-import { cn } from '@/lib/cn';
-import { useState } from 'react';
+'use client';
 
-const InputVariants = cva(
-  'border border-gray-800 bg-white w-full text-black-100 placeholder-gray-500 rounded-lg py-4 px-5 font-normal text-base leading-[26px]',
+import { InputHTMLAttributes, LabelHTMLAttributes, PropsWithChildren, Ref, useId } from 'react';
+import { cva, VariantProps } from 'class-variance-authority';
+
+export type Field = {
+  label?: string;
+  error?: string;
+};
+
+export function cn(...classes: (string | undefined)[]) {
+  return classes.filter(Boolean).join(' ');
+}
+
+export function Item({ children }: PropsWithChildren) {
+  return <div className='grid gap-1'>{children}</div>;
+}
+
+export function Label({
+  required,
+  children,
+  className,
+  ...props
+}: PropsWithChildren<LabelHTMLAttributes<HTMLLabelElement> & { required?: boolean }>) {
+  return (
+    <label
+      className={cn('text-black-100 inline-flex items-center gap-1 text-lg font-medium lg:gap-1.5', className)}
+      {...props}
+    >
+      {children}
+      {required && <span className='flex items-center pt-1.5 text-lg font-thin text-red-500 lg:text-xl'>*</span>}
+    </label>
+  );
+}
+
+export function Error({ children }: PropsWithChildren) {
+  return <div className='mt-2 text-sm text-red-500'>{children}</div>;
+}
+
+export const fieldClassName = cva(
+  'rounded-lg w-full px-4 h-11 lg:h-[64px] text-black-950  text-lg lg:text-xl focus-visible:outline-none ',
   {
     variants: {
       variant: {
-        default: '',
-        event: '',
+        default: 'bg-background-100',
+        outlined: 'border border-green-100 bg-transparent',
       },
-      disabled: {
-        true: 'bg-gray-200 text-gray-600',
-      },
-    },
-
-    defaultVariants: {
-      variant: 'default',
-      disabled: false,
     },
   },
 );
 
-interface InputProps extends VariantProps<typeof InputVariants> {
-  id?: string;
-  label?: string;
-  type?: string;
-  placeholder?: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  className?: string;
-  value: string;
-  disabled?: boolean;
-}
+export const ERROR_CLASSNAME = 'border border-error';
 
-export default function Input({
-  variant,
-  disabled = false,
-  id,
-  label,
-  type = 'text',
-  placeholder = '',
-  onChange,
-  className,
-  value,
-}: InputProps) {
-  const isEvent = variant === 'event';
-  const [isFocused, setIsFocused] = useState(false);
-
-  const handleFocus = () => setIsFocused(true);
-  const handleBlur = () => setIsFocused(value !== '');
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!disabled) onChange(e);
+export type InputProps = Field &
+  InputHTMLAttributes<HTMLInputElement> &
+  VariantProps<typeof fieldClassName> & {
+    ref?: Ref<HTMLInputElement>;
   };
 
+export default function OauthInput({ label, error, variant = 'default', className, ref, ...props }: InputProps) {
+  const id = useId();
+
   return (
-    <div className='relative flex flex-col gap-[8px]'>
-      <label
-        htmlFor={id}
-        className={cn(
-          'text-black-100 inline-block bg-clip-text text-base leading-[26px] font-normal',
-          isEvent &&
-            'absolute top-1/2 z-10 -translate-y-1/2 transform px-5 text-gray-500 transition-all duration-200 ease-in-out',
-          (isFocused || value) && isEvent && 'top-1/2 -translate-y-13 transform text-[14px]',
-          className,
-        )}
-      >
-        <span
-          className={cn(
-            'text-md cursor-pointer whitespace-nowrap md:text-lg',
-            disabled && isEvent ? 'bg-gray-200' : 'bg-white',
-            isEvent && (isFocused || value) && 'px-2 md:px-[8px]',
-          )}
-        >
+    <Item>
+      {label && (
+        <Label required={props.required} htmlFor={id}>
           {label}
-        </span>
-      </label>
+        </Label>
+      )}
       <input
         id={id}
-        type={type}
-        onChange={handleChange}
-        placeholder={isEvent ? '' : placeholder}
-        disabled={disabled}
-        className={cn(InputVariants({ variant, disabled }), className)}
-        value={value}
-        onFocus={isEvent ? handleFocus : undefined}
-        onBlur={isEvent ? handleBlur : undefined}
+        className={cn(
+          'mt-2 w-full rounded-md border p-3 focus:ring-2 focus:outline-none',
+          error ? 'border-red-500 focus:ring-red-300' : 'border-gray-300 focus:ring-green-100',
+          className,
+        )}
+        ref={ref}
+        {...props}
       />
-    </div>
+      {error && <Error>{error}</Error>}
+    </Item>
   );
 }
