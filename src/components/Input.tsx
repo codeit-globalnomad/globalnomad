@@ -57,7 +57,7 @@ export type InputProps = Field &
     ref?: Ref<HTMLInputElement>;
   };
 
-export default function OauthInput({ label, error, variant = 'default', className, ref, ...props }: InputProps) {
+export default function OauthInput({ label, error, className, ref, ...props }: InputProps) {
   const id = useId();
 
   return (
