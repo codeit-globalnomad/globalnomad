@@ -28,22 +28,22 @@ export function Label({
       {...props}
     >
       {children}
-      {required && <span className='flex items-center pt-1.5 text-lg font-thin text-red-500 lg:text-xl'>*</span>}
+      {required && <span className='text-error flex items-center pt-1.5 text-lg font-thin lg:text-2xl'>*</span>}
     </label>
   );
 }
 
 export function Error({ children }: PropsWithChildren) {
-  return <div className='mt-2 text-sm text-red-500'>{children}</div>;
+  return <div className='text-error mt-2 text-sm text-red-500'>{children}</div>;
 }
 
 export const fieldClassName = cva(
-  'rounded-lg w-full px-4 h-11 lg:h-[64px] text-black-950  text-lg lg:text-xl focus-visible:outline-none ',
+  'rounded-lg w-full px-4 h-11 lg:h-[64px] text-black-950 placeholder-blue-400 text-lg lg:text-xl focus-visible:outline-none read-only:text-blue-400',
   {
     variants: {
       variant: {
         default: 'bg-background-100',
-        outlined: 'border border-green-100 bg-transparent',
+        outlined: 'border border-blue-300 bg-transparent',
       },
     },
   },
