@@ -34,7 +34,7 @@ const SideNavMenu = () => {
   };
 
   return (
-    <aside className='w-[251px] flex-none rounded-lg border border-gray-300 bg-white p-4 md:w-[384px]'>
+    <aside className='w-[251px] flex-none rounded-lg border border-gray-300 bg-white p-4 shadow-md md:w-[384px]'>
       {/* 프로필 이미지 */}
       <div className='relative flex flex-col items-center gap-4'>
         <ProfileImage size='large' src={previewImage || undefined} />
