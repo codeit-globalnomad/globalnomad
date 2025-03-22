@@ -1,7 +1,7 @@
 'use client';
 import { useState, useRef, useEffect } from 'react';
-import Image from 'next/image';
-import arrowFilterDropdown from '@/assets/icons/arrow-filter-dropdown.svg';
+import Image, { StaticImageData } from 'next/image';
+import { useClickOutside } from '@/lib/utils/useClickOutside';
 
 interface FilterDropdownOption {
   label: string;
@@ -12,58 +12,78 @@ interface FilterDropdownProps {
   options: FilterDropdownOption[];
   onSelect: (option: FilterDropdownOption | null) => void;
   label: string;
-  className?: string;
+  buttonClassName?: string;
+  dropdownClassName?: string;
+  optionClassName?: string;
+  icon: StaticImageData;
+  includeAllOption?: boolean;
+  iconVisibleOnMobile?: boolean;
+  autoSelectFirstOption?: boolean;
 }
 
-export default function FilterDropdown({ options, onSelect, label, className = '' }: FilterDropdownProps) {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [selected, setSelected] = useState<FilterDropdownOption | null>(null);
+export default function FilterDropdown({
+  options,
+  label,
+  onSelect,
+  buttonClassName = '',
+  dropdownClassName = '',
+  optionClassName = '',
+  icon,
+  includeAllOption = false,
+  iconVisibleOnMobile = false,
+  autoSelectFirstOption = false,
+}: FilterDropdownProps) {
   const ref = useRef<HTMLDivElement>(null);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [updatedOptions, setUpdatedOptions] = useState<FilterDropdownOption[]>([]);
+  const [selected, setSelected] = useState<FilterDropdownOption | null>(
+    autoSelectFirstOption ? updatedOptions[0] : null,
+  );
+
+  useClickOutside(ref, () => setIsOpen(false));
 
   useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      if (ref.current && !ref.current.contains(e.target as Node)) {
-        setIsOpen(false);
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
+    setUpdatedOptions(includeAllOption && !autoSelectFirstOption ? [{ label: '전체' }, ...options] : options);
+  }, [includeAllOption, autoSelectFirstOption, options]);
+
+  useEffect(() => {
+    if (autoSelectFirstOption && updatedOptions.length > 0) {
+      setSelected(updatedOptions[0]);
+      onSelect(updatedOptions[0]);
+    }
+  }, [autoSelectFirstOption, updatedOptions, onSelect]);
 
   const handleSelect = (option: FilterDropdownOption) => {
-    if (option.label === '전체') {
-      setSelected(null);
-      onSelect(null);
-    } else {
-      setSelected(option);
-      onSelect(option);
-    }
+    setSelected(option.label === '전체' ? null : option);
+    onSelect(option.label === '전체' ? null : option);
     setIsOpen(false);
   };
 
-  const updatedOptions = [{ label: '전체' }, ...options];
-
   return (
-    <div ref={ref} className={`relative ${className}`}>
+    <div ref={ref} className='relative'>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className='text-md md:text-2lg flex w-full cursor-pointer items-center justify-center rounded-xl border border-green-100 px-4 py-2 font-medium whitespace-nowrap text-green-100 md:justify-between'
+        className={`flex cursor-pointer items-center whitespace-nowrap ${
+          selected ? 'opacity-100' : 'text-gray-700'
+        } ${iconVisibleOnMobile ? 'justify-center' : 'justify-between'} ${buttonClassName}`}
       >
         {selected ? selected.label : label}
-        <span className='hidden md:block'>
-          <Image src={arrowFilterDropdown} width={20} height={20} alt='필터' />
-        </span>
+        <Image
+          src={icon}
+          width={20}
+          height={20}
+          alt='필터 드롭다운 아이콘'
+          className={`${iconVisibleOnMobile ? 'hidden md:block' : 'block'}`}
+        />
       </button>
 
       {isOpen && (
-        <ul className='absolute left-0 z-10 mt-1 w-full rounded-xl border border-gray-300 bg-white drop-shadow-sm'>
-          {updatedOptions.map((option) => (
+        <ul className={`absolute left-0 z-10 mt-1 ${dropdownClassName}`}>
+          {updatedOptions.map((option, idx) => (
             <li
-              key={option.label}
+              key={`${option.label}-${idx}`}
               onClick={() => handleSelect(option)}
-              className={`text-md md:text-2lg h-[40px] cursor-pointer text-center leading-[40px] font-medium text-gray-900 hover:bg-gray-100 md:h-[62px] md:leading-[62px] ${
-                option.label === '전체' ? 'rounded-t-xl' : ''
-              } ${option.label === updatedOptions[updatedOptions.length - 1].label ? 'rounded-b-xl' : 'border-b border-gray-300'}`}
+              className={`cursor-pointer text-center hover:bg-gray-100 ${idx === 0 ? 'rounded-t-xl' : ''} ${idx === updatedOptions.length - 1 ? 'rounded-b-xl' : 'border-b border-gray-300'} ${optionClassName}`}
             >
               {option.label}
             </li>
