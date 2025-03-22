@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
-import ProfileImage from '@/components/ProfileImage'; // 기존 프로필 이미지 컴포넌트 사용
+import ProfileImage from '@/components/ProfileImage';
 
 // SVG 아이콘
 import MyInfo from '@/assets/icons/my-users.svg'; // 내정보
@@ -17,7 +17,7 @@ const NAV_ITEMS = [
   { name: '내 정보', path: '/my-page', icon: MyInfo },
   { name: '예약 내역', path: '/my-reservations', icon: MyReservation },
   { name: '내 체험 관리', path: '/my-activities', icon: MyActivities },
-  { name: '예약 현황', path: '/reservation-status', icon: MyReservationStatus },
+  { name: '예약 현황', path: '/my-activities/[activityId]/reservation-dashboard', icon: MyReservationStatus },
 ];
 
 const SideNavMenu = () => {
@@ -34,7 +34,7 @@ const SideNavMenu = () => {
   };
 
   return (
-    <aside className='w-[251px] max-w-[251px] flex-none rounded-lg border border-gray-300 bg-white p-4 md:w-[384px] md:max-w-[384px]'>
+    <aside className='w-[251px] flex-none rounded-lg border border-gray-300 bg-white p-4 md:w-[384px]'>
       {/* 프로필 이미지 */}
       <div className='relative flex flex-col items-center gap-4'>
         <ProfileImage size='large' src={previewImage || undefined} />
