@@ -1,41 +1,95 @@
 'use client';
 
 import Image from 'next/image';
+import ClosedEye from '@/assets/icons/eye-hidden.svg';
+import OpendEye from '@/assets/icons/eye-visible.svg';
 import logo from '@/assets/logo/logo-xl.svg';
 import SocialButtons from '../../signup/_components/SocialButtons';
 import Link from 'next/link';
 import Button from '@/components/Button';
+import { useLogin } from '@/lib/hooks/useAuth';
+import { useRouter } from 'next/navigation';
+import { LoginParams, loginSchema } from '@/lib/types/auth';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import Input from '@/components/Input';
+import { useState } from 'react';
 
 export default function LoginForm() {
+  const { mutateAsync: signin } = useLogin();
+  const router = useRouter();
+
+  const [isShowPassword, setIsShowPassword] = useState(true);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting, isValid },
+    trigger,
+  } = useForm<LoginParams>({
+    resolver: zodResolver(loginSchema),
+    mode: 'onChange',
+  });
+
+  const onSubmit = async (data: LoginParams) => {
+    try {
+      await signin(data);
+      alert('로그인에 성공했습니다.');
+      router.push('/login');
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    } catch (error: any) {
+      console.error('회원가입 실패:', error);
+      alert(error.response?.data?.message || '회원가입에 실패했습니다.');
+    }
+  };
   return (
     <div className='flex min-h-screen items-center justify-center'>
       <div className='w-full max-w-xl px-4'>
         <div className='mb-[56px] flex justify-center'>
           <Link href='/'>
-            <Image src={logo} width={340} height={192} alt='로그인창 로고' />
+            <div className='relative h-[138px] w-[245px] md:h-[192px] md:w-[340px]'>
+              <Image src={logo} alt='로그인창 로고' layout='fill' objectFit='contain' />
+            </div>
           </Link>
         </div>
 
-        <form className='space-y-4'>
+        <form className='space-y-4' onSubmit={handleSubmit(onSubmit)}>
           <div className='mb-[28px]'>
-            <label className='text-black-100 mb-2 block'>이메일</label>
-            <input
+            <Input
+              label='이메일'
+              error={errors.email?.message}
               type='email'
-              placeholder='이메일을 입력해 주세요'
-              className='w-full rounded-md border border-gray-300 p-3 focus:ring-2 focus:ring-green-100 focus:outline-none'
+              placeholder='이메일'
+              required
+              {...register('email', {
+                onBlur: () => trigger('email'),
+              })}
+              disabled={isSubmitting}
             />
           </div>
 
-          <div className='mb-[28px]'>
-            <label className='text-black-100 mb-2 block'>비밀번호</label>
-            <input
-              type='password'
-              placeholder='8자 이상 입력해 주세요'
-              className='w-full rounded-md border border-gray-300 p-3 focus:ring-2 focus:ring-green-100 focus:outline-none'
+          <div className='relative mb-[28px]'>
+            <Input
+              label='비밀번호'
+              error={errors.password?.message}
+              type={isShowPassword ? 'password' : 'text'}
+              placeholder='비밀번호'
+              required
+              {...register('password', {
+                onBlur: () => trigger('password'),
+              })}
+              disabled={isSubmitting}
+            />
+            <Image
+              src={isShowPassword ? ClosedEye : OpendEye}
+              alt='비밀번호 토글 이미지'
+              width={24}
+              height={24}
+              className='absolute top-[64px] right-3 -translate-y-1/2 cursor-pointer'
+              onClick={() => setIsShowPassword((prev) => !prev)}
             />
           </div>
-
-          <Button className='w-full py-[11px]' disabled={true}>
+          <Button className='w-full py-[11px]' disabled={!isValid || isSubmitting}>
             로그인 하기
           </Button>
         </form>
@@ -43,7 +97,7 @@ export default function LoginForm() {
         <div className='mt-8 mb-12 text-center'>
           <p className='text-gray-800'>
             회원이 아니신가요?{' '}
-            <a href='/login' className='font-semibold text-green-100'>
+            <a href='/signup' className='font-semibold text-green-100 underline'>
               회원가입하기
             </a>
           </p>
