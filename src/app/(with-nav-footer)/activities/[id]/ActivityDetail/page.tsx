@@ -21,7 +21,7 @@ const tabItems = [
   { label: '후기', targetId: 'reviews' },
 ];
 
-export default function ActivityPage({ activityDetail }: { activityDetail: ActivityDetailResponse }) {
+export default function ActivityDetailPage({ activityDetail }: { activityDetail: ActivityDetailResponse }) {
   console.log(activityDetail);
   const [currentTab, setCurrentTab] = useState('description');
   const [isLoading, setIsLoading] = useState(true);
