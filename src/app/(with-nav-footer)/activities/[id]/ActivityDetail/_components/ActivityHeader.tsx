@@ -13,6 +13,7 @@ import facebook from '@/assets/icons/share-facebook.svg';
 import x from '@/assets/icons/share-x.svg';
 import Modal from '@/components/Modal';
 import { ActivityDetailResponse } from '@/lib/types/activities';
+import { usePathname } from 'next/navigation';
 
 type ActivityHeaderProps = {
   activityDetail: ActivityDetailResponse;
@@ -21,9 +22,20 @@ type ActivityHeaderProps = {
 export default function ActivityHeader({ activityDetail }: ActivityHeaderProps) {
   const { category, title, rating, reviewCount, address } = activityDetail;
   const [modalStatus, setModalStatus] = useState(false);
+  const pathname = usePathname();
 
   const onHandleModalStatus = () => {
     setModalStatus(!modalStatus);
+  };
+
+  const copyUrlToClipboard = async () => {
+    try {
+      const urlToCopy = `${window.location.origin}${pathname}`;
+      await navigator.clipboard.writeText(urlToCopy);
+      alert('URL이 클립보드에 복사되었습니다!');
+    } catch (error) {
+      alert('URL 복사에 실패했습니다.');
+    }
   };
 
   return (
@@ -43,7 +55,7 @@ export default function ActivityHeader({ activityDetail }: ActivityHeaderProps) 
               </div>
               <ul className='flex justify-between'>
                 <li>
-                  <button className='cursor-pointer'>
+                  <button onClick={copyUrlToClipboard} className='cursor-pointer'>
                     <Image src={url} alt='URL 복사하기 아이콘' />
                   </button>
                 </li>
@@ -66,6 +78,7 @@ export default function ActivityHeader({ activityDetail }: ActivityHeaderProps) 
             </Modal>
           )}
         </div>
+
         {/* 더보기 <Dropdown /> */}
       </div>
       <div className='align-center flex flex-row gap-4'>
