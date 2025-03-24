@@ -38,6 +38,8 @@ export default function ActivityHeader({ activityDetail }: ActivityHeaderProps) 
     }
   };
 
+  const xShareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(`${title}\n📍 ${address}\n`)}&url=${window.location.origin}${pathname}`;
+
   return (
     <div className='flex flex-col gap-2'>
       <span className='text-md font-regular opacity-75'>{category}</span>
@@ -68,7 +70,7 @@ export default function ActivityHeader({ activityDetail }: ActivityHeaderProps) 
                   />
                 </li>
                 <li>
-                  <Link href=''>
+                  <Link href={xShareUrl} target='_blank' rel='noopener noreferrer'>
                     <Image src={x} alt='x 공유하기 아이콘' />
                   </Link>
                 </li>
