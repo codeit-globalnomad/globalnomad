@@ -21,8 +21,11 @@ const tabItems = [
   { label: '후기', targetId: 'reviews' },
 ];
 
-export default function ActivityDetailPage({ activityDetail }: { activityDetail: ActivityDetailResponse }) {
-  console.log(activityDetail);
+type ActivityDetailPageProps = {
+  activityDetail: ActivityDetailResponse;
+};
+
+export default function ActivityDetailPage({ activityDetail }: ActivityDetailPageProps) {
   const [currentTab, setCurrentTab] = useState('description');
   const [isLoading, setIsLoading] = useState(true);
   const [hasReservationSection, setHasReservationSection] = useState(false);
@@ -61,7 +64,7 @@ export default function ActivityDetailPage({ activityDetail }: { activityDetail:
     <div className='relative flex flex-col items-center justify-center scroll-smooth'>
       <div className={`${wrapper} flex-col px-5 lg:mt-10`}>
         <section className='flex flex-col gap-4'>
-          <ActivityHeader />
+          <ActivityHeader activityDetail={activityDetail} />
         </section>
       </div>
       <div className={`${wrapper} flex-col md:px-5`}>
