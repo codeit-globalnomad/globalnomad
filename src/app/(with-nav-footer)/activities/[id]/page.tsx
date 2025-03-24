@@ -23,7 +23,11 @@ const tabItems = [
 export default function Page() {
   const [currentTab, setCurrentTab] = useState('description');
   const [isLoading, setIsLoading] = useState(true);
-  const [hasReservationSection, setHasReservationSection] = useState(true);
+  const [hasReservationSection, setHasReservationSection] = useState(false);
+
+  // 임의의 더미 데이터
+  const currentUserId = 1; // 현재 로그인된 유저 ID
+  const activityCreatorId = 2; // 활동 생성자 ID
 
   useIntersectionObserver((id) => setCurrentTab(id));
 
@@ -35,6 +39,10 @@ export default function Page() {
   };
 
   useEffect(() => {
+    if (Number(currentUserId) !== Number(activityCreatorId)) {
+      setHasReservationSection(true);
+    }
+
     scrollToTop();
     const timer = setTimeout(() => {
       setIsLoading(false);
