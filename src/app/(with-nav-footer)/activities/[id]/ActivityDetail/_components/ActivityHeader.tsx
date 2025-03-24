@@ -1,8 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import starRating from '@/assets/icons/star-rating.svg';
 import marker from '@/assets/icons/marker.svg';
 import share from '@/assets/icons/share.svg';
@@ -13,16 +14,45 @@ import facebook from '@/assets/icons/share-facebook.svg';
 import x from '@/assets/icons/share-x.svg';
 import Modal from '@/components/Modal';
 import { ActivityDetailResponse } from '@/lib/types/activities';
-import { usePathname } from 'next/navigation';
 
 type ActivityHeaderProps = {
   activityDetail: ActivityDetailResponse;
 };
 
 export default function ActivityHeader({ activityDetail }: ActivityHeaderProps) {
-  const { category, title, rating, reviewCount, address } = activityDetail;
+  const { category, title, rating, reviewCount, address, description, bannerImageUrl } = activityDetail;
   const [modalStatus, setModalStatus] = useState(false);
+  const [kakaoReady, setKakaoReady] = useState(false);
   const pathname = usePathname();
+
+  useEffect(() => {
+    const loadKakaoScript = () => {
+      return new Promise<void>((resolve, reject) => {
+        const existingScript = document.getElementById('kakao-sdk');
+        if (existingScript) {
+          return resolve(); // 이미 스크립트가 로드되어 있으면 그냥 resolve
+        }
+        const script = document.createElement('script');
+        script.id = 'kakao-sdk';
+        script.src = 'https://developers.kakao.com/sdk/js/kakao.js';
+        script.onload = () => resolve();
+        script.onerror = (error) => reject(error);
+        document.body.appendChild(script);
+      });
+    };
+
+    loadKakaoScript()
+      .then(() => {
+        if (typeof window !== 'undefined' && window.Kakao) {
+          window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_API_KEY); // 카카오 API 키 초기화
+          setKakaoReady(true);
+        }
+      })
+      .catch((error) => {
+        console.error('카카오 SDK 로드 실패:', error);
+        alert('카카오 SDK 로드에 실패했습니다.');
+      });
+  }, []);
 
   const onHandleModalStatus = () => {
     setModalStatus(!modalStatus);
@@ -35,6 +65,34 @@ export default function ActivityHeader({ activityDetail }: ActivityHeaderProps) 
       alert('URL이 클립보드에 복사되었습니다!');
     } catch (error) {
       alert('URL 복사에 실패했습니다.');
+    }
+  };
+
+  const kakaoShare = () => {
+    if (kakaoReady && window.Kakao) {
+      window.Kakao.Link.sendDefault({
+        objectType: 'feed',
+        content: {
+          title: title, // 활동 제목
+          description: description, // 설명 (필요 시 변경)
+          imageUrl: bannerImageUrl, // 공유할 이미지 (필요시 변경)
+          link: {
+            mobileWebUrl: `${window.location.origin}${pathname}`, // 모바일 웹 링크
+            webUrl: `${window.location.origin}${pathname}`, // 웹 링크
+          },
+        },
+        buttons: [
+          {
+            title: '웹으로 보기',
+            link: {
+              mobileWebUrl: `${window.location.origin}${pathname}`,
+              webUrl: `${window.location.origin}${pathname}`,
+            },
+          },
+        ],
+      });
+    } else {
+      alert('카카오 공유를 초기화하는데 실패했습니다.');
     }
   };
 
@@ -60,9 +118,9 @@ export default function ActivityHeader({ activityDetail }: ActivityHeaderProps) 
                   </button>
                 </li>
                 <li>
-                  <Link href=''>
+                  <button onClick={kakaoShare} className='cursor-pointer'>
                     <Image src={kakao} alt='카카오톡 공유하기 아이콘' />
-                  </Link>
+                  </button>
                 </li>
                 <li>
                   <Link href=''>
