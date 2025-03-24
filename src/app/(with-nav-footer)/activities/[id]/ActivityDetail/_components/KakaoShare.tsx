@@ -32,7 +32,7 @@ const KakaoShare = ({ title, description, bannerImageUrl, pathname }: KakaoShare
 
     loadKakaoScript()
       .then(() => {
-        if (typeof window !== 'undefined' && window.Kakao) {
+        if (typeof window !== 'undefined' && window.Kakao && !window.Kakao.isInitialized()) {
           window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_API_KEY);
           setKakaoReady(true);
         }
