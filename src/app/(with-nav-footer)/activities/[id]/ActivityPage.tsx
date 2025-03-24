@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { ActivityDetailResponse } from '@/lib/types/activities';
 import { useIntersectionObserver } from '@/lib/utils/useIntersectionObserver';
 import ActivityHeader from './_components/ActivityHeader';
 import ActivityGallery from './_components/ActivityGallery';
@@ -20,7 +21,7 @@ const tabItems = [
   { label: '후기', targetId: 'reviews' },
 ];
 
-export default function ActivityPage({ activityDetail }: { activityDetail: any }) {
+export default function ActivityPage({ activityDetail }: { activityDetail: ActivityDetailResponse }) {
   console.log(activityDetail);
   const [currentTab, setCurrentTab] = useState('description');
   const [isLoading, setIsLoading] = useState(true);

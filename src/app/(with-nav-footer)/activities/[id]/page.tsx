@@ -4,8 +4,8 @@ import { safeResponse } from '@/lib/network/safeResponse';
 import { Activity, activityDetailSchema } from '@/lib/types/activities';
 import ActivityPage from './ActivityPage';
 
-export default async function Page({ params }: { params: { id: string } }) {
-  const { id } = params;
+export default async function Page({ params }: { params: Promise<{ id: string }> }) {
+  const id = (await params).id;
 
   try {
     const response = await axiosServerHelper<Activity>(`/activities/${id}`);
@@ -15,7 +15,7 @@ export default async function Page({ params }: { params: { id: string } }) {
       return notFound();
     }
     return <ActivityPage activityDetail={activityDetail} />;
-  } catch (error) {
+  } catch {
     return notFound();
   }
 }
