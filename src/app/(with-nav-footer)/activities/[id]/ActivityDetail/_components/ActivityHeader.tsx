@@ -39,6 +39,7 @@ export default function ActivityHeader({ activityDetail }: ActivityHeaderProps) 
   };
 
   const xShareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(`${title}\n📍 ${address}\n`)}&url=${window.location.origin}${pathname}`;
+  const facebookShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`${window.location.origin}${pathname}`)}`;
 
   return (
     <div className='flex flex-col gap-2'>
@@ -75,7 +76,7 @@ export default function ActivityHeader({ activityDetail }: ActivityHeaderProps) 
                   </Link>
                 </li>
                 <li>
-                  <Link href=''>
+                  <Link href={facebookShareUrl} target='_blank' rel='noopener noreferrer'>
                     <Image src={facebook} alt='페이스북 아이콘' />
                   </Link>
                 </li>

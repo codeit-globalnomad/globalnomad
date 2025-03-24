@@ -19,3 +19,24 @@ export default async function Page({ params }: { params: Promise<{ id: string }>
     return notFound();
   }
 }
+
+// export async function generateMetadata({ params }: { params: { id: string } }) {
+//   const id = params.id;
+
+//   return {
+//     title: `체험 ${id} 상세`,
+//     description: '체험에 대한 자세한 정보!',
+//     openGraph: {
+//       title: `체험 ${id} 상세`,
+//       description: '체험에 대한 자세한 정보!',
+//       url: `http://localhost:3000/activities/${id}`,
+//       images: [
+//         {
+//           url: 'http://localhost:3000/thumbnail.jpg',
+//           width: 800,
+//           height: 600,
+//         },
+//       ],
+//     },
+//   };
+// }
