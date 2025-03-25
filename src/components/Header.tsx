@@ -51,6 +51,7 @@ function LoggedInHeader() {
           <div className='my-[24px] h-[22px] border-r-2 border-gray-300' />
           <div className='flex cursor-pointer gap-[10px]'>
             <div className='py-[19px]'>
+              {/* 누르면 드롭 다운으로 로그아웃 / 마이페이지 띄우기 */}
               <ProfileImage src={profileDefault} size='small' onClick={() => {}} />
             </div>
             <p className='leading-[70px]'>닉네임</p>

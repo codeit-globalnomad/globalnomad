@@ -43,6 +43,7 @@ export default function SignupForm() {
       try {
         const response = errorResponse(error);
         const errorData = await response.json();
+        console.error('Error data:', errorData);
       } catch (err) {
         console.error('  error response:', err);
       }

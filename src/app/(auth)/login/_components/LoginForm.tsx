@@ -37,9 +37,8 @@ export default function LoginForm() {
       //모달로 변경 예정
       alert('로그인에 성공했습니다.');
       router.push('/login');
-    } catch (error: any) {
-      console.error('회원가입 실패:', error);
-      alert(error.response?.data?.message || '회원가입에 실패했습니다.');
+    } catch (error) {
+      console.error(error);
     }
   };
   return (
