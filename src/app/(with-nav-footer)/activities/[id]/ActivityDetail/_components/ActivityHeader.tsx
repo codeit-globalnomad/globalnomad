@@ -12,8 +12,8 @@ import url from '@/assets/icons/share-url.svg';
 import facebook from '@/assets/icons/share-facebook.svg';
 import x from '@/assets/icons/share-x.svg';
 import Modal from '@/components/Modal';
-import KakaoShare from './KakaoShare';
 import { ActivityDetailResponse } from '@/lib/types/activities';
+import KakaoShare from './KakaoShare';
 
 type ActivityHeaderProps = {
   activityDetail: ActivityDetailResponse;
@@ -33,7 +33,7 @@ export default function ActivityHeader({ activityDetail }: ActivityHeaderProps) 
       const urlToCopy = `${window.location.origin}${pathname}`;
       await navigator.clipboard.writeText(urlToCopy);
       alert('URL이 클립보드에 복사되었습니다!');
-    } catch (error) {
+    } catch {
       alert('URL 복사에 실패했습니다.');
     }
   };

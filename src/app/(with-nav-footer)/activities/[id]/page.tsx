@@ -1,42 +1,45 @@
 import { notFound } from 'next/navigation';
-import axiosServerHelper from '@/lib/network/axiosServerHelper';
 import { safeResponse } from '@/lib/network/safeResponse';
+import axiosServerHelper from '@/lib/network/axiosServerHelper';
 import { Activity, activityDetailSchema } from '@/lib/types/activities';
 import ActivityDetailPage from './ActivityDetail';
 
-export default async function Page({ params }: { params: Promise<{ id: string }> }) {
-  const id = (await params).id;
+export async function generateMetadata({ params }: { params: Promise<{ id: number }> }) {
+  const resolvedParams = await params;
+  const { id } = resolvedParams;
 
   try {
     const response = await axiosServerHelper<Activity>(`/activities/${id}`);
     const activityDetail = safeResponse(response.data, activityDetailSchema);
 
     if (!activityDetail) {
-      return notFound();
+      notFound();
     }
-    return <ActivityDetailPage activityDetail={activityDetail} />;
+
+    return {
+      title: activityDetail.title,
+      description: activityDetail.description,
+      openGraph: {
+        title: activityDetail.title,
+        description: activityDetail.description,
+        url: `http://localhost:3000/activity/${id}`,
+        images: [
+          {
+            url: activityDetail.bannerImageUrl,
+            width: 800,
+            height: 600,
+          },
+        ],
+      },
+    };
   } catch {
-    return notFound();
+    notFound();
   }
 }
 
-// export async function generateMetadata({ params }: { params: { id: string } }) {
-//   const id = params.id;
+export default async function Page({ params }: { params: Promise<{ id: number }> }) {
+  const resolvedParams = await params;
+  const { id } = resolvedParams;
 
-//   return {
-//     title: `체험 ${id} 상세`,
-//     description: '체험에 대한 자세한 정보!',
-//     openGraph: {
-//       title: `체험 ${id} 상세`,
-//       description: '체험에 대한 자세한 정보!',
-//       url: `http://localhost:3000/activities/${id}`,
-//       images: [
-//         {
-//           url: 'http://localhost:3000/thumbnail.jpg',
-//           width: 800,
-//           height: 600,
-//         },
-//       ],
-//     },
-//   };
-// }
+  return <ActivityDetailPage id={id} />;
+}
