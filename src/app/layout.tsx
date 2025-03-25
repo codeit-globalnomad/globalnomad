@@ -2,6 +2,8 @@ import { Pretendard } from '@/font';
 import './globals.css';
 import { Metadata } from 'next';
 import QueryClientProvider from '@/components/provider/queryProvider';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 export const metadata: Metadata = {
   title: 'GlobalNomad',
@@ -17,6 +19,7 @@ export default function RootLayout({
     <html lang='ko'>
       <body className={Pretendard.className}>
         <QueryClientProvider>{children}</QueryClientProvider>
+        <ToastContainer position='bottom-center' />
       </body>
     </html>
   );
