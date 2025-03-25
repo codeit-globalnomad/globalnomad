@@ -5,54 +5,137 @@ import logo from '@/assets/logo/logo-xl.svg';
 import SocialButtons from './SocialButtons';
 import Link from 'next/link';
 import Button from '@/components/Button';
+import { useSignup } from '@/lib/hooks/useUsers';
+import { useRouter } from 'next/navigation';
+import { useForm } from 'react-hook-form';
+import { SignupParams, signupSchema } from '@/lib/types/users';
+import { zodResolver } from '@hookform/resolvers/zod';
+import errorResponse from '@/lib/network/errorResponse';
+import { useState } from 'react';
+import ClosedEye from '@/assets/icons/eye-hidden.svg';
+import OpendEye from '@/assets/icons/eye-visible.svg';
+import Input from '@/components/Input';
 
 export default function SignupForm() {
+  const { mutateAsync: signup } = useSignup();
+  const router = useRouter();
+
+  const [isShowPassword, setIsShowPassword] = useState(true);
+  const [isShowPasswordConfirm, setIsShowPasswordConfirm] = useState(true);
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isSubmitting, isValid },
+    trigger,
+  } = useForm<SignupParams>({
+    resolver: zodResolver(signupSchema),
+    mode: 'onChange',
+  });
+
+  const onSubmit = async (data: SignupParams) => {
+    console.log('111');
+    try {
+      console.log('222', data);
+      await signup(data);
+      console.log('성공');
+      reset();
+      router.push('/login');
+    } catch (error) {
+      console.error('❌ 회원가입 실패:', error);
+
+      try {
+        const response = errorResponse(error);
+        const errorData = await response.json(); // 여기서 에러 발생 가능
+        console.error('❌ Error Response:', errorData);
+      } catch (err) {
+        console.error('❌ Failed to parse error response:', err);
+      }
+    }
+  };
   return (
     <div className='flex min-h-screen items-center justify-center'>
       <div className='w-full max-w-xl px-4'>
         <div className='mb-[56px] flex justify-center'>
           <Link href='/'>
-            <Image src={logo} width={340} height={192} alt='회원가입창 로고' />
+            <div className='relative h-[138px] w-[245px] md:h-[192px] md:w-[340px]'>
+              <Image src={logo} alt='회원가입창 로고' layout='fill' objectFit='contain' />
+            </div>
           </Link>
         </div>
 
-        <form className='space-y-4'>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <div className='mb-[28px]'>
-            <label className='text-black-100 mb-2 block'>이메일</label>
-            <input
+            <Input
+              label='이메일'
+              error={errors.email?.message}
               type='email'
-              placeholder='이메일을 입력해 주세요'
-              className='w-full rounded-md border border-gray-300 p-3 focus:ring-2 focus:ring-green-100 focus:outline-none'
+              placeholder='이메일'
+              required
+              {...register('email', {
+                onBlur: () => trigger('email'),
+              })}
+              disabled={isSubmitting}
             />
           </div>
 
           <div className='mb-[28px]'>
-            <label className='text-black-100 mb-2 block'>닉네임</label>
-            <input
+            <Input
+              label='닉네임'
+              error={errors.nickname?.message}
               type='text'
               placeholder='닉네임을 입력해 주세요'
-              className='w-full rounded-md border border-gray-300 p-3 focus:ring-2 focus:ring-green-100 focus:outline-none'
+              required
+              {...register('nickname', {
+                onBlur: () => trigger('nickname'),
+              })}
+              disabled={isSubmitting}
             />
           </div>
 
-          <div className='mb-[28px]'>
-            <label className='text-black-100 mb-2 block'>비밀번호</label>
-            <input
-              type='password'
-              placeholder='8자 이상 입력해 주세요'
-              className='w-full rounded-md border border-gray-300 p-3 focus:ring-2 focus:ring-green-100 focus:outline-none'
+          <div className='relative mb-[28px]'>
+            <Input
+              label='비밀번호'
+              error={errors.password?.message}
+              type={isShowPassword ? 'password' : 'text'}
+              placeholder='비밀번호'
+              required
+              {...register('password', {
+                onBlur: () => trigger('password'),
+              })}
+              disabled={isSubmitting}
+            />
+            <Image
+              src={isShowPassword ? ClosedEye : OpendEye}
+              alt='비밀번호 토글 이미지'
+              width={24}
+              height={24}
+              className='absolute top-[65px] right-3 -translate-y-1/2 cursor-pointer'
+              onClick={() => setIsShowPassword((prev) => !prev)}
+            />
+          </div>
+          <div className='relative mb-[28px]'>
+            <Input
+              label='비밀번호 확인'
+              error={errors.confirmPassword?.message}
+              type={isShowPasswordConfirm ? 'password' : 'text'}
+              placeholder='비밀번호 확인'
+              required
+              {...register('confirmPassword')}
+              disabled={isSubmitting}
+            />
+            <Image
+              src={isShowPasswordConfirm ? ClosedEye : OpendEye}
+              alt='비밀번호 토글 이미지'
+              width={24}
+              height={24}
+              className='absolute top-[64px] right-3 -translate-y-1/2 cursor-pointer'
+              onClick={() => setIsShowPasswordConfirm((prev) => !prev)}
             />
           </div>
 
-          <div className='mb-[28px]'>
-            <label className='text-black-100 mb-2 block'>비밀번호 확인</label>
-            <input
-              type='password'
-              placeholder='비밀번호를 한 번 더 입력해 주세요'
-              className='w-full rounded-md border border-gray-300 p-3 focus:ring-2 focus:ring-green-100 focus:outline-none'
-            />
-          </div>
-          <Button className='w-full py-[11px]' disabled={true}>
+          <Button type='submit' className='w-full py-[11px]' disabled={!isValid || isSubmitting}>
             <div>회원가입 하기</div>
           </Button>
         </form>
@@ -60,11 +143,12 @@ export default function SignupForm() {
         <div className='mt-8 mb-12 text-center'>
           <p className='text-gray-800'>
             회원이신가요?{' '}
-            <a href='/login' className='font-semibold text-green-100'>
+            <Link href='/login' className='font-semibold text-green-100 underline'>
               로그인하기
-            </a>
+            </Link>
           </p>
         </div>
+
         <SocialButtons />
       </div>
     </div>

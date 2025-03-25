@@ -34,9 +34,9 @@ export default function LoginForm() {
   const onSubmit = async (data: LoginParams) => {
     try {
       await signin(data);
+      //모달로 변경 예정
       alert('로그인에 성공했습니다.');
       router.push('/login');
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       console.error('회원가입 실패:', error);
       alert(error.response?.data?.message || '회원가입에 실패했습니다.');
@@ -89,7 +89,7 @@ export default function LoginForm() {
               onClick={() => setIsShowPassword((prev) => !prev)}
             />
           </div>
-          <Button className='w-full py-[11px]' disabled={!isValid || isSubmitting}>
+          <Button type='submit' className='w-full py-[11px]' disabled={!isValid || isSubmitting}>
             로그인 하기
           </Button>
         </form>

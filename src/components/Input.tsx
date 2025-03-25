@@ -23,18 +23,15 @@ export function Label({
   ...props
 }: PropsWithChildren<LabelHTMLAttributes<HTMLLabelElement> & { required?: boolean }>) {
   return (
-    <label
-      className={cn('text-black-100 inline-flex items-center gap-1 text-lg font-medium lg:gap-1.5', className)}
-      {...props}
-    >
+    <label className={cn('text-black-100 inline-flex items-center gap-1 text-lg font-medium', className)} {...props}>
       {children}
-      {required && <span className='text-error flex items-center pt-1.5 text-lg font-thin lg:text-2xl'>*</span>}
+      {required && <span className='flex items-center pt-1.5 text-lg font-thin text-red-500'>*</span>}
     </label>
   );
 }
 
 export function Error({ children }: PropsWithChildren) {
-  return <div className='text-error mt-2 text-sm text-red-500'>{children}</div>;
+  return <div className='mt-2 text-sm text-red-500'>{children}</div>;
 }
 
 export const fieldClassName = cva(
@@ -71,7 +68,7 @@ export default function Input({ label, error, className, ref, ...props }: InputP
         id={id}
         className={cn(
           'mt-2 w-full rounded-md border p-3 focus:ring-2 focus:outline-none',
-          error ? 'border-red-500 focus:ring-red-300' : 'border-gray-300 focus:ring-green-100',
+          error ? 'border-red-500 focus:ring-red-500' : 'border-green-100 focus:ring-green-100',
           className,
         )}
         ref={ref}
