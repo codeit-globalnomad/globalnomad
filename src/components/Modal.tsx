@@ -1,14 +1,21 @@
 'use client';
-import React, { useEffect } from 'react';
+
+import { useClickOutside } from '@/lib/utils/useClickOutside';
+import React, { useEffect, useRef } from 'react';
 
 interface ModalProps {
   title?: string;
   onClose: () => void;
   children?: React.ReactNode;
   fullScreen?: boolean;
+  className?: string;
 }
 
-const Modal = ({ title, onClose, children, fullScreen = false }: ModalProps) => {
+const Modal = ({ title, onClose, children, fullScreen = false, className = '' }: ModalProps) => {
+  const modalRef = useRef<HTMLDivElement | null>(null);
+
+  useClickOutside(modalRef, onClose);
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
@@ -21,10 +28,6 @@ const Modal = ({ title, onClose, children, fullScreen = false }: ModalProps) => 
     };
   }, [onClose]);
 
-  const preventOffModal = (event: React.MouseEvent) => {
-    event.stopPropagation();
-  };
-
   useEffect(() => {
     document.body.style.overflow = 'hidden';
     return () => {
@@ -36,17 +39,9 @@ const Modal = ({ title, onClose, children, fullScreen = false }: ModalProps) => 
     <div
       id='모달 외부'
       onClick={onClose}
-      className='pointer-events-auto fixed inset-0 flex h-full w-full items-center justify-center bg-gray-500/50'
+      className='pointer-events-auto fixed inset-0 z-100 flex h-full w-full items-center justify-center bg-gray-500/50'
     >
-      <div
-        id='모달'
-        onClick={preventOffModal}
-        className={`rounded-md bg-white p-5 ${
-          fullScreen
-            ? 'h-full w-full md:h-[750px] md:w-[480px] lg:max-h-[750px] lg:w-[480px]'
-            : 'max-h-[60%] w-[327px] max-w-[90vw] md:w-[540px] lg:w-[540px]'
-        }`}
-      >
+      <div id='모달' ref={modalRef} className={`rounded-md bg-white p-6 ${fullScreen && 'h-full w-full'} ${className}`}>
         <div className='text-2xl text-black'>{title}</div>
         {children}
       </div>
