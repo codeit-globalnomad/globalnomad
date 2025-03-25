@@ -22,6 +22,12 @@ export const login = async (data: LoginParams) => {
  * https://sp-globalnomad-api.vercel.app/docs/#/Auth/Refresh
  */
 export const refreshToken = async () => {
-  const response = await axiosClientHelper.post<RefreshTokenResponse>('/auth/tokens');
+  const response = await axiosClientHelper.post<RefreshTokenResponse>(
+    '/auth/tokens',
+    {},
+    {
+      withCredentials: true,
+    },
+  );
   return safeResponse(response.data, refreshTokenResponseSchema);
 };

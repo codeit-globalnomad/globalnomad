@@ -1,11 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useQuery } from '@tanstack/react-query';
-import {
-  CreateProfileImageParams,
-  profileImageUrlSchema,
-  SignupParams,
-  UserDataUpdateParams,
-} from '../types/users';
+import { CreateProfileImageParams, profileImageUrlSchema, SignupParams, UserDataUpdateParams } from '../types/users';
 import { getUserData, patchUserdataUpdate, postFileImageUrl, signup } from '../apis/users';
 
 // 회원가입 훅
@@ -26,11 +21,11 @@ export const useMyData = () => {
 // 내 정보 수정 훅
 export const useUserdataUpdate = () => {
   const queryClient = useQueryClient();
-  return useMutation({  
+  return useMutation({
     mutationFn: (params: UserDataUpdateParams) => patchUserdataUpdate(params),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['user'] });
-    }, 
+    },
   });
 };
 
