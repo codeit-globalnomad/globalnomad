@@ -12,8 +12,7 @@ export default function SocialButtons() {
         'https://kauth.kakao.com/oauth/authorize?' +
         `client_id=${process.env.NEXT_PUBLIC_KAKAO_API_KEY}` +
         `&redirect_uri=${process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI}` +
-        `&response_type=code` +
-        `&state=${provider}`;
+        `&response_type=code`;
 
       window.location.href = KAKAO_OAUTH_URL;
     } else {
@@ -22,8 +21,7 @@ export default function SocialButtons() {
         `client_id=${process.env.NEXT_PUBLIC_GOOGLE_API_KEY}&` +
         `redirect_uri=${process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI}&` +
         `response_type=code&` +
-        `scope=openid%20profile%20email&` +
-        `state=${provider}&`;
+        `scope=openid%20profile%20email&`;
       window.location.href = GOOGLE_OAUTH_URL;
     }
   };
@@ -32,15 +30,20 @@ export default function SocialButtons() {
     <div>
       <div className='mb-10 flex items-center gap-4'>
         <div className='flex-1 border-t border-gray-300' />
-        <p className='text-center text-xl text-gray-800'>SNS 계정으로 회원가입하기</p>
+        <p className='text-md text-center text-gray-800 md:text-xl'>SNS 계정으로 회원가입하기</p>
         <div className='flex-1 border-t border-gray-300' />
       </div>
       <div className='mt-2 flex justify-center space-x-4'>
         <button type='button' onClick={() => handleSocialLogin('google')} className='cursor-pointer'>
-          <Image src={google} width={72} height={72} alt='구글 로그인 아이콘' />
+          <div className='relative h-[48px] w-[48px] md:h-[72px] md:w-[72px]'>
+            <Image src={google} alt='구글 로그인 아이콘' layout='fill' objectFit='contain' />
+          </div>
         </button>
+
         <button type='button' onClick={() => handleSocialLogin('kakao')} className='cursor-pointer'>
-          <Image src={kakao} width={72} height={72} alt='카카오 로그인 아이콘' />
+          <div className='relative h-[48px] w-[48px] md:h-[72px] md:w-[72px]'>
+            <Image src={kakao} alt='카카오 로그인 아이콘' layout='fill' objectFit='contain' />
+          </div>
         </button>
       </div>
     </div>
