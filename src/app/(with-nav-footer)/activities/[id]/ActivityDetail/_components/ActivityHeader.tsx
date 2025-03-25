@@ -3,22 +3,22 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { toast } from 'react-toastify';
+import { useRouter } from 'next/navigation';
 import { usePathname } from 'next/navigation';
-import starRating from '@/assets/icons/star-rating.svg';
-import marker from '@/assets/icons/marker.svg';
-import share from '@/assets/icons/share.svg';
+import { toast } from 'react-toastify';
 import close from '@/assets/icons/close-fill.svg';
+import kebab from '@/assets/icons/kebab.svg';
+import marker from '@/assets/icons/marker.svg';
+import starRating from '@/assets/icons/star-rating.svg';
+import share from '@/assets/icons/share.svg';
 import url from '@/assets/icons/share-url.svg';
 import x from '@/assets/icons/share-x.svg';
-import Modal from '@/components/Modal';
-import { ActivityDetailResponse } from '@/lib/types/activities';
-import KakaoShare from './KakaoShare';
-import { FacebookShare } from './FacebookShare';
 import Dropdown from '@/components/Dropdown';
-import kebab from '@/assets/icons/kebab.svg';
-import { useRouter } from 'next/navigation';
+import Modal from '@/components/Modal';
 import { useDeleteActivity } from '@/lib/hooks/useMyActivities';
+import { ActivityDetailResponse } from '@/lib/types/activities';
+import { FacebookShare } from './FacebookShare';
+import KakaoShare from './KakaoShare';
 
 type ActivityHeaderProps = {
   activityDetail: ActivityDetailResponse;
@@ -116,10 +116,10 @@ export default function ActivityHeader({ activityDetail, isSameUser }: ActivityH
           )}
           {isSameUser && (
             <Dropdown
-              options={dropdownOptions} // 옵션 설정
-              onSelect={handleSelectOption} // 항목 선택 시 실행할 함수
-              trigger={<Image src={kebab} alt='더보기 아이콘' />} // 드롭다운을 열 트리거 버튼
-              dropdownClassName='right-0 z-80' // 드롭다운 스타일 수정 (선택사항)
+              options={dropdownOptions}
+              onSelect={handleSelectOption}
+              trigger={<Image src={kebab} alt='더보기 아이콘' />}
+              dropdownClassName='right-0 z-80'
             />
           )}
         </div>
