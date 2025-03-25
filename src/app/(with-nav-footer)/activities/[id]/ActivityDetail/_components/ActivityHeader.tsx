@@ -15,15 +15,23 @@ import Modal from '@/components/Modal';
 import { ActivityDetailResponse } from '@/lib/types/activities';
 import KakaoShare from './KakaoShare';
 import { FacebookShare } from './FacebookShare';
+import Dropdown from '@/components/Dropdown';
+import kebab from '@/assets/icons/kebab.svg';
+import { useRouter } from 'next/navigation';
+import { useDeleteActivity } from '@/lib/hooks/useMyActivities';
 
 type ActivityHeaderProps = {
   activityDetail: ActivityDetailResponse;
+  isSameUser: boolean;
 };
 
-export default function ActivityHeader({ activityDetail }: ActivityHeaderProps) {
-  const { category, title, rating, reviewCount, address, description, bannerImageUrl } = activityDetail;
+export default function ActivityHeader({ activityDetail, isSameUser }: ActivityHeaderProps) {
+  const { category, title, rating, reviewCount, address, description, bannerImageUrl, id } = activityDetail;
   const [modalStatus, setModalStatus] = useState(false);
   const pathname = usePathname();
+  const router = useRouter();
+
+  const { mutate: deleteActivity } = useDeleteActivity();
 
   const onHandleModalStatus = () => {
     setModalStatus(!modalStatus);
@@ -41,13 +49,38 @@ export default function ActivityHeader({ activityDetail }: ActivityHeaderProps) 
 
   const xShareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(`${title}\n📍 ${address}\n`)}&url=${window.location.origin}${pathname}`;
 
+  const dropdownOptions = [
+    { label: '수정하기', onClick: () => router.push(`/my-activities/${id}`) },
+    {
+      label: '삭제하기',
+      onClick: () => {
+        deleteActivity(id);
+        toast.success('체험이 삭제되었습니다.');
+        setTimeout(() => {
+          router.push('/activities');
+        }, 3000);
+      },
+    },
+  ];
+
+  const handleSelectOption = (option: { label: string }) => {
+    console.log(`선택된 옵션: ${option.label}`);
+  };
+
   return (
     <div className='flex flex-col gap-2'>
       <span className='text-md font-regular opacity-75'>{category}</span>
       <div className='flex justify-between'>
         <h1 className='w-[80%] text-2xl font-bold md:text-3xl'>{title}</h1>
-        <div>
-          <Image src={share} className='cursor-pointer' alt='공유하기 아이콘' onClick={onHandleModalStatus} />
+        <div className='flex items-baseline'>
+          <Image
+            src={share}
+            width={36}
+            height={36}
+            className='relative top-[-1.5px] cursor-pointer'
+            alt='공유하기 아이콘'
+            onClick={onHandleModalStatus}
+          />
           {modalStatus && (
             <Modal onClose={onHandleModalStatus}>
               <div className='mb-[36px] flex items-center justify-between'>
@@ -81,9 +114,15 @@ export default function ActivityHeader({ activityDetail }: ActivityHeaderProps) 
               </ul>
             </Modal>
           )}
+          {isSameUser && (
+            <Dropdown
+              options={dropdownOptions} // 옵션 설정
+              onSelect={handleSelectOption} // 항목 선택 시 실행할 함수
+              trigger={<Image src={kebab} alt='더보기 아이콘' />} // 드롭다운을 열 트리거 버튼
+              dropdownClassName='right-0 z-80' // 드롭다운 스타일 수정 (선택사항)
+            />
+          )}
         </div>
-
-        {/* 더보기 <Dropdown /> */}
       </div>
       <div className='align-center flex flex-row gap-4'>
         {/* Rating */}
