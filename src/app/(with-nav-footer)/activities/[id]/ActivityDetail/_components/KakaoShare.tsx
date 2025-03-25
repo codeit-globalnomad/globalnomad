@@ -32,13 +32,19 @@ const KakaoShare = ({ title, description, bannerImageUrl, pathname }: KakaoShare
 
     loadKakaoScript()
       .then(() => {
+        const kakaoApiKey = process.env.NEXT_PUBLIC_KAKAO_API_KEY;
+
+        if (!kakaoApiKey) {
+          alert('Kakao API key가 설정되지 않았습니다.');
+          return;
+        }
+
         if (typeof window !== 'undefined' && window.Kakao && !window.Kakao.isInitialized()) {
-          window.Kakao.init(process.env.NEXT_PUBLIC_KAKAO_API_KEY);
+          window.Kakao.init(kakaoApiKey);
           setKakaoReady(true);
         }
       })
-      .catch((error) => {
-        console.error('카카오 SDK 로드 실패:', error);
+      .catch(() => {
         alert('카카오 SDK 로드에 실패했습니다.');
       });
   }, []);
