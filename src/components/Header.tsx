@@ -8,24 +8,28 @@ import bell from '@/assets/icons/bell.svg';
 import bellHover from '@/assets/icons/bell-hover.svg';
 import { useEffect, useState } from 'react';
 
+async function checkLoginStatus() {
+  try {
+    const res = await fetch('oauth/status', { credentials: 'include' });
+    if (!res.ok) throw new Error('Failed to fetch login status');
+    const data = await res.json();
+    return data.isLoggedIn;
+  } catch (error) {
+    console.error('Login status check failed:', error);
+    return false;
+  }
+}
+
 function LoggedOutHeader() {
   return (
     <div className='flex h-[70px] w-full justify-center border-b border-gray-300'>
       <div className='flex w-full justify-between px-5 md:w-full md:px-5 lg:mx-auto lg:w-[1200px]'>
         <Link href='/'>
-          <Image
-            src={logoMd}
-            width={166}
-            height={28}
-            alt='로고'
-            style={{ width: 166, height: 28 }}
-            className='my-[21px] cursor-pointer'
-            priority
-          />
+          <Image src={logoMd} width={166} height={28} alt='로고' className='my-[21px] cursor-pointer' priority />
         </Link>
         <div className='flex gap-[25px] leading-[70px]'>
-          <Link href={'/login'}>로그인</Link>
-          <Link href={'/signup'}>회원가입</Link>
+          <Link href='/login'>로그인</Link>
+          <Link href='/signup'>회원가입</Link>
         </div>
       </div>
     </div>
@@ -37,15 +41,7 @@ function LoggedInHeader() {
     <div className='flex h-[70px] w-full justify-center border-b border-gray-300'>
       <div className='flex w-full justify-between px-5 md:w-full md:px-5 lg:mx-auto lg:w-[1200px]'>
         <Link href='/'>
-          <Image
-            src={logoMd}
-            width={166}
-            height={28}
-            alt='로고'
-            style={{ width: 166, height: 28 }}
-            className='my-[21px] cursor-pointer'
-            priority
-          />
+          <Image src={logoMd} width={166} height={28} alt='로고' className='my-[21px] cursor-pointer' priority />
         </Link>
         <div className='flex gap-[25px] max-[430px]:gap-[10px] md:gap-[25px] lg:gap-[25px]'>
           <div className='group my-[25px] cursor-pointer'>
@@ -69,8 +65,19 @@ export default function Header() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    const accessToken = localStorage.getItem('accessToken');
-    setIsLoggedIn(!!accessToken);
+    const fetchLoginStatus = async () => {
+      const status = await checkLoginStatus();
+      setIsLoggedIn(status);
+    };
+
+    fetchLoginStatus();
+
+    const handleStorageChange = () => {
+      fetchLoginStatus();
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
   }, []);
 
   return isLoggedIn ? <LoggedInHeader /> : <LoggedOutHeader />;
