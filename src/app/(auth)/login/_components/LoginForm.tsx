@@ -85,7 +85,7 @@ export default function LoginForm() {
               alt='비밀번호 토글 이미지'
               width={24}
               height={24}
-              className='absolute top-[64px] right-3 -translate-y-1/2 cursor-pointer'
+              className='absolute top-[68px] right-3 -translate-y-1/2 cursor-pointer'
               onClick={() => setIsShowPassword((prev) => !prev)}
             />
           </div>

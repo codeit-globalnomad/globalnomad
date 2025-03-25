@@ -35,22 +35,16 @@ export default function SignupForm() {
   });
 
   const onSubmit = async (data: SignupParams) => {
-    console.log('111');
     try {
-      console.log('222', data);
       await signup(data);
-      console.log('성공');
       reset();
       router.push('/login');
     } catch (error) {
-      console.error('❌ 회원가입 실패:', error);
-
       try {
         const response = errorResponse(error);
-        const errorData = await response.json(); // 여기서 에러 발생 가능
-        console.error('❌ Error Response:', errorData);
+        const errorData = await response.json();
       } catch (err) {
-        console.error('❌ Failed to parse error response:', err);
+        console.error('  error response:', err);
       }
     }
   };
@@ -111,7 +105,7 @@ export default function SignupForm() {
               alt='비밀번호 토글 이미지'
               width={24}
               height={24}
-              className='absolute top-[65px] right-3 -translate-y-1/2 cursor-pointer'
+              className='absolute top-[68px] right-3 -translate-y-1/2 cursor-pointer'
               onClick={() => setIsShowPassword((prev) => !prev)}
             />
           </div>
@@ -130,7 +124,7 @@ export default function SignupForm() {
               alt='비밀번호 토글 이미지'
               width={24}
               height={24}
-              className='absolute top-[64px] right-3 -translate-y-1/2 cursor-pointer'
+              className='absolute top-[68px] right-3 -translate-y-1/2 cursor-pointer'
               onClick={() => setIsShowPasswordConfirm((prev) => !prev)}
             />
           </div>
