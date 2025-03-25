@@ -1,8 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { ActivityDetailResponse } from '@/lib/types/activities';
-import { useIntersectionObserver } from '@/lib/utils/useIntersectionObserver';
 import ActivityHeader from './_components/ActivityHeader';
 import ActivityGallery from './_components/ActivityGallery';
 import ActivityTab from './_components/ActivityTab';
@@ -13,6 +11,8 @@ import { MobileReservation, TabletReservation, DesktopReservation } from './_com
 import ActivityBanner from './_components/ActivityBanner';
 import ScrollToTopButton from './_components/ScrollToTopButton';
 import LoadingSpinner from './_components/LoadingSpinner';
+import { useActivityDetail } from '@/lib/hooks/useActivities';
+import { useIntersectionObserver } from '@/lib/utils/useIntersectionObserver';
 
 const wrapper = 'mt-3 flex w-full flex-col gap-4 md:gap-6 max-w-[1200px]';
 const tabItems = [
@@ -21,11 +21,9 @@ const tabItems = [
   { label: '후기', targetId: 'reviews' },
 ];
 
-type ActivityDetailPageProps = {
-  activityDetail: ActivityDetailResponse;
-};
+export default function ActivityDetailPage({ id }: { id: number }) {
+  const { data: activityDetail } = useActivityDetail(id);
 
-export default function ActivityDetailPage({ activityDetail }: ActivityDetailPageProps) {
   const [currentTab, setCurrentTab] = useState('description');
   const [isLoading, setIsLoading] = useState(true);
   const [hasReservationSection, setHasReservationSection] = useState(false);
@@ -56,7 +54,7 @@ export default function ActivityDetailPage({ activityDetail }: ActivityDetailPag
     return () => clearTimeout(timer);
   }, []);
 
-  if (isLoading) {
+  if (isLoading || !activityDetail) {
     return <LoadingSpinner />;
   }
 
