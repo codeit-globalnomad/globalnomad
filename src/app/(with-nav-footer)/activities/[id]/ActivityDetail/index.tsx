@@ -47,11 +47,11 @@ export default function ActivityDetailPage({ id }: { id: number }) {
     return () => clearTimeout(timer);
   }, []);
 
-  if (isLoading || !activityDetail || !userData) {
+  if (isLoading || !activityDetail) {
     return <LoadingSpinner />;
   }
 
-  const isSameUser = userData.id === activityDetail.userId;
+  const isSameUser = userData?.id === activityDetail.userId;
 
   return (
     <div className='relative flex flex-col items-center justify-center scroll-smooth'>
