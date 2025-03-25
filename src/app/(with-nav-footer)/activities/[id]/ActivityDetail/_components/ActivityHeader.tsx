@@ -14,6 +14,7 @@ import x from '@/assets/icons/share-x.svg';
 import Modal from '@/components/Modal';
 import { ActivityDetailResponse } from '@/lib/types/activities';
 import KakaoShare from './KakaoShare';
+import { toast } from 'react-toastify';
 
 type ActivityHeaderProps = {
   activityDetail: ActivityDetailResponse;
@@ -32,9 +33,9 @@ export default function ActivityHeader({ activityDetail }: ActivityHeaderProps) 
     try {
       const urlToCopy = `${window.location.origin}${pathname}`;
       await navigator.clipboard.writeText(urlToCopy);
-      alert('URL이 클립보드에 복사되었습니다!');
+      toast.success('URL이 클립보드에 복사되었습니다!');
     } catch {
-      alert('URL 복사에 실패했습니다.');
+      toast.error('URL 복사에 실패했습니다.');
     }
   };
 
