@@ -82,34 +82,38 @@ export default function ActivityHeader({ activityDetail, isSameUser }: ActivityH
             onClick={onHandleModalStatus}
           />
           {modalStatus && (
-            <Modal onClose={onHandleModalStatus}>
-              <div className='mb-[36px] flex items-center justify-between'>
+            <Modal onClose={onHandleModalStatus} className='w-[400px] max-w-[90%]'>
+              <div className='mb-[20px] flex items-center justify-between'>
                 <h2 className='text-2xl font-bold'>공유하기</h2>
                 <button onClick={onHandleModalStatus} className='cursor-pointer'>
-                  <Image src={close} alt='닫기 아이콘' />
+                  <Image src={close} width={36} height={36} alt='닫기 아이콘' />
                 </button>
               </div>
               <ul className='flex justify-between'>
-                <li>
+                <li className='text-center'>
                   <button onClick={copyUrlToClipboard} className='cursor-pointer'>
                     <Image src={url} alt='URL 복사하기 아이콘' />
                   </button>
+                  <p className='text-md font-regular'>링크복사</p>
                 </li>
-                <li>
+                <li className='text-center'>
                   <KakaoShare
                     title={title}
                     description={description}
                     bannerImageUrl={bannerImageUrl}
                     pathname={pathname}
                   />
+                  <p className='text-md font-regular'>카카오톡</p>
                 </li>
-                <li>
-                  <Link href={xShareUrl} target='_blank' rel='noopener noreferrer'>
+                <li className='text-center'>
+                  <Link href={xShareUrl} target='_blank' rel='noopener noreferrer' className='inline-block'>
                     <Image src={x} alt='x 공유하기 아이콘' />
                   </Link>
+                  <p className='text-md font-regular'>X</p>
                 </li>
-                <li>
+                <li className='text-center'>
                   <FacebookShare currentUrl={`${window.location.origin}${pathname}`} title={title} address={address} />
+                  <p className='text-md font-regular'>페이스북</p>
                 </li>
               </ul>
             </Modal>
