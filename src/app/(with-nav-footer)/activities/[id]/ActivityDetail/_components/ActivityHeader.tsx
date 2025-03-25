@@ -75,9 +75,9 @@ export default function ActivityHeader({ activityDetail, isSameUser }: ActivityH
         <div className='flex items-baseline'>
           <Image
             src={share}
-            width={36}
-            height={36}
-            className='relative top-[-1.5px] cursor-pointer'
+            width={35}
+            height={35}
+            className='relative top-[-1.8px] cursor-pointer'
             alt='공유하기 아이콘'
             onClick={onHandleModalStatus}
           />
