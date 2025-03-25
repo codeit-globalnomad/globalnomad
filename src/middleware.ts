@@ -9,7 +9,7 @@ export const middleware = async (request: NextRequest) => {
   const accessToken = cookieStore.get('accessToken');
   const refreshToken = cookieStore.get('refreshToken');
 
-  const pathname = request.nextUrl.pathname;
+  const pathname = request.nextUrl.pathname.replace(/\/$/, '');
 
   const isAfterLoginRoute = AFTER_LOGIN_DOMAIN.includes(pathname);
   const isBeforeLoginRoute = BEFORE_LOGIN_DOMAIN.includes(pathname);
