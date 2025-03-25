@@ -60,19 +60,7 @@ export const FacebookShare = ({ currentUrl, title, address }: FacebookShareProps
       });
     } else {
       // PC 환경: 단순 팝업 공유
-      const popup = window.open(
-        facebookUrl,
-        '페이스북 공유하기',
-        'width=800,height=800,location=no,status=no,scrollbars=yes',
-      );
-      if (popup) {
-        popup.focus();
-        popup.onbeforeunload = () => {
-          toast.success('공유 성공');
-        };
-      } else {
-        toast.error('팝업이 차단되었습니다. 팝업 차단을 해제해주세요.');
-      }
+      window.location.href = facebookUrl;
     }
   };
 
