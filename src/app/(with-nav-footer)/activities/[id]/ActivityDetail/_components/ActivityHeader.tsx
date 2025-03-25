@@ -3,18 +3,18 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { toast } from 'react-toastify';
 import { usePathname } from 'next/navigation';
 import starRating from '@/assets/icons/star-rating.svg';
 import marker from '@/assets/icons/marker.svg';
 import share from '@/assets/icons/share.svg';
 import close from '@/assets/icons/close-fill.svg';
 import url from '@/assets/icons/share-url.svg';
-import facebook from '@/assets/icons/share-facebook.svg';
 import x from '@/assets/icons/share-x.svg';
 import Modal from '@/components/Modal';
 import { ActivityDetailResponse } from '@/lib/types/activities';
 import KakaoShare from './KakaoShare';
-import { toast } from 'react-toastify';
+import { FacebookShare } from './FacebookShare';
 
 type ActivityHeaderProps = {
   activityDetail: ActivityDetailResponse;
@@ -40,7 +40,6 @@ export default function ActivityHeader({ activityDetail }: ActivityHeaderProps) 
   };
 
   const xShareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(`${title}\n📍 ${address}\n`)}&url=${window.location.origin}${pathname}`;
-  const facebookShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`${window.location.origin}${pathname}`)}`;
 
   return (
     <div className='flex flex-col gap-2'>
@@ -77,9 +76,7 @@ export default function ActivityHeader({ activityDetail }: ActivityHeaderProps) 
                   </Link>
                 </li>
                 <li>
-                  <Link href={facebookShareUrl} target='_blank' rel='noopener noreferrer'>
-                    <Image src={facebook} alt='페이스북 아이콘' />
-                  </Link>
+                  <FacebookShare currentUrl={`${window.location.origin}${pathname}`} title={title} address={address} />
                 </li>
               </ul>
             </Modal>
