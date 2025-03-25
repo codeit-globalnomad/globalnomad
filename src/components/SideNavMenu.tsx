@@ -11,14 +11,12 @@ import MyActivities from '@/assets/icons/my-activities.svg';
 import MyReservationStatus from '@/assets/icons/my-activities-dashboard.svg';
 import EditIcon from '@/assets/icons/pencil.svg';
 
-const NAV_ITEMS = [
-  { name: '내 정보', path: '/my-page', icon: MyInfo },
-  { name: '예약 내역', path: '/my-reservations', icon: MyReservation },
-  { name: '내 체험 관리', path: '/my-activities', icon: MyActivities },
-  { name: '예약 현황', path: '/my-activities/[activityId]/reservation-dashboard', icon: MyReservationStatus },
-];
+interface SideNavMenuProps {
+  userId?: string;
+  activityId?: string;
+}
 
-const SideNavMenu = () => {
+const SideNavMenu = ({ userId, activityId }: SideNavMenuProps) => {
   const pathname = usePathname();
   const [previewImage, setPreviewImage] = useState<string | null>(null);
 
@@ -29,6 +27,17 @@ const SideNavMenu = () => {
       setPreviewImage(imageUrl);
     }
   };
+
+  const NAV_ITEMS = [
+    { name: '내 정보', path: '/my-page', icon: MyInfo },
+    { name: '예약 내역', path: '/my-reservations', icon: MyReservation },
+    { name: '내 체험 관리', path: `/my-activities/${userId}`, icon: MyActivities },
+    {
+      name: '예약 현황',
+      path: `/my-activities/${activityId}/reservation-dashboard`,
+      icon: MyReservationStatus,
+    },
+  ];
 
   return (
     <aside className='w-[251px] flex-none rounded-lg border border-gray-300 bg-white p-4 shadow-md md:w-[384px]'>
