@@ -17,7 +17,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: numbe
     }
 
     return {
-      title: activityDetail.title,
+      title: `${activityDetail.title} | GlobalNomad`,
       description: activityDetail.description,
       openGraph: {
         title: activityDetail.title,
