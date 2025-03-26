@@ -54,7 +54,11 @@ const SideNavMenu = ({ userId, activityId }: SideNavMenuProps) => {
       <nav className='mt-6'>
         <ul className='flex flex-col gap-1'>
           {NAV_ITEMS.map((item) => {
-            const isActive = pathname?.startsWith(item.path);
+            const isActive =
+              (item.name === '내 정보' && pathname === '/my-page') ||
+              (item.name === '예약 내역' && pathname === '/my-reservations') ||
+              (item.name === '내 체험 관리' && pathname === `/my-activities/${userId}`) ||
+              (item.name === '예약 현황' && pathname === `/my-activities/${activityId}/reservation-dashboard`);
             return (
               <li key={item.path}>
                 <Link
