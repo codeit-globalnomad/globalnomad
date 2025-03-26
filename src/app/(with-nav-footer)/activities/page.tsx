@@ -1,6 +1,7 @@
 import Banner from './_components/Banner';
-import BestActivities from './_components/BestActivities';
 import SearchBar from './_components/SearchBar';
+import BestActivities from './_components/BestActivities';
+import AllActivities from './_components/AllActivities';
 
 export default function Page() {
   return (
@@ -11,6 +12,9 @@ export default function Page() {
       </div>
       <div className='mt-[100px] md:mt-[158px]'>
         <BestActivities />
+      </div>
+      <div className='mt-[60px] mb-[20%]'>
+        <AllActivities />
       </div>
     </>
   );
