@@ -82,7 +82,7 @@ export default function ActivityHeader({ activityDetail, isSameUser }: ActivityH
             onClick={onHandleModalStatus}
           />
           {modalStatus && (
-            <Modal onClose={onHandleModalStatus} className='w-[400px] max-w-[90%]'>
+            <Modal onClose={onHandleModalStatus} className='w-[460px] max-w-[90%]'>
               <div className='mb-[20px] flex items-center justify-between'>
                 <h2 className='text-2xl font-bold'>공유하기</h2>
                 <button onClick={onHandleModalStatus} className='cursor-pointer'>
