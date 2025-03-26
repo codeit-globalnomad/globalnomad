@@ -5,6 +5,7 @@ import { useClickOutside } from '@/lib/utils/useClickOutside';
 
 interface FilterDropdownOption {
   label: string;
+  value?: string;
   onClick?: () => void;
 }
 
@@ -19,6 +20,7 @@ interface FilterDropdownProps {
   includeAllOption?: boolean;
   iconVisibleOnMobile?: boolean;
   autoSelectFirstOption?: boolean;
+  selected?: FilterDropdownOption | null;
 }
 
 export default function FilterDropdown({
@@ -32,13 +34,11 @@ export default function FilterDropdown({
   includeAllOption = false,
   iconVisibleOnMobile = false,
   autoSelectFirstOption = false,
+  selected = null,
 }: FilterDropdownProps) {
   const ref = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [updatedOptions, setUpdatedOptions] = useState<FilterDropdownOption[]>([]);
-  const [selected, setSelected] = useState<FilterDropdownOption | null>(
-    autoSelectFirstOption ? updatedOptions[0] : null,
-  );
 
   useClickOutside(ref, () => setIsOpen(false));
 
@@ -46,15 +46,7 @@ export default function FilterDropdown({
     setUpdatedOptions(includeAllOption && !autoSelectFirstOption ? [{ label: '전체' }, ...options] : options);
   }, [includeAllOption, autoSelectFirstOption, options]);
 
-  useEffect(() => {
-    if (autoSelectFirstOption && updatedOptions.length > 0) {
-      setSelected(updatedOptions[0]);
-      onSelect(updatedOptions[0]);
-    }
-  }, [autoSelectFirstOption, updatedOptions, onSelect]);
-
   const handleSelect = (option: FilterDropdownOption) => {
-    setSelected(option.label === '전체' ? null : option);
     onSelect(option.label === '전체' ? null : option);
     setIsOpen(false);
   };
