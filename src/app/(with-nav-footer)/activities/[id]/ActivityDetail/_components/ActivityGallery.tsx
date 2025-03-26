@@ -11,6 +11,7 @@ import pause from '@/assets/icons/pause.svg';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/effect-fade';
+import { Swiper as SwiperInstance } from 'swiper';
 
 type ActivityGalleryProps = {
   activityDetail: ActivityDetailResponse | undefined;
@@ -21,11 +22,12 @@ export default function ActivityGallery({ activityDetail }: ActivityGalleryProps
   const images = bannerImageUrl ? [bannerImageUrl, ...(subImages?.map((img) => img.imageUrl) || [])] : [];
   const [currentIndex, setCurrentIndex] = useState(1);
   const [isAutoplay, setIsAutoplay] = useState(true);
-  const swiperRef = useRef<any>(null);
+
+  const swiperRef = useRef<SwiperInstance | null>(null);
 
   const progressContent = useRef<HTMLSpanElement | null>(null);
 
-  const onAutoplayTimeLeft = (swiper: any, time: number, progress: number) => {
+  const onAutoplayTimeLeft = (swiper: SwiperInstance, time: number) => {
     if (progressContent.current) {
       progressContent.current.textContent = `${Math.ceil(time / 1000)}s`;
     }
@@ -34,10 +36,10 @@ export default function ActivityGallery({ activityDetail }: ActivityGalleryProps
   const toggleAutoplay = () => {
     if (swiperRef.current) {
       if (isAutoplay) {
-        swiperRef.current.swiper.autoplay.stop();
+        swiperRef.current.autoplay.stop();
         setIsAutoplay(false);
       } else {
-        swiperRef.current.swiper.autoplay.start();
+        swiperRef.current.autoplay.start();
         setIsAutoplay(true);
       }
     }
@@ -54,7 +56,7 @@ export default function ActivityGallery({ activityDetail }: ActivityGalleryProps
   return (
     <div className='relative h-[430px] w-full overflow-hidden md:h-[540px] md:rounded-lg lg:h-[550px]'>
       <Swiper
-        ref={swiperRef}
+        onSwiper={(swiper) => (swiperRef.current = swiper)}
         modules={[Navigation, Autoplay, Keyboard, Mousewheel, EffectFade]}
         spaceBetween={10}
         slidesPerView={1}
