@@ -4,17 +4,19 @@
   align-items: center;
   min-width: 342px;
   max-width: 800px;
-  width: 100%;
+  margin-bottom: 262px;
 }
 
 .my-calendar .react-calendar__navigation {
   width: 342px;
-  height: 90px;
+  height: 42px;
   display: flex;
   align-items: center;
   font-weight: 700;
   font-size: 20px;
   line-height: 32px;
+  margin-top: 30px;
+  margin-bottom: 18px;
 }
 
 .my-calendar .react-calendar__navigation__label span {
