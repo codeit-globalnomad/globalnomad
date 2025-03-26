@@ -84,7 +84,7 @@ export default function Category({
           >
             <Image
               src={isEnd ? categoryArrowLeft : categoryArrowRight}
-              alt={isEnd ? 'Left Arrow' : 'Right Arrow'}
+              alt={isEnd ? '좌측 화살표' : '우측 화살표'}
               width={32}
               height={32}
             />

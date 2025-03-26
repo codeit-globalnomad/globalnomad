@@ -63,7 +63,7 @@ export default function AllActivities() {
           </div>
           <div>
             <FilterDropdown
-              buttonClassName='w-[90px] md:w-[120px] h-[42px] md:h-[53px] rounded-xl border border-green-100 px-3 py-2 font-medium whitespace-nowrap text-green-100 md:justify-between'
+              buttonClassName='w-[90px] md:w-[120px] h-[42px] md:h-[53px] rounded-xl border border-green-100 text-md md:text-lg px-3 py-2 font-medium whitespace-nowrap text-green-100 md:justify-between'
               dropdownClassName='w-[90px] rounded-xl border md:w-[120px] border-gray-300 bg-white drop-shadow-sm'
               icon={arrowFilterDropdown}
               label='가격'
