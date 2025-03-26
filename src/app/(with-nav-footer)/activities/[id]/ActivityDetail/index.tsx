@@ -61,7 +61,7 @@ export default function ActivityDetailPage({ id }: { id: number }) {
         </section>
       </div>
       <div className={`${wrapper} flex-col md:px-5`}>
-        <ActivityGallery />
+        <ActivityGallery activityDetail={activityDetail} />
       </div>
       <div className={`md:${wrapper} px-5 md:flex-row md:gap-[2%] lg:mb-16`}>
         <section className={`mt-6 mb-6 w-full ${!isSameUser ? 'md:w-[70%]' : 'md:w-full'}`}>
