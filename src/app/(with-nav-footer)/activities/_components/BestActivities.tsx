@@ -80,7 +80,7 @@ export default function BestActivities() {
       ) : (
         <div className='mt-[16px] flex gap-[16px] md:mt-[32px] md:gap-[24px]'>
           {visibleActivities?.map((activity) => (
-            <div key={activity.id} className='w-full'>
+            <div key={activity.id} className='w-full max-w-[384px]'>
               <BestActivityItem activity={activity} />
             </div>
           ))}
