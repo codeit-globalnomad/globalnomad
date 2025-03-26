@@ -10,7 +10,7 @@ import { useEffect, useState } from 'react';
 
 async function checkLoginStatus() {
   try {
-    const res = await fetch('oauth/status', { credentials: 'include' });
+    const res = await fetch('/oauth/status', { credentials: 'include' });
     if (!res.ok) throw new Error('Failed to fetch login status');
     const data = await res.json();
     return data.isLoggedIn;
