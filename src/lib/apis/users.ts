@@ -33,7 +33,7 @@ export const getUserData = async () => {
  * 내 정보 수정 API
  * https://sp-globalnomad-api.vercel.app/docs/#/Users/UpdateMyInfo
  */
-export const patchUserdataUpdate = async (params: UserDataUpdateParams) => {
+export const patchUserdataUpdate = async (params: Partial<UserDataUpdateParams>) => {
   const response = await axiosClientHelper.patch<User>('/users/me', params);
   return safeResponse(response.data, userSchema);
 };
