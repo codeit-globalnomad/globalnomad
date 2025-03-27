@@ -54,6 +54,7 @@ export default function ActivityDetailPage({ id }: { id: number }) {
   const isSameUser = userData?.id === activityDetail.userId;
   const category = activityDetail.category;
   const currentActivityId = activityDetail.id;
+  const description = activityDetail.description;
 
   return (
     <div className='relative flex flex-col items-center justify-center scroll-smooth'>
@@ -77,7 +78,7 @@ export default function ActivityDetailPage({ id }: { id: number }) {
             />
           </div>
           <div className='w-full'>
-            <DescriptionSection />
+            <DescriptionSection description={description} />
             <LocationSection />
             <ReviewsSection />
             <ActivityBanner category={category} currentActivityId={currentActivityId} />
