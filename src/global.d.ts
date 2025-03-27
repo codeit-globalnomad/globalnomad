@@ -18,6 +18,15 @@ interface KakaoShareButtonOptions {
   }[];
 }
 
+interface KakaoMaps {
+  LatLng: typeof LatLng;
+  Map: {
+    new (container: HTMLElement, options: { center: LatLng; level: number }): Map;
+  };
+  Marker: typeof Marker;
+  load: (callback: () => void) => void;
+}
+
 declare global {
   interface Window {
     Kakao: {
@@ -26,6 +35,7 @@ declare global {
       Link: {
         sendDefault: (options: KakaoShareButtonOptions) => void;
       };
+      maps: KakaoMaps;
     };
     FB: {
       getLoginStatus: (callback: (response: FB.LoginStatusResponse) => void) => void;
