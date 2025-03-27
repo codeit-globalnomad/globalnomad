@@ -40,7 +40,7 @@ const SideNavMenu = ({ userId, activityId }: SideNavMenuProps) => {
   ];
 
   return (
-    <aside className='w-[251px] flex-none rounded-lg border border-gray-300 bg-white p-4 shadow-md md:w-[384px]'>
+    <aside className='h-[432px] w-[251px] flex-none rounded-lg border border-gray-300 bg-white p-4 shadow-md md:w-[384px]'>
       <div className='relative flex flex-col items-center gap-4'>
         <ProfileImage size='large' src={previewImage || undefined} />
         <label
