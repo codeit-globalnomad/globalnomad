@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import LoadingSpinner from '@/components/LoadingSpinner';
 import { useActivityDetail } from '@/lib/hooks/useActivities';
 import { useMyData } from '@/lib/hooks/useUsers';
 import { useIntersectionObserver } from '@/lib/utils/useIntersectionObserver';
@@ -13,7 +14,6 @@ import ReviewsSection from './_components/ActivityReviewsSection';
 import { MobileReservation, TabletReservation, DesktopReservation } from './_components/ActivityReservation';
 import ActivityBanner from './_components/ActivityBanner';
 import ScrollToTopButton from './_components/ScrollToTopButton';
-import LoadingSpinner from '@/components/LoadingSpinner';
 
 const wrapper = 'mt-3 flex w-full flex-col gap-4 md:gap-6 max-w-[1200px]';
 const tabItems = [
@@ -55,6 +55,7 @@ export default function ActivityDetailPage({ id }: { id: number }) {
   const category = activityDetail.category;
   const currentActivityId = activityDetail.id;
   const description = activityDetail.description;
+  const address = activityDetail.address;
 
   return (
     <div className='relative flex flex-col items-center justify-center scroll-smooth'>
@@ -79,7 +80,7 @@ export default function ActivityDetailPage({ id }: { id: number }) {
           </div>
           <div className='w-full'>
             <DescriptionSection description={description} />
-            <LocationSection />
+            <LocationSection address={address} />
             <ReviewsSection />
             <ActivityBanner category={category} currentActivityId={currentActivityId} />
           </div>
