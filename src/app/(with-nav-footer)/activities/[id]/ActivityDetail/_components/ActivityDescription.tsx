@@ -1,13 +1,27 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import Image from 'next/image';
+import arrow from '@/assets/icons/arrow-filter-dropdown2.svg';
 
-export default function ActivityDescription() {
+type ActivityDescriptionProps = {
+  description: string;
+};
+
+export default function ActivityDescription({ description }: ActivityDescriptionProps) {
   const [isExpanded, setIsExpanded] = useState(false);
+  const [contentHeight, setContentHeight] = useState(0);
+  const contentRef = useRef<HTMLParagraphElement>(null);
 
   const handleToggle = () => {
     setIsExpanded(!isExpanded);
   };
+
+  useEffect(() => {
+    if (contentRef.current) {
+      setContentHeight(contentRef.current.scrollHeight);
+    }
+  }, [description]);
 
   return (
     <>
@@ -23,37 +37,30 @@ export default function ActivityDescription() {
           z-index: -1;
           transition:
             height 0.3s ease-out,
-            opacity 0.3s ease-out; /* 추가된 opacity */
+            opacity 0.3s ease-out;
         }
-
-        /* 버튼 클릭 시 ::before의 높이와 opacity를 변화시켜서 사라지게 */
         button.expanded::before {
-          height: 0; /* ::before의 높이를 0으로 설정 */
-          opacity: 0; /* opacity를 0으로 설정하여 부드럽게 사라지도록 */
-        }
-
-        /* 설명 내용 p 태그의 높이를 상태에 따라 조절 */
-        p {
-          max-height: ${isExpanded ? '1000px' : '200px'}; /* max-height로 변경 */
-          overflow: hidden; /* 내용이 넘치지 않도록 숨기기 */
-          transition: height 0.3s ease-out; /* 부드러운 높이 변화를 위한 트랜지션 */
+          height: 0;
+          opacity: 0;
         }
       `}</style>
       <p
-        className={`transition-max-height w-full overflow-hidden duration-300 ease-out ${
-          isExpanded ? 'max-h-[1000px]' : 'max-h-[200px]'
-        }`}
+        ref={contentRef}
+        className={`overflow-hidden transition-all duration-300 ease-out`}
+        style={{
+          height: isExpanded ? `${contentHeight}px` : '100px',
+          marginBottom: isExpanded ? '50px' : '0',
+        }}
       >
-        체험 설명 내용 내용 내용 내용 내용 내용 내용 내용 내용 내용 내용 내용 내용 내용 내용 내용 내용 내용 내용 내용
-        내용 내용 내용 내용 내용 내용 내용 내용 내용 내용 내용 내용 내용 내용 내용 내용 내용체험 설명 내용 내용 내용
-        내용 내용 내용 내용 내용 내용
-      </p>{' '}
+        {description}
+      </p>
       <div className='relative z-10 mt-[-30px] bg-transparent'>
         <button
           className={`align-center flex w-full cursor-pointer justify-center rounded-[4px] border-1 border-black bg-white px-1 py-[8px] ${isExpanded ? 'expanded' : ''}`}
           onClick={handleToggle}
         >
-          {isExpanded ? '간략히 보기' : '더보기'}
+          <span>{isExpanded ? '간략히 보기' : '더보기'}</span>
+          <Image src={arrow} alt='아래 위 버튼 화살표 아이콘' className={`ml-2 ${isExpanded ? 'rotate-180' : ''}`} />
         </button>
       </div>
     </>
