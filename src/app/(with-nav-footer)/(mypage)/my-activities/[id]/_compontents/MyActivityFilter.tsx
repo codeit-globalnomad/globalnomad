@@ -3,7 +3,7 @@
 import FilterDropdown from '@/components/FilterDropdown';
 import { useCallback, useEffect, useState } from 'react';
 import MyCalendar from '../reservation-dashboard/_components/MyCalendar';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import arrowFilterDropdown2 from '@/assets/icons/arrow-filter-dropdown2.svg';
 import { MyActivitiesResponse, ReservationDashboardResponse } from '@/lib/types/myActivities';
 
@@ -19,6 +19,7 @@ type ActivitiesFilterOption = {
 };
 
 export default function MyActivityFilter({ activity, monthData }: Props) {
+  const { id } = useParams();
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -34,10 +35,34 @@ export default function MyActivityFilter({ activity, monthData }: Props) {
     value: act.id,
   }));
 
+  useEffect(() => {
+    if (id) {
+      const activityId = Number(id);
+      setSelectedActivityId(activityId);
+
+      // URL의 id에 해당하는 옵션을 selectOption에 설정
+      const selectedActivity = activitiesFilterOption.find((activity) => activity.value === activityId);
+      setSelectOption(selectedActivity || null);
+    }
+  }, [id, activity.activities]);
+
+  useEffect(() => {
+    const dateStr = `${currentYear}-${currentMonth}`;
+    setSelectedDate(dateStr);
+  }, [currentYear, currentMonth]);
+
   const handleSelectActivity = (option: ActivitiesFilterOption | null) => {
     setSelectOption(option);
     setSelectedActivityId(option?.value ? Number(option.value) : null);
+
+    if (option?.value) {
+      router.push(`/my-activities/${option.value}/reservation-dashboard?year=${currentYear}&month=${currentMonth}`);
+    }
   };
+
+  useEffect(() => {
+    console.log('selectedDate:', selectedDate);
+  }, [selectedDate]);
 
   const handleMonthChange = useCallback(
     ({ activeStartDate }: { activeStartDate: Date | null }) => {
@@ -52,20 +77,8 @@ export default function MyActivityFilter({ activity, monthData }: Props) {
         );
       }
     },
-    [router, selectedActivityId],
+    [selectedActivityId, currentYear, currentMonth],
   );
-
-  useEffect(() => {
-    if (selectOption?.value) {
-      router.push(
-        `/my-activities/${selectOption.value}/reservation-dashboard?year=${currentYear}&month=${currentMonth}`,
-      );
-    }
-  }, [selectOption, currentYear, currentMonth, router]);
-
-  useEffect(() => {
-    console.log('selectedDate:', selectedDate);
-  }, [selectedDate]);
 
   return (
     <div>
