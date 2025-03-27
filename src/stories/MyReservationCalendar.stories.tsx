@@ -1,5 +1,7 @@
 import type { Meta, StoryFn } from '@storybook/react';
-import MyCalendar, { Props } from '@/app/(with-nav-footer)/(mypage)/my-reservations/_compontents/MyCalendar';
+import MyCalendar, {
+  Props,
+} from '@/app/(with-nav-footer)/(mypage)/my-activities/[id]/reservation-dashboard/_components/MyCalendar';
 
 // mock data
 const MyMonthReservationMockData = [
