@@ -1,10 +1,8 @@
 import axios, { isAxiosError } from 'axios';
 import { cookies } from 'next/headers';
 import { getExpirationDate } from './getExpirationDate';
-<<<<<<< HEAD
+
 import { getErrorMessage } from './errorMessage';
-=======
->>>>>>> a534584 (fix: 로그인 회원가입할 때 api 수정)
 
 const axiosServerHelper = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
@@ -25,8 +23,7 @@ axiosServerHelper.interceptors.response.use(
     const { response, config } = error;
 
     if (response?.status === 401) {
-<<<<<<< HEAD
-      const baseURL = 'https://sp-globalnomad-api.vercel.app/12-1';
+      const baseURL = process.env.NEXT_PUBLIC_API_URL;
 
       const cookieStore = await cookies();
       const refreshToken = cookieStore.get('refreshToken')?.value;
@@ -45,31 +42,6 @@ axiosServerHelper.interceptors.response.use(
       }
 
       const accessToken = res.accessToken;
-=======
-      const baseURL =
-        process.env.NODE_ENV === 'production'
-          ? process.env.NEXT_PUBLIC_PRODUCTION_DOMAIN
-          : process.env.NEXT_PUBLIC_LOCAL_DOMAIN;
-      const cookieStore = await cookies();
-      const refreshToken = cookieStore.get('refreshToken')?.value;
-      const res = await axios.post(
-        `${baseURL}/api/auth/refresh-token`,
-        {},
-        {
-          headers: {
-            Cookie: `refreshToken=${refreshToken};`,
-          },
-        },
-      );
-
-      const accessTokenCookie = res.headers['set-cookie']?.find((cookie) => {
-        return cookie.startsWith('accessToken');
-      });
-
-      if (!accessTokenCookie) return Promise.reject(error);
-      const accessTokenMatch = accessTokenCookie.match(/accessToken=([^;]+)/);
-      const accessToken = accessTokenMatch ? accessTokenMatch[1] : null;
->>>>>>> a534584 (fix: 로그인 회원가입할 때 api 수정)
 
       if (!config) return Promise.reject(error);
       if (!accessToken) return Promise.reject(error);

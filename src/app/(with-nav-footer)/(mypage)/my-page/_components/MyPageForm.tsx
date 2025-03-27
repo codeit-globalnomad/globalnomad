@@ -43,7 +43,6 @@ export default function MyPageForm() {
     }
   }, [user, reset]);
 
-  const email = watch('email');
   const nickname = watch('nickname');
   const newPassword = watch('newPassword');
   const confirmNewPassword = watch('confirmNewPassword');

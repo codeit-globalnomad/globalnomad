@@ -14,7 +14,6 @@ import EditIcon from '@/assets/icons/pencil.svg';
 
 import { useProfileImage as useProfileImageContext } from '@/lib/contexts/ProfileImageContext';
 import { useProfileImage as useProfileImageUpload, useUserdataUpdate } from '@/lib/hooks/useUsers';
-import { useQueryClient } from '@tanstack/react-query';
 
 interface SideNavMenuProps {
   userId?: string;
@@ -29,8 +28,6 @@ const SideNavMenu = ({ userId, activityId }: SideNavMenuProps) => {
   const [previewImage, setPreviewImage] = useState<string | null>(null);
 
   const { mutate: patchImage } = useUserdataUpdate();
-
-  const queryClient = useQueryClient();
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
