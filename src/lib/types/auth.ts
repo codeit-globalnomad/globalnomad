@@ -28,7 +28,7 @@ export const loginResponseSchema = z.object({
     createdAt: z.string().datetime(),
     updatedAt: z.string().datetime(),
   }),
-  refreshToken: z.string(),
+  refreshToken: z.string().optional(),
   accessToken: z.string().optional(),
 });
 

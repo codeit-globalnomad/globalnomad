@@ -62,6 +62,7 @@ export const Required: Story = {
     placeholder: '이메일을 입력하세요',
     required: true,
     variant: 'default',
+    className: 'bg-gray-200',
   },
 };
 
