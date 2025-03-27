@@ -62,6 +62,8 @@ export default function ActivityGallery({ activityDetail }: ActivityGalleryProps
     setLightboxOpen(true);
   };
 
+  const hasMultipleImages = images.length > 1;
+
   return (
     <div className='relative h-[430px] w-full overflow-hidden md:h-[540px] md:rounded-lg lg:h-[550px]'>
       <Swiper
@@ -124,7 +126,7 @@ export default function ActivityGallery({ activityDetail }: ActivityGalleryProps
         >
           <Image src={prevArrow} alt='다음 화살표 아이콘' className='scale-x-[-1] transform' />
         </button>
-        {images.length > 1 && (
+        {hasMultipleImages && (
           <button onClick={toggleAutoplay} className='flex cursor-pointer items-center justify-center'>
             {isAutoplay ? (
               <Image src={pause} alt='일시정지 아이콘' width={22} height={22} />
@@ -134,7 +136,7 @@ export default function ActivityGallery({ activityDetail }: ActivityGalleryProps
           </button>
         )}
       </div>
-      {images.length > 1 && (
+      {hasMultipleImages && (
         <div className='absolute top-4 right-4 z-60'>
           <span ref={progressContent} className='text-md text-center text-white'>
             0s
