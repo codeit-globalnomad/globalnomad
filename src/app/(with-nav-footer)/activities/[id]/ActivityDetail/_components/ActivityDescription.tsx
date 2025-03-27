@@ -46,7 +46,7 @@ export default function ActivityDescription({ description }: ActivityDescription
       `}</style>
       <p
         ref={contentRef}
-        className={`overflow-hidden transition-all duration-300 ease-out`}
+        className={`overflow-hidden text-lg text-[17px] leading-[1.5] font-light transition-all duration-300 ease-out`}
         style={{
           height: isExpanded ? `${contentHeight}px` : '100px',
           marginBottom: isExpanded ? '50px' : '0',
@@ -54,7 +54,7 @@ export default function ActivityDescription({ description }: ActivityDescription
       >
         {description}
       </p>
-      <div className='relative z-10 mt-[-30px] bg-transparent'>
+      <div className='relative z-10 mt-[-20px] bg-transparent'>
         <button
           className={`align-center flex w-full cursor-pointer justify-center rounded-[4px] border-1 border-black bg-white px-1 py-[8px] ${isExpanded ? 'expanded' : ''}`}
           onClick={handleToggle}
