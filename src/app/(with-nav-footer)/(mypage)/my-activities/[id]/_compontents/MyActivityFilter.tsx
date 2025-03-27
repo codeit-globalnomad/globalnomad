@@ -2,7 +2,7 @@
 
 import FilterDropdown from '@/components/FilterDropdown';
 import { useCallback, useEffect, useState } from 'react';
-import MyCalendar from '../_compontents/MyCalendar';
+import MyCalendar from '../reservation-dashboard/_components/MyCalendar';
 import { useRouter, useSearchParams } from 'next/navigation';
 import arrowFilterDropdown2 from '@/assets/icons/arrow-filter-dropdown2.svg';
 import { MyActivitiesResponse, ReservationDashboardResponse } from '@/lib/types/myActivities';
