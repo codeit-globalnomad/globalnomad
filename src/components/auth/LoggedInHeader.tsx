@@ -10,7 +10,13 @@ import bellHover from '@/assets/icons/bell-hover.svg';
 import Dropdown from '../Dropdown';
 import ProfileImage from '../ProfileImage';
 
-export default function LoggedInHeader({ nickname }: { nickname: string }) {
+export default function LoggedInHeader({
+  nickname,
+  profileImage,
+}: {
+  nickname: string;
+  profileImage: string | null | undefined;
+}) {
   const [state, formAction] = useActionState(logout, null);
   const router = useRouter();
 
@@ -49,7 +55,7 @@ export default function LoggedInHeader({ nickname }: { nickname: string }) {
               options={option}
               trigger={
                 <div className='flex cursor-pointer justify-center gap-[10px] align-middle'>
-                  <ProfileImage src={profileDefault} size='small' />
+                  <ProfileImage src={profileImage?.trim() ? profileImage : profileDefault} size='small' />
                   <p className='leading-[35px]'>{nickname}</p>
                 </div>
               }

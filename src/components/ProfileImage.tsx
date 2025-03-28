@@ -24,7 +24,7 @@ const profileImageVariants = cva('relative rounded-full', {
 });
 
 interface ProfileImageProps extends VariantProps<typeof profileImageVariants> {
-  src?: StaticImageData | string;
+  src?: StaticImageData | string | null;
   onClick?: () => void;
   className?: string;
 }
