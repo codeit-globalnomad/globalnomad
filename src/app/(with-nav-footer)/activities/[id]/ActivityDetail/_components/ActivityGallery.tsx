@@ -31,12 +31,6 @@ export default function ActivityGallery({ activityDetail }: ActivityGalleryProps
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
 
-  const onAutoplayTimeLeft = (swiper: SwiperInstance, time: number) => {
-    if (progressContent.current) {
-      progressContent.current.textContent = `${Math.ceil(time / 1000)}s`;
-    }
-  };
-
   const toggleAutoplay = () => {
     if (swiperRef.current) {
       if (isAutoplay) {
@@ -90,7 +84,6 @@ export default function ActivityGallery({ activityDetail }: ActivityGalleryProps
           delay: 4000,
           disableOnInteraction: true,
         }}
-        onAutoplayTimeLeft={onAutoplayTimeLeft}
         onAutoplayStop={onAutoplayStop}
         onAutoplayStart={onAutoplayStart}
         className='h-full'
@@ -136,13 +129,6 @@ export default function ActivityGallery({ activityDetail }: ActivityGalleryProps
           </button>
         )}
       </div>
-      {hasMultipleImages && (
-        <div className='absolute top-4 right-4 z-60'>
-          <span ref={progressContent} className='text-md text-center text-white'>
-            0s
-          </span>
-        </div>
-      )}
       <Lightbox
         open={lightboxOpen}
         close={() => setLightboxOpen(false)}
