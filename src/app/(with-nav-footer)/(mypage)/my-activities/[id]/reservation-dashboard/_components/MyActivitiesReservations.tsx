@@ -60,6 +60,10 @@ export default function MyActivitiesReservations({ selectedDate, setSelectedDate
       .join('년 ')
       .replace(/-(?=\d{2}$)/, '월 ') + '일';
 
+  const filteredSchedule = selectedSchedule
+    ? dateSchedule?.filter((schedule) => schedule.scheduleId === selectedSchedule.value)
+    : undefined;
+
   return (
     <div
       ref={dateRef}
@@ -86,11 +90,32 @@ export default function MyActivitiesReservations({ selectedDate, setSelectedDate
           label='시간대 선택'
           icon={arrowFilterDropdown2}
           selected={selectedSchedule || { label: '시작시간 ~ 종료시간', value: '' }}
-          buttonClassName='w-full rounded-[4px] h-[56px] border border-gray-800 py-2 px-4 text-black-100'
+          buttonClassName='w-full rounded-[4px] h-[56px] border border-gray-800 py-2 px-4 text-black-100 bg-white'
           optionClassName='border-gray-800 p-3'
-          dropdownClassName='w-full border rounded-[4px] border-gray-800 overflow-y-auto overflow-x-auto'
+          dropdownClassName='w-full border rounded-[4px] border-gray-800 overflow-y-auto overflow-x-auto bg-white'
         />
       </div>
+      {filteredSchedule === undefined || filteredSchedule.length === 0 ? (
+        <>
+          <section className='flex gap-5 border-b border-b-gray-300 pb-[10px] text-[20px] leading-[32px] font-normal text-gray-900'>
+            <div className='cursor-pointer'>신청 0</div>
+            <div className='cursor-pointer'>승인 0</div>
+            <div className='cursor-pointer'>거절 0</div>
+          </section>
+          <div className='text-center text-gray-500'>선택된 시간대에 대한 예약 정보가 없습니다.</div>
+        </>
+      ) : (
+        filteredSchedule.map((option, index) => (
+          <section
+            key={index}
+            className='flex gap-5 border-b border-b-gray-300 pb-[10px] text-[20px] leading-[32px] font-normal text-gray-900'
+          >
+            <div className='cursor-pointer'>신청 {option.count.pending}</div>
+            <div className='cursor-pointer'>승인 {option.count.confirmed}</div>
+            <div className='cursor-pointer'>거절 {option.count.declined}</div>
+          </section>
+        ))
+      )}
     </div>
   );
 }
