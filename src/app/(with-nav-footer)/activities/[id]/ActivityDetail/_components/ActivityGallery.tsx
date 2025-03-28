@@ -61,7 +61,7 @@ export default function ActivityGallery({ activityDetail }: ActivityGalleryProps
     <div className='relative h-[430px] w-full overflow-hidden md:h-[540px] md:rounded-lg lg:h-[550px]'>
       <Swiper
         onSwiper={(swiper) => (swiperRef.current = swiper)}
-        modules={[Navigation, Autoplay, Keyboard, Mousewheel, EffectFade]}
+        modules={[Navigation, Autoplay, Keyboard, EffectFade]}
         spaceBetween={10}
         slidesPerView={1}
         loop={false}
@@ -71,9 +71,6 @@ export default function ActivityGallery({ activityDetail }: ActivityGalleryProps
           prevEl: '.custom-prev',
         }}
         keyboard={{
-          enabled: true,
-        }}
-        mousewheel={{
           enabled: true,
         }}
         onSlideChange={(swiper) => {
