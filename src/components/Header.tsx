@@ -1,12 +1,9 @@
 'use client';
 
-import Link from 'next/link';
 import LoadingSkeleton from './auth/LoadingSkeleton';
-import Image from 'next/image';
 import { useMyData } from '@/lib/hooks/useUsers';
 import LoggedInHeader from './auth/LoggedInHeader';
 import LoggedOutHeader from './auth/LoggedOutHeader';
-import logoMd from '@/assets/logo/logo-md.svg';
 
 export default function Header() {
   const { data: user, isLoading } = useMyData();
