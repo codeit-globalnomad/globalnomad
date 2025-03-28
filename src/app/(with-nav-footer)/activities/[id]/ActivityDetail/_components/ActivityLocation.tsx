@@ -21,7 +21,7 @@ export default function ActivityLocation({ address, latitude, longitude }: Locat
     document.head.appendChild(script);
 
     script.onload = () => {
-      const kakao = (window as any).kakao;
+      const kakao = window.kakao;
 
       kakao.maps.load(() => {
         const container = mapContainerRef.current;

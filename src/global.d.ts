@@ -18,30 +18,14 @@ interface KakaoShareButtonOptions {
   }[];
 }
 
-interface KakaoMaps {
-  LatLng: typeof LatLng;
-  Map: {
-    new (container: HTMLElement, options: { center: LatLng; level: number }): Map;
-  };
-  Marker: typeof Marker;
-  load: (callback: () => void) => void;
-}
-
 declare global {
   interface Window {
-    Kakao: {
-      isInitialized: () => boolean;
-      init: (key: string) => void;
-      Link: {
-        sendDefault: (options: KakaoShareButtonOptions) => void;
-      };
-      maps: KakaoMaps;
-    };
     FB: {
       getLoginStatus: (callback: (response: FB.LoginStatusResponse) => void) => void;
       login: (callback: (response: FB.LoginResponse) => void) => void;
       ui: (params: FB.ShareParams, callback: (response: FB.ShareResponse) => void) => void;
     };
+    kakao: typeof kakao;
   }
 }
 
