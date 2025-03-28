@@ -1,11 +1,12 @@
 'use client';
 
 import FilterDropdown from '@/components/FilterDropdown';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import MyCalendar from '../reservation-dashboard/_components/MyCalendar';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import arrowFilterDropdown2 from '@/assets/icons/arrow-filter-dropdown2.svg';
 import { MyActivitiesResponse, ReservationDashboardResponse } from '@/lib/types/myActivities';
+import MyActivitiesReservations from '../reservation-dashboard/_components/MyActivitiesReservations';
 
 type Props = {
   activity: MyActivitiesResponse;
@@ -22,7 +23,6 @@ export default function MyActivityFilter({ activity, monthData }: Props) {
   const { id } = useParams();
   const searchParams = useSearchParams();
   const router = useRouter();
-  const dateRef = useRef<HTMLDivElement | null>(null);
 
   const currentYear = Number(searchParams.get('year')) || new Date().getFullYear();
   const currentMonth = (Number(searchParams.get('month')) || new Date().getMonth() + 1).toString().padStart(2, '0');
@@ -71,20 +71,6 @@ export default function MyActivityFilter({ activity, monthData }: Props) {
     [selectedActivityId, currentYear, currentMonth],
   );
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (dateRef.current && !dateRef.current.contains(event.target as Node)) {
-        setSelectedDate('');
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, []);
-
   return (
     <div className='relative'>
       <div className='relative flex flex-col gap-[32px]'>
@@ -111,10 +97,12 @@ export default function MyActivityFilter({ activity, monthData }: Props) {
           onDateChange={setSelectedDate}
         />
       </div>
-      {selectedDate && (
-        <div ref={dateRef} className='absolute top-[220px] right-0 bg-red-50'>
-          {selectedDate}
-        </div>
+      {selectedDate && selectedActivityId && (
+        <MyActivitiesReservations
+          selectedDate={selectedDate}
+          setSelectedDate={setSelectedDate}
+          activityId={selectedActivityId}
+        />
       )}
     </div>
   );
