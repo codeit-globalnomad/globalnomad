@@ -76,12 +76,18 @@ export default function ActivityLocation({ address, latitude, longitude }: Locat
       <div className='flex items-baseline justify-between'>
         <div className='md:text-2lg flex items-center gap-1'>
           <Image src={marker} alt='지도 마커 아이콘' />
-          <span className='font-regular flex gap-1 text-lg opacity-75'>{address}</span>&nbsp;
-          <button className='cursor-pointer text-lg text-green-100 underline' onClick={handleCopy}>
+          <span className='font-regular block w-full gap-1 truncate text-lg whitespace-nowrap opacity-75'>
+            {address}
+          </span>
+          &nbsp;
+          <button className='mr-2 flex-none cursor-pointer text-lg text-green-100 underline' onClick={handleCopy}>
             복사
           </button>
         </div>
-        <button className='cursor-pointer rounded-md bg-green-100 px-4 py-2 text-[15px] text-white' onClick={openMap}>
+        <button
+          className='flex-none cursor-pointer rounded-md bg-green-100 px-4 py-2 text-[15px] text-white'
+          onClick={openMap}
+        >
           카카오맵에서 보기
         </button>
       </div>
