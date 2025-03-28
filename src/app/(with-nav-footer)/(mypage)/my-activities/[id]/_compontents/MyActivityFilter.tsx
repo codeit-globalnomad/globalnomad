@@ -1,7 +1,7 @@
 'use client';
 
 import FilterDropdown from '@/components/FilterDropdown';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import MyCalendar from '../reservation-dashboard/_components/MyCalendar';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import arrowFilterDropdown2 from '@/assets/icons/arrow-filter-dropdown2.svg';
@@ -22,6 +22,7 @@ export default function MyActivityFilter({ activity, monthData }: Props) {
   const { id } = useParams();
   const searchParams = useSearchParams();
   const router = useRouter();
+  const dateRef = useRef<HTMLDivElement | null>(null);
 
   const currentYear = Number(searchParams.get('year')) || new Date().getFullYear();
   const currentMonth = (Number(searchParams.get('month')) || new Date().getMonth() + 1).toString().padStart(2, '0');
@@ -40,16 +41,10 @@ export default function MyActivityFilter({ activity, monthData }: Props) {
       const activityId = Number(id);
       setSelectedActivityId(activityId);
 
-      // URL의 id에 해당하는 옵션을 selectOption에 설정
       const selectedActivity = activitiesFilterOption.find((activity) => activity.value === activityId);
       setSelectOption(selectedActivity || null);
     }
   }, [id, activity.activities]);
-
-  useEffect(() => {
-    const dateStr = `${currentYear}-${currentMonth}`;
-    setSelectedDate(dateStr);
-  }, [currentYear, currentMonth]);
 
   const handleSelectActivity = (option: ActivitiesFilterOption | null) => {
     setSelectOption(option);
@@ -59,10 +54,6 @@ export default function MyActivityFilter({ activity, monthData }: Props) {
       router.push(`/my-activities/${option.value}/reservation-dashboard?year=${currentYear}&month=${currentMonth}`);
     }
   };
-
-  useEffect(() => {
-    console.log('selectedDate:', selectedDate);
-  }, [selectedDate]);
 
   const handleMonthChange = useCallback(
     ({ activeStartDate }: { activeStartDate: Date | null }) => {
@@ -80,8 +71,22 @@ export default function MyActivityFilter({ activity, monthData }: Props) {
     [selectedActivityId, currentYear, currentMonth],
   );
 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dateRef.current && !dateRef.current.contains(event.target as Node)) {
+        setSelectedDate('');
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
   return (
-    <div>
+    <div className='relative'>
       <div className='relative flex flex-col gap-[32px]'>
         <h1 className='text-[32px] leading-[42px] font-bold'>예약현황</h1>
         <FilterDropdown
@@ -106,6 +111,11 @@ export default function MyActivityFilter({ activity, monthData }: Props) {
           onDateChange={setSelectedDate}
         />
       </div>
+      {selectedDate && (
+        <div ref={dateRef} className='absolute top-[220px] right-0 bg-red-50'>
+          {selectedDate}
+        </div>
+      )}
     </div>
   );
 }
