@@ -3,7 +3,7 @@
 import Button from '@/components/Button';
 import Input from '@/components/Input';
 import { useForm } from 'react-hook-form';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useMyData, useUserdataUpdate } from '@/lib/hooks/useUsers';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { userDataFormSchema, UserDataFormValues, UserDataUpdateParams } from '@/lib/types/users';
