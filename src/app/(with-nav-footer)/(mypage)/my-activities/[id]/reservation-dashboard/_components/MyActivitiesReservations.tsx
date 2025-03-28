@@ -2,10 +2,11 @@
 
 import Image from 'next/image';
 import CloseImage from '@/assets/icons/close.svg';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useReservedSchedule } from '@/lib/hooks/useMyActivities';
 import FilterDropdown from '@/components/FilterDropdown';
 import arrowFilterDropdown2 from '@/assets/icons/arrow-filter-dropdown2.svg';
+import ReservationDetails from './ReservationDetails';
 
 type Props = {
   selectedDate: string;
@@ -19,17 +20,28 @@ type FilterDropdownOption = {
   onClick?: () => void;
 };
 
+type ReservationStatus = 'pending' | 'confirmed' | 'declined';
+
 export default function MyActivitiesReservations({ selectedDate, setSelectedDate, activityId }: Props) {
   const dateRef = useRef<HTMLDivElement | null>(null);
   const { data: dateSchedule } = useReservedSchedule(activityId, selectedDate);
   const [selectedSchedule, setSelectedSchedule] = useState<FilterDropdownOption | null>(null);
+  const [activeTab, setActiveTab] = useState<ReservationStatus | null>(null);
 
-  const options = dateSchedule
-    ? dateSchedule.map((schedule) => ({
-        label: `${schedule.startTime} ~ ${schedule.endTime}`,
-        value: schedule.scheduleId,
-      }))
-    : [];
+  const options = useMemo(() => {
+    return dateSchedule
+      ? dateSchedule.map((schedule) => ({
+          label: `${schedule.startTime} ~ ${schedule.endTime}`,
+          value: schedule.scheduleId,
+        }))
+      : [];
+  }, [dateSchedule]);
+
+  useEffect(() => {
+    if (options.length > 0) {
+      setSelectedSchedule(options[0]);
+    }
+  }, [options]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -51,7 +63,7 @@ export default function MyActivitiesReservations({ selectedDate, setSelectedDate
 
   const handleSelect = (option: FilterDropdownOption | null) => {
     setSelectedSchedule(option);
-    console.log(option);
+    setActiveTab(null);
   };
 
   const formattedDate =
@@ -62,7 +74,7 @@ export default function MyActivitiesReservations({ selectedDate, setSelectedDate
 
   const filteredSchedule = selectedSchedule
     ? dateSchedule?.filter((schedule) => schedule.scheduleId === selectedSchedule.value)
-    : undefined;
+    : null;
 
   return (
     <div
@@ -95,26 +107,34 @@ export default function MyActivitiesReservations({ selectedDate, setSelectedDate
           dropdownClassName='w-full border rounded-[4px] border-gray-800 overflow-y-auto overflow-x-auto bg-white'
         />
       </div>
-      {filteredSchedule === undefined || filteredSchedule.length === 0 ? (
+      {filteredSchedule && filteredSchedule.length > 0 ? (
         <>
-          <section className='flex gap-5 border-b border-b-gray-300 pb-[10px] text-[20px] leading-[32px] font-normal text-gray-900'>
-            <div className='cursor-pointer'>신청 0</div>
-            <div className='cursor-pointer'>승인 0</div>
-            <div className='cursor-pointer'>거절 0</div>
+          <section className='flex items-center gap-5 border-b border-b-gray-300 text-[20px] leading-[32px] font-normal text-gray-900'>
+            <button
+              className={`cursor-pointer ${activeTab === 'pending' ? 'pm-[6px] border-b-[4px] border-green-100 text-[20px] leading-[32px] font-semibold text-green-100' : ''}`}
+              onClick={() => setActiveTab('pending')}
+            >
+              신청 {filteredSchedule[0].count.pending}
+            </button>
+            <button
+              className={`cursor-pointer ${activeTab === 'confirmed' ? 'pm-[6px] border-b-[4px] border-green-100 text-[20px] leading-[32px] font-semibold text-green-100' : ''}`}
+              onClick={() => setActiveTab('confirmed')}
+            >
+              승인 {filteredSchedule[0].count.confirmed}
+            </button>
+            <button
+              className={`cursor-pointer ${activeTab === 'declined' ? 'pm-[6px] border-b-[4px] border-green-100 text-[20px] leading-[32px] font-semibold text-green-100' : ''}`}
+              onClick={() => setActiveTab('declined')}
+            >
+              거절 {filteredSchedule[0].count.declined}
+            </button>
           </section>
-          <div className='text-center text-gray-500'>선택된 시간대에 대한 예약 정보가 없습니다.</div>
+          {activeTab && <ReservationDetails type={activeTab} />}
         </>
       ) : (
-        filteredSchedule.map((option, index) => (
-          <section
-            key={index}
-            className='flex gap-5 border-b border-b-gray-300 pb-[10px] text-[20px] leading-[32px] font-normal text-gray-900'
-          >
-            <div className='cursor-pointer'>신청 {option.count.pending}</div>
-            <div className='cursor-pointer'>승인 {option.count.confirmed}</div>
-            <div className='cursor-pointer'>거절 {option.count.declined}</div>
-          </section>
-        ))
+        <div className='items-center justify-center text-center text-gray-500'>
+          선택된 시간대에 대한 예약 정보가 없습니다.
+        </div>
       )}
     </div>
   );
