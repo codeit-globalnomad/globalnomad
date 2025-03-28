@@ -1,4 +1,4 @@
-import { startTransition, useActionState, useEffect } from 'react';
+import { startTransition, useActionState, useCallback, useEffect, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import logout from './logoutAction';
 import Link from 'next/link';
@@ -26,18 +26,18 @@ export default function LoggedInHeader({
     }
   }, [state, router]);
 
-  const option = [
-    { label: '마이 페이지', onClick: () => router.push('/my-page') },
-    {
-      label: '로그아웃',
-      onClick: () => {
-        startTransition(() => {
-          formAction();
-        });
-      },
-    },
-  ];
-
+  const handleLogout = useCallback(() => {
+    startTransition(() => {
+      formAction();
+    });
+  }, []);
+  const options = useMemo(
+    () => [
+      { label: '마이 페이지', onClick: () => router.push('/my-page') },
+      { label: '로그아웃', onClick: handleLogout },
+    ],
+    [router, handleLogout],
+  );
   return (
     <div className='flex h-[70px] w-full justify-center border-b border-gray-300'>
       <div className='flex w-full justify-between px-5 md:w-full md:px-5 lg:mx-auto lg:w-[1200px]'>
@@ -52,7 +52,7 @@ export default function LoggedInHeader({
           <div className='my-[24px] h-[22px] border-r-2 border-gray-300' />
           <div className='py-[19px]'>
             <Dropdown
-              options={option}
+              options={options}
               trigger={
                 <div className='flex cursor-pointer justify-center gap-[10px] align-middle'>
                   <ProfileImage src={profileImage?.trim() ? profileImage : profileDefault} size='small' />

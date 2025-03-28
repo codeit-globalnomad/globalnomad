@@ -1,5 +1,6 @@
 'use server';
 
+import { getErrorMessage } from '@/lib/network/errorMessage';
 import { cookies } from 'next/headers';
 
 const logout = async () => {
@@ -12,8 +13,8 @@ const logout = async () => {
       status: true,
       error: '',
     };
-  } catch {
-    return { status: false, error: '오류 발생' };
+  } catch (error) {
+    return { status: false, error: getErrorMessage(error) };
   }
 };
 
