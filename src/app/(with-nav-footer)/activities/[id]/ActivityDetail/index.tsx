@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import LoadingSpinner from '@/components/LoadingSpinner';
-import { useActivityDetail } from '@/lib/hooks/useActivities';
+import { useActivityDetail, useActivityReviews } from '@/lib/hooks/useActivities';
 import { useMyData } from '@/lib/hooks/useUsers';
 import { useIntersectionObserver } from '@/lib/utils/useIntersectionObserver';
 import ActivityHeader from './_components/ActivityHeader';
@@ -25,6 +25,7 @@ const tabItems = [
 export default function ActivityDetailPage({ id }: { id: number }) {
   const { data: activityDetail } = useActivityDetail(id);
   const { data: userData } = useMyData();
+  const { data: activityReviews } = useActivityReviews(id);
 
   const [currentTab, setCurrentTab] = useState('description');
   const [isLoading, setIsLoading] = useState(true);
@@ -81,7 +82,7 @@ export default function ActivityDetailPage({ id }: { id: number }) {
           <div className='w-full'>
             <DescriptionSection description={description} />
             <LocationSection address={address} />
-            <ReviewsSection />
+            <ReviewsSection activityReviews={activityReviews} />
             <ActivityBanner category={category} currentActivityId={currentActivityId} />
           </div>
         </section>
