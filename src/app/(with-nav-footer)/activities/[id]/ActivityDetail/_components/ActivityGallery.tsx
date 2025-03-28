@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import { useRef, useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Navigation, Autoplay, Keyboard, Mousewheel, EffectFade } from 'swiper/modules';
+import { Navigation, Autoplay, Keyboard, EffectFade } from 'swiper/modules';
 import { Swiper as SwiperInstance } from 'swiper';
 import Lightbox from 'yet-another-react-lightbox';
 import prevArrow from '@/assets/icons/left-arrow-white.svg';
