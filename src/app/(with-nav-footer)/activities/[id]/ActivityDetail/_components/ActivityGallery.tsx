@@ -26,7 +26,6 @@ export default function ActivityGallery({ activityDetail }: ActivityGalleryProps
   const [currentIndex, setCurrentIndex] = useState(1);
   const [isAutoplay, setIsAutoplay] = useState(true);
   const swiperRef = useRef<SwiperInstance | null>(null);
-  const progressContent = useRef<HTMLSpanElement | null>(null);
 
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
