@@ -47,6 +47,8 @@ axiosServerHelper.interceptors.response.use(
       if (!accessToken) return Promise.reject(error);
 
       const accessTokenExp = getExpirationDate(accessToken);
+      const refreshTokenExp = refreshToken ? getExpirationDate(refreshToken) : undefined;
+
       cookieStore.set('accessToken', accessToken, {
         httpOnly: true,
         sameSite: 'lax',
@@ -54,6 +56,15 @@ axiosServerHelper.interceptors.response.use(
         path: '/',
         expires: accessTokenExp || undefined,
       });
+      if (refreshToken) {
+        cookieStore.set('refreshToken', refreshToken, {
+          httpOnly: true,
+          sameSite: 'lax',
+          secure: process.env.NODE_ENV === 'production',
+          path: '/',
+          expires: refreshTokenExp || undefined,
+        });
+      }
       config.headers.Authorization = `Bearer ${accessToken}`;
       return axiosServerHelper(config);
     }
