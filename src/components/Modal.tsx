@@ -38,11 +38,14 @@ const Modal = ({ title, onClose, children, fullScreen = false, className = '' }:
   return (
     <div
       id='모달 외부'
-      onClick={onClose}
       className='pointer-events-auto fixed inset-0 z-100 flex h-full w-full items-center justify-center bg-gray-500/50'
     >
-      <div id='모달' ref={modalRef} className={`rounded-md bg-white p-6 ${fullScreen && 'h-full w-full'} ${className}`}>
-        <div className='text-2xl text-black'>{title}</div>
+      <div
+        id='모달'
+        ref={modalRef}
+        className={`rounded-md bg-white p-6 ${fullScreen ? 'h-full w-full' : ''} ${className}`}
+      >
+        {title && <div className='text-2xl text-black'>{title}</div>}
         {children}
       </div>
     </div>
