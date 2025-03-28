@@ -80,46 +80,52 @@ export type ProfileImageUrlResponse = z.infer<typeof profileImageUrlResponseSche
 // 내 정보 수정 API 타입
 export const userDataFormSchema = z
   .object({
-    email: z.string(),
+    email: z.string().email(),
     nickname: z
       .string()
       .trim()
       .min(1, { message: '닉네임을 입력해주세요.' })
       .max(10, { message: '닉네임을 10자 이하로 입력해주세요.' }),
     profileImageUrl: z.union([z.string().url(), profileImageUrlSchema]),
-
-    newPassword: z
-      .string()
-
-      .refine(
-        (val) => {
-          if (typeof val !== 'string') return true;
-          return val === '' || val.length >= 8;
-        },
-        {
-          message: '비밀번호를 8자 이상 입력해주세요.',
-        },
-      ),
-    confirmNewPassword: z
-      .string()
-
-      .refine(
-        (val) => {
-          if (typeof val !== 'string') return true;
-          return val === '' || val.length >= 8;
-        },
-        {
-          message: '비밀번호를 확인해주세요.',
-        },
-      ),
+    newPassword: z.string().optional().or(z.literal('')),
+    confirmNewPassword: z.string().optional().or(z.literal('')),
   })
-  .refine(
-    (data) => data.newPassword === '' || data.confirmNewPassword === '' || data.newPassword === data.confirmNewPassword,
-    {
-      path: ['confirmNewPassword'],
-      message: '비밀번호가 일치하지 않습니다.',
-    },
-  );
+  .superRefine((data, ctx) => {
+    const { newPassword, confirmNewPassword } = data;
+
+    // 새 비밀번호가 입력되었고 8자 미만이면 에러
+    if (newPassword && newPassword.length < 8) {
+      ctx.addIssue({
+        path: ['newPassword'],
+        code: z.ZodIssueCode.custom,
+        message: '비밀번호는 8자 이상 입력해주세요.',
+      });
+    }
+
+    // 새 비밀번호 확인이 입력되었고 8자 미만이면 에러
+    if (confirmNewPassword && confirmNewPassword.length < 8) {
+      ctx.addIssue({
+        path: ['confirmNewPassword'],
+        code: z.ZodIssueCode.custom,
+        message: '비밀번호가 일치하지 않습니다.',
+      });
+    }
+
+    // 둘 다 8자 이상일 때만 일치 여부 검사
+    if (
+      newPassword &&
+      confirmNewPassword &&
+      newPassword.length >= 8 &&
+      confirmNewPassword.length >= 8 &&
+      newPassword !== confirmNewPassword
+    ) {
+      ctx.addIssue({
+        path: ['confirmNewPassword'],
+        code: z.ZodIssueCode.custom,
+        message: '비밀번호가 일치하지 않습니다.',
+      });
+    }
+  });
 
 export type UserDataFormValues = z.infer<typeof userDataFormSchema>;
 

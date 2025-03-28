@@ -3,14 +3,20 @@
 import Button from '@/components/Button';
 import Input from '@/components/Input';
 import { useForm } from 'react-hook-form';
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useMyData, useUserdataUpdate } from '@/lib/hooks/useUsers';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { userDataFormSchema, UserDataFormValues, UserDataUpdateParams } from '@/lib/types/users';
+import ClosedEye from '@/assets/icons/eye-hidden.svg';
+import OpendEye from '@/assets/icons/eye-visible.svg';
+import Image from 'next/image';
 
 export default function MyPageForm() {
   const { data: user } = useMyData();
   const { mutate: updateUserData, isPending } = useUserdataUpdate();
+
+  const [isShowPassword, setIsShowPassword] = useState(true);
+  const [isShowPasswordConfirm, setIsShowPasswordConfirm] = useState(true);
 
   const {
     register,
@@ -22,6 +28,7 @@ export default function MyPageForm() {
   } = useForm<UserDataFormValues>({
     mode: 'onChange',
     resolver: zodResolver(userDataFormSchema),
+    shouldUnregister: true,
     defaultValues: {
       nickname: '',
       email: '',
@@ -64,19 +71,30 @@ export default function MyPageForm() {
       profileImageUrl: safeProfileImageUrl,
       ...(data.newPassword ? { newPassword: data.newPassword } : {}),
     };
-
-    console.log('📡 payload', payload);
     updateUserData(payload);
   };
+  const isPasswordPairValid =
+    (newPassword || '').length >= 8 && (confirmNewPassword || '').length >= 8 && newPassword === confirmNewPassword;
 
-  const isFormValidToSubmit = useMemo(() => {
-    if (!user) return false;
-    const nicknameChanged = nickname.trim() !== user.nickname.trim();
-    const isPasswordFilled = newPassword.length > 0 || confirmNewPassword.length > 0;
-    const noErrors = !errors.nickname && !errors.newPassword && !errors.confirmNewPassword;
+  const nicknameChanged = nickname.trim() !== user?.nickname.trim();
 
-    return (nicknameChanged || isPasswordFilled) && noErrors;
-  }, [user, nickname, newPassword, confirmNewPassword, errors]);
+  const isFormValidToSubmit =
+    !!user &&
+    // 닉네임만 바꾼 경우
+    ((nicknameChanged && !newPassword && !confirmNewPassword) ||
+      // 비밀번호만 제대로 바꾼 경우
+      isPasswordPairValid ||
+      // 닉네임도 바꾸고 비밀번호도 바꾼 경우
+      (nicknameChanged && isPasswordPairValid)) &&
+    !errors.nickname &&
+    !errors.newPassword &&
+    !errors.confirmNewPassword;
+
+  useEffect(() => {
+    if (newPassword) {
+      trigger('confirmNewPassword');
+    }
+  }, [newPassword, trigger]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -88,6 +106,8 @@ export default function MyPageForm() {
       </div>
 
       <div className='space-y-4'>
+        <input type='hidden' {...register('profileImageUrl')} />
+
         <Input label='닉네임' placeholder='닉네임 입력' {...register('nickname')} />
         <Input
           label='이메일'
@@ -97,26 +117,46 @@ export default function MyPageForm() {
           {...register('email')}
           className='bg-gray-200'
         />
-        <Input
-          label='새 비밀번호'
-          error={errors.newPassword?.message as string}
-          type='password'
-          placeholder='8자 이상 입력해주세요'
-          {...register('newPassword', {
-            minLength: { value: 8, message: '8자 이상 입력해주세요' },
-            onBlur: () => trigger('newPassword'),
-          })}
-        />
-        <Input
-          label='새 비밀번호 확인'
-          error={errors.confirmNewPassword?.message as string}
-          type='password'
-          placeholder='비밀번호를 한번 더 입력해주세요'
-          {...register('confirmNewPassword', {
-            validate: (value) => value === newPassword || '비밀번호가 일치하지 않습니다.',
-            onBlur: () => trigger('confirmNewPassword'),
-          })}
-        />
+
+        <div className='relative'>
+          <Input
+            label='새 비밀번호'
+            error={errors.newPassword?.message as string}
+            type={isShowPassword ? 'password' : 'text'}
+            placeholder='8자 이상 입력해주세요'
+            {...register('newPassword', {
+              onBlur: () => trigger('newPassword'),
+            })}
+          />
+          <Image
+            src={isShowPassword ? ClosedEye : OpendEye}
+            alt='비밀번호 토글 이미지'
+            width={24}
+            height={24}
+            className='absolute top-[64px] right-3 -translate-y-1/2 cursor-pointer'
+            onClick={() => setIsShowPassword((prev) => !prev)}
+          />
+        </div>
+
+        <div className='relative'>
+          <Input
+            label='새 비밀번호 확인'
+            error={errors.confirmNewPassword?.message as string}
+            type={isShowPasswordConfirm ? 'password' : 'text'}
+            placeholder='비밀번호를 한번 더 입력해주세요'
+            {...register('confirmNewPassword', {
+              onBlur: () => trigger('confirmNewPassword'),
+            })}
+          />
+          <Image
+            src={isShowPasswordConfirm ? ClosedEye : OpendEye}
+            alt='비밀번호 토글 이미지'
+            width={24}
+            height={24}
+            className='absolute top-[64px] right-3 -translate-y-1/2 cursor-pointer'
+            onClick={() => setIsShowPasswordConfirm((prev) => !prev)}
+          />
+        </div>
       </div>
     </form>
   );
