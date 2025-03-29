@@ -1,14 +1,36 @@
-import { useRef } from 'react';
+'use client';
+
+import { useState } from 'react';
 import Image from 'next/image';
 import starRating from '@/assets/icons/star-rating.svg';
+import { useActivityReviews } from '@/lib/hooks/useActivities';
 import { ActivityReviewsResponse } from '@/lib/types/activities';
 import ActivityReviews from './ActivityReviews';
 
 type ActivityReviewsProps = {
-  activityReviews: ActivityReviewsResponse | undefined;
+  id: number;
+  reviewCount: number;
 };
-export default function ReviewsSection({ activityReviews }: ActivityReviewsProps) {
-  const reviewsRef = useRef<HTMLDivElement>(null);
+
+export default function ReviewsSection({ id, reviewCount }: ActivityReviewsProps) {
+  const [reviewsToShow, setReviewsToShow] = useState(3);
+  const [reviews, setReviews] = useState<ActivityReviewsResponse['reviews']>([]);
+  const { data: activityReviews } = useActivityReviews(id, 1, reviewCount);
+
+  if (activityReviews && activityReviews.reviews !== reviews) {
+    setReviews(activityReviews.reviews);
+  }
+
+  const totalReviews = activityReviews?.totalCount ?? 0;
+  const reviewsPerPage = 3;
+
+  const loadMoreReviews = () => {
+    setReviewsToShow((prevReviews) => prevReviews + 3);
+  };
+
+  const totalPages = Math.ceil(totalReviews / reviewsPerPage);
+  const currentPage = Math.ceil(reviewsToShow / reviewsPerPage);
+  const hasMoreReviews = reviewsToShow < totalReviews;
   const totalCount = activityReviews?.reviews ? activityReviews.totalCount : 0;
 
   const getRatingText = (averageRating: number) => {
@@ -20,22 +42,41 @@ export default function ReviewsSection({ activityReviews }: ActivityReviewsProps
   };
 
   const averageRating = activityReviews?.averageRating ?? 0;
+  const firstReview = reviews.length > 0 ? reviews[reviews.length - 1] : null;
 
   return (
-    <div id='reviews' ref={reviewsRef}>
+    <div id='reviews'>
       <div className='pt-[40px] md:pt-[50px]'></div>
       <div className='flex flex-col gap-3'>
         <div className='flex items-center justify-between'>
           <h3 className='text-xl font-bold md:text-[22px]'>체험 후기 {totalCount}개</h3>
           <div className='flex gap-1'>
             <Image width={26} height={26} src={starRating} alt='별점 아이콘' />
-            <span className='text-2lg md:text-xl'>
+            <span className='text-2lg md:text-[19px]'>
               <span className='font-bold'>{averageRating}</span>&nbsp;
               {getRatingText(averageRating)}
             </span>
           </div>
         </div>
-        <ActivityReviews activityReviews={activityReviews} />
+        <ActivityReviews
+          activityReviews={{
+            totalCount: totalReviews,
+            averageRating: activityReviews?.averageRating ?? 0,
+            reviews: reviews.slice(0, reviewsToShow),
+          }}
+          firstReview={firstReview}
+        />
+        {hasMoreReviews && (
+          <button
+            onClick={loadMoreReviews}
+            className='mt-4 flex cursor-pointer items-center justify-center gap-2 rounded-[4px] border-1 border-black bg-white px-1 py-[8px]'
+          >
+            더보기
+            <span className='text-sm'>
+              ({currentPage}/{totalPages} 페이지)
+            </span>
+          </button>
+        )}
       </div>
     </div>
   );

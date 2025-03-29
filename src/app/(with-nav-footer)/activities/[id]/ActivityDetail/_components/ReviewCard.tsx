@@ -5,6 +5,7 @@ type Review = ActivityReviewsResponse['reviews'][number];
 
 type ReviewsProps = {
   reviews: Review[];
+  firstReview: Review | null;
 };
 
 const getTimeAgo = (dateString: string) => {
@@ -18,14 +19,14 @@ const getTimeAgo = (dateString: string) => {
   return `${Math.floor(diffInSeconds / 86400)}일 전`;
 };
 
-export default function ReviewCard({ reviews }: ReviewsProps) {
+export default function ReviewCard({ reviews, firstReview }: ReviewsProps) {
   return (
     <>
       {reviews.map((review, index) => {
-        const isFirst = index === 0;
-        const isLast = index === reviews.length - 1;
+        const isFirstReview = firstReview && review.id === firstReview.id;
+        const isLast = index === 0;
         return (
-          <div key={review.id} className='rounded-[12px] border-[1px] border-gray-200 bg-white p-4'>
+          <div key={review.id} className='rounded-[12px] bg-gray-100 p-8'>
             <div className='flex justify-between'>
               <ul className='flex items-center gap-3'>
                 <li>
@@ -39,16 +40,18 @@ export default function ReviewCard({ reviews }: ReviewsProps) {
                 </li>
                 <li>
                   <p className='font-bold'>{review.user.nickname}</p>
-                  <p className='font-gray-600 text-sm'>{getTimeAgo(review.createdAt)}</p>
+                  <p className='text-sm text-gray-600'>{getTimeAgo(review.createdAt)}</p>
                 </li>
               </ul>
-              {isFirst && (
+              {isFirstReview && (
                 <span className='h-fit rounded-[3px] border-[1px] border-green-100 bg-white px-2 py-1 text-xs font-bold text-green-100'>
                   첫 후기
                 </span>
               )}
-              {isLast && !isFirst && (
-                <span className='rounded-[3px] bg-green-100 px-2 py-1 text-xs font-bold text-white'>최근 후기</span>
+              {isLast && !isFirstReview && (
+                <span className='h-fit rounded-[3px] bg-green-100 px-2 py-1 text-xs font-bold text-white'>
+                  최근 후기
+                </span>
               )}
             </div>
             <p className='mt-2'>{review.content}</p>
