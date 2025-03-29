@@ -81,7 +81,7 @@ export default function ActivityDetailPage({ id }: { id: number }) {
           <div className='w-full'>
             <DescriptionSection description={description} />
             <LocationSection address={address} />
-            <ReviewsSection id={id} reviewCount={activityDetail.reviewCount} />
+            <ReviewsSection currentActivityId={currentActivityId} reviewCount={activityDetail.reviewCount} />
             <ActivityBanner category={category} currentActivityId={currentActivityId} />
           </div>
         </section>
