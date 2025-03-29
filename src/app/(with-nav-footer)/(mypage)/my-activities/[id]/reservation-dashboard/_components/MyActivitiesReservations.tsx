@@ -48,7 +48,7 @@ export default function MyActivitiesReservations({ selectedDate, setSelectedDate
     if (dateSchedule && dateSchedule.length > 0 && !activeTab) {
       setActiveTab('pending');
     }
-  }, [dateSchedule]);
+  }, [dateSchedule, activeTab]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -62,7 +62,7 @@ export default function MyActivitiesReservations({ selectedDate, setSelectedDate
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, []);
+  }, [setSelectedDate]);
 
   const handleClickClose = () => {
     setSelectedDate('');
