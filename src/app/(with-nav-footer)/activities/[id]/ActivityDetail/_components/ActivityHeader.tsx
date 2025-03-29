@@ -129,13 +129,11 @@ export default function ActivityHeader({ activityDetail, isSameUser }: ActivityH
         </div>
       </div>
       <div className='align-center flex flex-row gap-4'>
-        {/* Rating */}
         <div className='font-regular text-md flex gap-1 md:text-lg'>
           <Image src={starRating} alt='별점 아이콘' />
           <span>{rating}</span>
           <span>({reviewCount})</span>
         </div>
-        {/* Address */}
         <div className='text-md font-regular flex gap-1 md:text-lg'>
           <Image src={marker} alt='지도 마커 아이콘' />
           <span className='opacity-75'>{address}</span>
