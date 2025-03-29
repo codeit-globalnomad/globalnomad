@@ -38,14 +38,14 @@ export default function MyCalendar({ monthTotalData, onDateChange, onActiveStart
       textColor: 'text-gray-900',
     },
     confirmed: {
-      label: (count) => `예약 ${count}`,
-      bgColor: 'bg-blue-100',
-      textColor: 'text-white',
-    },
-    pending: {
       label: (count) => `승인 ${count}`,
       bgColor: 'bg-orange-100',
       textColor: 'text-orange-10',
+    },
+    pending: {
+      label: (count) => `예약 ${count}`,
+      bgColor: 'bg-blue-100',
+      textColor: 'text-white',
     },
   };
 
