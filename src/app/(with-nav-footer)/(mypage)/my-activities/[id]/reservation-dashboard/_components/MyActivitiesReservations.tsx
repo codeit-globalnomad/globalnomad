@@ -25,9 +25,9 @@ type ReservationStatus = 'pending' | 'confirmed' | 'declined';
 
 export default function MyActivitiesReservations({ selectedDate, setSelectedDate, activityId }: Props) {
   const dateRef = useRef<HTMLDivElement | null>(null);
-  const { data: dateSchedule } = useReservedSchedule(activityId, selectedDate);
+  const { data: dateSchedule, isLoading, isError } = useReservedSchedule(activityId, selectedDate);
   const [selectedSchedule, setSelectedSchedule] = useState<FilterDropdownOption | null>(null);
-  const [activeTab, setActiveTab] = useState<ReservationStatus | null>(null);
+  const [activeTab, setActiveTab] = useState<ReservationStatus | null>('pending');
 
   const options = useMemo(() => {
     return dateSchedule
@@ -39,16 +39,16 @@ export default function MyActivitiesReservations({ selectedDate, setSelectedDate
   }, [dateSchedule]);
 
   useEffect(() => {
-    if (options.length > 0) {
+    if (options.length > 0 && !selectedSchedule) {
       setSelectedSchedule(options[0]);
     }
-  }, [options]);
+  }, [options, selectedSchedule]);
 
   useEffect(() => {
     if (dateSchedule && dateSchedule.length > 0 && !activeTab) {
       setActiveTab('pending');
     }
-  }, [dateSchedule, activeTab]);
+  }, [dateSchedule]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -70,7 +70,6 @@ export default function MyActivitiesReservations({ selectedDate, setSelectedDate
 
   const handleSelect = (option: FilterDropdownOption | null) => {
     setSelectedSchedule(option);
-    setActiveTab(null);
   };
 
   const formattedDate =
@@ -82,6 +81,14 @@ export default function MyActivitiesReservations({ selectedDate, setSelectedDate
   const filteredSchedule = selectedSchedule
     ? dateSchedule?.filter((schedule) => schedule.scheduleId === selectedSchedule.value)
     : null;
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (isError) {
+    return <div>Error loading reservation data.</div>;
+  }
 
   return (
     <div
