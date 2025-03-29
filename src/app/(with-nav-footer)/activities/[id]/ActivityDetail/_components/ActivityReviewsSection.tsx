@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import starRating from '@/assets/icons/star-rating.svg';
 import { useActivityReviews } from '@/lib/hooks/useActivities';
@@ -8,14 +8,14 @@ import { ActivityReviewsResponse } from '@/lib/types/activities';
 import ActivityReviews from './ActivityReviews';
 
 type ActivityReviewsProps = {
-  id: number;
+  currentActivityId: number;
   reviewCount: number;
 };
 
-export default function ReviewsSection({ id, reviewCount }: ActivityReviewsProps) {
+export default function ReviewsSection({ currentActivityId, reviewCount }: ActivityReviewsProps) {
   const [reviewsToShow, setReviewsToShow] = useState(3);
   const [reviews, setReviews] = useState<ActivityReviewsResponse['reviews']>([]);
-  const { data: activityReviews } = useActivityReviews(id, 1, reviewCount);
+  const { data: activityReviews } = useActivityReviews(currentActivityId, 1, reviewCount);
 
   if (activityReviews && activityReviews.reviews !== reviews) {
     setReviews(activityReviews.reviews);
@@ -44,6 +44,11 @@ export default function ReviewsSection({ id, reviewCount }: ActivityReviewsProps
   const averageRating = activityReviews?.averageRating ?? 0;
   const firstReview = reviews.length > 0 ? reviews[reviews.length - 1] : null;
 
+  useEffect(() => {
+    console.log('API에서 가져온 리뷰 데이터:', activityReviews?.reviews);
+  }, [activityReviews]);
+  console.log('받은 리뷰 데이터:', activityReviews?.reviews);
+
   return (
     <div id='reviews'>
       <div className='pt-[40px] md:pt-[50px]'></div>
@@ -51,8 +56,8 @@ export default function ReviewsSection({ id, reviewCount }: ActivityReviewsProps
         <div className='flex items-center justify-between'>
           <h3 className='text-xl font-bold md:text-[22px]'>체험 후기 {totalCount}개</h3>
           <div className='flex gap-1'>
-            <Image width={26} height={26} src={starRating} alt='별점 아이콘' />
-            <span className='text-2lg md:text-[19px]'>
+            <Image width={20} height={20} src={starRating} alt='별점 아이콘' />
+            <span className='text-2lg md:text-[18px]'>
               <span className='font-bold'>{averageRating}</span>&nbsp;
               {getRatingText(averageRating)}
             </span>
