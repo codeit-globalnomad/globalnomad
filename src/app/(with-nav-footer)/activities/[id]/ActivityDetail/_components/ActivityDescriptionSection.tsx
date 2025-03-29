@@ -1,12 +1,16 @@
 import { useRef } from 'react';
 import ActivityDescription from './ActivityDescription';
 
-export default function DescriptionSection() {
+type ActivityDescriptionSectionProps = {
+  description: string;
+};
+
+export default function DescriptionSection({ description }: ActivityDescriptionSectionProps) {
   const descriptionRef = useRef<HTMLDivElement>(null);
   return (
     <div id='description' ref={descriptionRef}>
       <div className='pt-[40px] md:pt-[50px]'></div>
-      <ActivityDescription />
+      <ActivityDescription description={description} />
     </div>
   );
 }

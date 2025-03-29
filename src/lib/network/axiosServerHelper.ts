@@ -2,6 +2,8 @@ import axios, { isAxiosError } from 'axios';
 import { cookies } from 'next/headers';
 import { getExpirationDate } from './getExpirationDate';
 
+import { getErrorMessage } from './errorMessage';
+
 const axiosServerHelper = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
 });
@@ -21,29 +23,25 @@ axiosServerHelper.interceptors.response.use(
     const { response, config } = error;
 
     if (response?.status === 401) {
-      const baseURL =
-        process.env.NODE_ENV === 'production'
-          ? process.env.NEXT_PUBLIC_PRODUCTION_DOMAIN
-          : process.env.NEXT_PUBLIC_LOCAL_DOMAIN;
+      const baseURL = process.env.NEXT_PUBLIC_API_URL;
+
       const cookieStore = await cookies();
       const refreshToken = cookieStore.get('refreshToken')?.value;
-      const res = await axios.post(
-        `${baseURL}/api/auth/refresh-token`,
-        {},
-        {
+      console.log(refreshToken);
+      let res;
+      try {
+        res = await fetch(`${baseURL}/auth/tokens`, {
+          method: 'POST',
           headers: {
-            Cookie: `refreshToken=${refreshToken};`,
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${refreshToken}`,
           },
-        },
-      );
+        }).then((value) => value.json());
+      } catch (e) {
+        console.log(getErrorMessage(e));
+      }
 
-      const accessTokenCookie = res.headers['set-cookie']?.find((cookie) => {
-        return cookie.startsWith('accessToken');
-      });
-
-      if (!accessTokenCookie) return Promise.reject(error);
-      const accessTokenMatch = accessTokenCookie.match(/accessToken=([^;]+)/);
-      const accessToken = accessTokenMatch ? accessTokenMatch[1] : null;
+      const accessToken = res.accessToken;
 
       if (!config) return Promise.reject(error);
       if (!accessToken) return Promise.reject(error);

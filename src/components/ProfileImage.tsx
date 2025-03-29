@@ -37,7 +37,7 @@ export default function ProfileImage({ src, size, onClick }: ProfileImageProps) 
     <div className={cn(profileImageVariants({ size, clickable: !!onClick }))} onClick={onClick}>
       <Image
         className='rounded-full object-cover'
-        src={src || profileDefault}
+        src={src?.toString().trim() ? src : profileDefault}
         alt='프로필 이미지'
         onError={onErrorImage}
         fill

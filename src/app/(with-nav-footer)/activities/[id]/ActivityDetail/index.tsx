@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import LoadingSpinner from '@/components/LoadingSpinner';
 import { useActivityDetail } from '@/lib/hooks/useActivities';
 import { useMyData } from '@/lib/hooks/useUsers';
 import { useIntersectionObserver } from '@/lib/utils/useIntersectionObserver';
@@ -13,7 +14,6 @@ import ReviewsSection from './_components/ActivityReviewsSection';
 import { MobileReservation, TabletReservation, DesktopReservation } from './_components/ActivityReservation';
 import ActivityBanner from './_components/ActivityBanner';
 import ScrollToTopButton from './_components/ScrollToTopButton';
-import LoadingSpinner from '@/components/LoadingSpinner';
 
 const wrapper = 'mt-3 flex w-full flex-col gap-4 md:gap-6 max-w-[1200px]';
 const tabItems = [
@@ -52,6 +52,10 @@ export default function ActivityDetailPage({ id }: { id: number }) {
   }
 
   const isSameUser = userData?.id === activityDetail.userId;
+  const category = activityDetail.category;
+  const currentActivityId = activityDetail.id;
+  const description = activityDetail.description;
+  const address = activityDetail.address;
 
   return (
     <div className='relative flex flex-col items-center justify-center scroll-smooth'>
@@ -61,11 +65,11 @@ export default function ActivityDetailPage({ id }: { id: number }) {
         </section>
       </div>
       <div className={`${wrapper} flex-col md:px-5`}>
-        <ActivityGallery />
+        <ActivityGallery activityDetail={activityDetail} />
       </div>
       <div className={`md:${wrapper} px-5 md:flex-row md:gap-[2%] lg:mb-16`}>
         <section className={`mt-6 mb-6 w-full ${!isSameUser ? 'md:w-[70%]' : 'md:w-full'}`}>
-          <div className='sticky top-0 z-10 bg-white'>
+          <div className='sticky top-0 z-20 bg-white'>
             <ActivityTab
               tabs={tabItems}
               currentTab={currentTab}
@@ -75,10 +79,10 @@ export default function ActivityDetailPage({ id }: { id: number }) {
             />
           </div>
           <div className='w-full'>
-            <DescriptionSection />
-            <LocationSection />
+            <DescriptionSection description={description} />
+            <LocationSection address={address} />
             <ReviewsSection />
-            <ActivityBanner />
+            <ActivityBanner category={category} currentActivityId={currentActivityId} />
           </div>
         </section>
         {!isSameUser && (

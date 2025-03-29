@@ -5,7 +5,7 @@ import { useClickOutside } from '@/lib/utils/useClickOutside';
 
 interface FilterDropdownOption {
   label: string;
-  value?: string;
+  value?: string | number;
   onClick?: () => void;
 }
 

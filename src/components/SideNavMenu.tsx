@@ -1,15 +1,19 @@
 'use client';
 
-import { useState } from 'react';
 import { usePathname } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useState } from 'react';
+
 import ProfileImage from '@/components/ProfileImage';
 import MyInfo from '@/assets/icons/my-users.svg';
 import MyReservation from '@/assets/icons/my-reservations.svg';
 import MyActivities from '@/assets/icons/my-activities.svg';
 import MyReservationStatus from '@/assets/icons/my-activities-dashboard.svg';
 import EditIcon from '@/assets/icons/pencil.svg';
+
+import { useProfileImage as useProfileImageContext } from '@/lib/contexts/ProfileImageContext';
+import { useProfileImage as useProfileImageUpload, useUserdataUpdate } from '@/lib/hooks/useUsers';
 
 interface SideNavMenuProps {
   userId?: string;
@@ -18,14 +22,30 @@ interface SideNavMenuProps {
 
 const SideNavMenu = ({ userId, activityId }: SideNavMenuProps) => {
   const pathname = usePathname();
+
+  const { profileImageUrl, setProfileImageUrl } = useProfileImageContext();
+  const { mutate: uploadImage } = useProfileImageUpload();
   const [previewImage, setPreviewImage] = useState<string | null>(null);
+
+  const { mutate: patchImage } = useUserdataUpdate();
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      setPreviewImage(imageUrl);
-    }
+    if (!file) return;
+
+    const imageUrl = URL.createObjectURL(file);
+    setPreviewImage(imageUrl);
+
+    uploadImage(
+      { image: file },
+      {
+        onSuccess: (res) => {
+          console.log(res);
+          setProfileImageUrl(res.profileImageUrl);
+          patchImage({ profileImageUrl: res.profileImageUrl });
+        },
+      },
+    );
   };
 
   const NAV_ITEMS = [
@@ -40,9 +60,9 @@ const SideNavMenu = ({ userId, activityId }: SideNavMenuProps) => {
   ];
 
   return (
-    <aside className='w-[251px] flex-none rounded-lg border border-gray-300 bg-white p-4 shadow-md md:w-[384px]'>
+    <aside className='h-[432px] w-[251px] flex-none rounded-lg border border-gray-300 bg-white p-4 shadow-md md:w-[384px]'>
       <div className='relative flex flex-col items-center gap-4'>
-        <ProfileImage size='large' src={previewImage || undefined} />
+        <ProfileImage size='large' src={previewImage || profileImageUrl || undefined} />
         <label
           className='hover:bg-green-10 absolute right-7 bottom-0 flex h-11 w-11 cursor-pointer items-center justify-center rounded-full bg-green-100 transition md:right-24'
           aria-label='프로필 수정'

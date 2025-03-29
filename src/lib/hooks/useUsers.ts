@@ -15,20 +15,29 @@ export const useMyData = () => {
   return useQuery({
     queryKey: ['user'],
     queryFn: () => getUserData(),
+    staleTime: 0,
+    refetchOnMount: true,
+    refetchOnWindowFocus: false,
   });
 };
 
 // 내 정보 수정 훅
 export const useUserdataUpdate = () => {
   const queryClient = useQueryClient();
+
   return useMutation({
-    mutationFn: (params: UserDataUpdateParams) => patchUserdataUpdate(params),
+    mutationFn: async (params: Partial<UserDataUpdateParams>) => {
+      const response = await patchUserdataUpdate(params);
+      return response;
+    },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['user'] });
     },
+    onError: (error) => {
+      console.error(' 수정 실패:', error);
+    },
   });
 };
-
 // 프로필 이미지 URL 생성 훅
 export const useProfileImage = () => {
   return useMutation({

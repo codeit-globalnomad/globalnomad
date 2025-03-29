@@ -16,10 +16,13 @@ import { NextRequest, NextResponse } from 'next/server';
 import { isEmpty, omit } from 'es-toolkit/compat';
 import axiosServerHelper from '@/lib/network/axiosServerHelper';
 import errorResponse from '@/lib/network/errorResponse';
+import { getExpirationDate } from '@/lib/network/getExpirationDate';
 
 export const GET = async (request: NextRequest) => {
   const url = new URL(request.url);
+
   const endPoint = url.pathname.replace(/^\/api/, '');
+  console.log(endPoint);
   const searchParams = Object.fromEntries(url.searchParams.entries());
   try {
     const apiResponse = await axiosServerHelper.get(
@@ -32,6 +35,7 @@ export const GET = async (request: NextRequest) => {
     );
     return NextResponse.json(apiResponse.data, { status: apiResponse.status });
   } catch (error) {
+    console.log(error);
     return errorResponse(error);
   }
 };
@@ -51,14 +55,27 @@ export const POST = async (request: NextRequest) => {
         },
       },
     );
-    const response = NextResponse.json(omit(apiResponse.data, ['accessToken']), { status: apiResponse.status });
-    if (endPoint === '/auth/login')
-      response.cookies.set('accessToken', apiResponse.data.accessToken, {
+    const response = NextResponse.json(omit(apiResponse.data, ['accessToken', 'refreshToken']), {
+      status: apiResponse.status,
+    });
+    const accessToken = apiResponse.data.accessToken;
+    const refreshToken = apiResponse.data.refreshToken;
+    if (endPoint === '/auth/login') {
+      response.cookies.set('accessToken', accessToken, {
         httpOnly: true,
         sameSite: 'lax',
         secure: process.env.NODE_ENV === 'production',
         path: '/',
+        expires: getExpirationDate(accessToken) || undefined,
       });
+      response.cookies.set('refreshToken', apiResponse.data.refreshToken, {
+        httpOnly: true,
+        sameSite: 'lax',
+        secure: process.env.NODE_ENV === 'production',
+        path: '/',
+        expires: getExpirationDate(refreshToken) || undefined,
+      });
+    }
     return response;
   } catch (error) {
     return errorResponse(error);
