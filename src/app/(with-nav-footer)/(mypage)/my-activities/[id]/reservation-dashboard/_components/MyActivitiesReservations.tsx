@@ -45,6 +45,12 @@ export default function MyActivitiesReservations({ selectedDate, setSelectedDate
   }, [options]);
 
   useEffect(() => {
+    if (dateSchedule && dateSchedule.length > 0 && !activeTab) {
+      setActiveTab('pending');
+    }
+  }, [dateSchedule, activeTab]);
+
+  useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dateRef.current && !dateRef.current.contains(event.target as Node)) {
         setSelectedDate('');
