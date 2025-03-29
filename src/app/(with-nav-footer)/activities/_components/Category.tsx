@@ -67,7 +67,7 @@ export default function Category({
               <SwiperSlide key={category} style={{ width: 'auto' }}>
                 <Button
                   variant='outline'
-                  className={`md:text-2lg h-[42px] w-[80px] rounded-2xl text-center text-lg font-medium whitespace-nowrap md:h-[53px] md:w-[120px] ${
+                  className={`md:text-2lg text-md h-[42px] w-[80px] rounded-2xl text-center font-medium whitespace-nowrap md:h-[53px] md:w-[120px] ${
                     selectedCategory == category ? 'bg-black-200 text-white' : ''
                   }`}
                   onClick={() => handleCategoryClick(category)}
