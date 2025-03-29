@@ -1,12 +1,13 @@
 'use client';
 
-import Image from 'next/image';
 import CloseImage from '@/assets/icons/close.svg';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useReservedSchedule } from '@/lib/hooks/useMyActivities';
 import FilterDropdown from '@/components/FilterDropdown';
+import ReservationCardList from './ReservationCardList';
 import arrowFilterDropdown2 from '@/assets/icons/arrow-filter-dropdown2.svg';
-import ReservationDetails from './ReservationDetails';
+import Image from 'next/image';
+import NoData from '@/assets/icons/No-data.svg';
 
 type Props = {
   selectedDate: string;
@@ -79,7 +80,7 @@ export default function MyActivitiesReservations({ selectedDate, setSelectedDate
   return (
     <div
       ref={dateRef}
-      className='text-black-100 absolute top-[220px] right-0 flex min-h-[582px] w-[429px] flex-col gap-[27px] rounded-[24px] border border-gray-300 bg-white px-6 py-6'
+      className='text-black-100 absolute top-[220px] right-0 flex h-[697px] min-h-[582px] w-[429px] flex-col gap-[27px] overflow-hidden rounded-[24px] border border-gray-300 bg-white px-6 py-6'
     >
       <div className='flex items-center justify-between'>
         <h1 className='text-[24px] leading-[32px] font-bold'>예약 정보</h1>
@@ -129,11 +130,16 @@ export default function MyActivitiesReservations({ selectedDate, setSelectedDate
               거절 {filteredSchedule[0].count.declined}
             </button>
           </section>
-          {activeTab && <ReservationDetails type={activeTab} />}
+          {activeTab && selectedSchedule && (
+            <ReservationCardList type={activeTab} scheduleId={Number(selectedSchedule.value)} activityId={activityId} />
+          )}
         </>
       ) : (
-        <div className='items-center justify-center text-center text-gray-500'>
-          선택된 시간대에 대한 예약 정보가 없습니다.
+        <div className='flex flex-col items-center gap-4 px-[50px] py-[145px]'>
+          <Image src={NoData} width={80} height={80} alt='선택된 시간대에 대한 예약 정보가 없습니다.' />
+          <div className='items-center justify-center text-center text-gray-500'>
+            선택된 시간대에 대한 예약 정보가 없습니다.
+          </div>
         </div>
       )}
     </div>
