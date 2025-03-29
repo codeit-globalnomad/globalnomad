@@ -1,12 +1,22 @@
 'use client';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import Button from '@/components/Button';
 import bed from '@/assets/icons/bed.svg';
 import FloatingLabelInput from './FloatingLabelInput';
-import { useState } from 'react';
 
-export default function SearchBar() {
-  const [inputValue, setInputValue] = useState('');
+export default function SearchBar({ onSearch, searchTerm }: { onSearch(term: string): void; searchTerm: string }) {
+  const [inputValue, setInputValue] = useState(searchTerm);
+
+  useEffect(() => {
+    setInputValue(searchTerm);
+  }, [searchTerm]);
+
+  const handleSearchClick = () => onSearch(inputValue);
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') onSearch(inputValue);
+  };
 
   return (
     <div className='w-full min-w-[375px] px-4 md:px-6'>
@@ -16,15 +26,21 @@ export default function SearchBar() {
           <div className='relative mt-[15px] flex items-center gap-[12px] md:mt-[32px]'>
             <div className='relative flex-grow'>
               <FloatingLabelInput
-                id='searchId'
+                id='search'
                 label='내가 원하는 체험은'
                 onChange={(e) => setInputValue(e.target.value)}
                 value={inputValue}
-                className='h-[56px] w-full max-w-[1004px] min-w-[187px] py-[14px] pl-[48px]'
+                onKeyDown={handleKeyDown}
               />
               <Image src={bed} width={24} height={24} alt='침대' className='absolute top-[16px] left-[12px]' />
             </div>
-            <Button className='px-[20px] py-[15px] whitespace-nowrap md:px-[40px] md:py-[15px]'>검색하기</Button>
+            <Button
+              className='px-[20px] py-[15px] whitespace-nowrap md:px-[40px] md:py-[15px]'
+              onClick={handleSearchClick}
+              type='submit'
+            >
+              검색하기
+            </Button>
           </div>
         </div>
       </div>
