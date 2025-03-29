@@ -39,8 +39,8 @@ const KakaoShare = ({ title, description, bannerImageUrl, pathname }: KakaoShare
           return;
         }
 
-        if (typeof window !== 'undefined' && window.kakao && !window.kakao.isInitialized()) {
-          window.kakao.init(kakaoApiKey);
+        if (typeof window !== 'undefined' && window.Kakao && !window.Kakao.isInitialized()) {
+          window.Kakao.init(kakaoApiKey);
           setKakaoReady(true);
         }
       })
@@ -50,8 +50,8 @@ const KakaoShare = ({ title, description, bannerImageUrl, pathname }: KakaoShare
   }, []);
 
   const kakaoShare = () => {
-    if (kakaoReady && window.kakao) {
-      window.kakao.Link.sendDefault({
+    if (kakaoReady && window.Kakao) {
+      window.Kakao.Link.sendDefault({
         objectType: 'feed',
         content: {
           title: title,

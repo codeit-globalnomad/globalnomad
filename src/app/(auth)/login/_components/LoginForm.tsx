@@ -25,10 +25,7 @@ export default function LoginForm() {
   const [isShowPassword, setIsShowPassword] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  const modalClassName =
-    errorMessage === '존재하지 않는 유저입니다.'
-      ? 'w-[90%] max-w-[540px] h-[250px]'
-      : 'w-[90%] max-w-[400px] h-[180px]';
+  const modalClassName = `w-[90%] ${errorMessage === '존재하지 않는 유저입니다.' ? 'max-w-[540px] h-[250px]' : 'max-w-[400px] h-[180px]'}`;
   const {
     register,
     handleSubmit,
@@ -50,7 +47,7 @@ export default function LoginForm() {
       await signin(data);
       toast.success('로그인');
       router.push('/activities');
-    } catch (error: unknown) {
+    } catch (error) {
       const err = error as AxiosError<{ message: string }>;
       const message = err?.response?.data?.message;
       if (message === '비밀번호가 일치하지 않습니다.' || message === '존재하지 않는 유저입니다.') {
@@ -117,10 +114,10 @@ export default function LoginForm() {
 
         <div className='mt-8 mb-12 text-center'>
           <p className='text-gray-800'>
-            회원이 아니신가요?{' '}
-            <a href='/signup' className='font-semibold text-green-100 underline'>
+            회원이 아니신가요?
+            <Link href='/signup' className='font-semibold text-green-100 underline'>
               회원가입하기
-            </a>
+            </Link>
           </p>
         </div>
         <SocialButtons />

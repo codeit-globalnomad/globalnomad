@@ -50,7 +50,7 @@ export default function SignupForm() {
       toast.success('회원가입 성공 ');
       reset();
       router.push('/login');
-    } catch (error: unknown) {
+    } catch (error) {
       const err = error as AxiosError<{ message: string }>;
       const message = err?.response?.data?.message;
       try {
@@ -152,7 +152,7 @@ export default function SignupForm() {
 
         <div className='mt-8 mb-12 text-center'>
           <p className='text-gray-800'>
-            회원이신가요?{' '}
+            회원이신가요?
             <Link href='/login' className='font-semibold text-green-100 underline'>
               로그인하기
             </Link>
