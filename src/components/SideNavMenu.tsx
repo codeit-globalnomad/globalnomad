@@ -17,7 +17,7 @@ import { useProfileImage as useProfileImageUpload, useUserdataUpdate } from '@/l
 
 interface SideNavMenuProps {
   userId?: string;
-  activityId?: string;
+  activityId?: number;
 }
 
 const SideNavMenu = ({ userId, activityId }: SideNavMenuProps) => {
