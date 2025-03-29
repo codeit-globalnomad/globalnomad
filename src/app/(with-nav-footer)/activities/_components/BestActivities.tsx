@@ -12,7 +12,7 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 
 export default function BestActivities() {
-  const { data, isLoading, isError } = useActivities({
+  const { data, isError } = useActivities({
     method: 'offset',
     sort: 'most_reviewed',
     page: 1,
@@ -38,7 +38,6 @@ export default function BestActivities() {
     }
   };
 
-  if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>에러가 발생했습니다.</div>;
 
   return (

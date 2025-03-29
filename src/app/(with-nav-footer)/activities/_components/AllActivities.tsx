@@ -21,7 +21,7 @@ export default function AllActivities() {
   const isTablet = useMediaQuery('(min-width: 768px) and (max-width: 1023px)');
   const itemsPerPage = isPC ? 8 : isTablet ? 9 : 4;
 
-  const { data, isLoading, isError } = useActivities({
+  const { data, isError } = useActivities({
     method: 'offset',
     sort: selectedSort,
     page: currentPage,
@@ -51,7 +51,6 @@ export default function AllActivities() {
     setCurrentPage(page);
   };
 
-  if (isLoading) return <div>Loading...</div>;
   if (isError) return <div>에러가 발생했습니다.</div>;
 
   return (
