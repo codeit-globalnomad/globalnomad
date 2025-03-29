@@ -11,6 +11,7 @@ import AllActivityItem from './AllActivityItem';
 import Pagination from '@/components/Pagination';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import leftArrow from '@/assets/icons/left-arrow.svg';
+import empty from '@/assets/icons/empty.svg';
 
 export default function ActivityList() {
   const router = useRouter();
@@ -90,19 +91,31 @@ export default function ActivityList() {
             </section>
           </div>
           <p className='text-black-100 text-lg'>총 {data?.totalCount}개의 결과</p>
-          <div
-            className={`mt-[32px] grid max-h-[1024px] min-h-[715px] gap-x-[8px] gap-y-[20px] md:max-h-[1429px] md:gap-x-[16px] md:gap-y-[32px] lg:h-[922px] lg:gap-x-[24px] lg:gap-y-[48px] ${isPC ? 'grid-cols-4' : isTablet ? 'grid-cols-3' : 'grid-cols-2'}`}
-          >
-            {data?.activities?.map((activity) => <AllActivityItem key={activity.id} activity={activity} />)}
-          </div>
-          <div className='mt-[100px] flex justify-center'>
-            <Pagination
-              currentPage={currentPage}
-              totalPages={Math.ceil((data?.totalCount || 0) / itemsPerPage)}
-              onChange={handlePageChange}
-              size={isPC || isTablet ? 'md' : 'sm'}
-            />
-          </div>
+
+          {data?.activities?.length === 0 ? (
+            <div className='mx-auto mt-[100px] flex w-full max-w-[1200px] flex-col items-center justify-center'>
+              <div className='relative h-[140px] w-[140px] md:h-[200px] md:w-[200px]'>
+                <Image src={empty} fill alt='검색 결과 0개' className='absolute' />
+              </div>
+              <p className='text-2lg mt-[24px] font-medium text-gray-800'>검색 결과가 없습니다.</p>
+            </div>
+          ) : (
+            <>
+              <div
+                className={`mt-[32px] grid max-h-[1024px] min-h-[715px] gap-x-[8px] gap-y-[20px] md:max-h-[1429px] md:gap-x-[16px] md:gap-y-[32px] lg:h-[922px] lg:gap-x-[24px] lg:gap-y-[48px] ${isPC ? 'grid-cols-4' : isTablet ? 'grid-cols-3' : 'grid-cols-2'}`}
+              >
+                {data?.activities?.map((activity) => <AllActivityItem key={activity.id} activity={activity} />)}
+              </div>
+              <div className='mt-[100px] flex justify-center'>
+                <Pagination
+                  currentPage={currentPage}
+                  totalPages={Math.ceil((data?.totalCount || 0) / itemsPerPage)}
+                  onChange={handlePageChange}
+                  size={isPC || isTablet ? 'md' : 'sm'}
+                />
+              </div>
+            </>
+          )}
         </div>
       )}
     </>
