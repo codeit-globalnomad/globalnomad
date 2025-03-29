@@ -9,8 +9,8 @@ import SearchBar from './SearchBar';
 import AllActivities from './AllActivities';
 import AllActivityItem from './AllActivityItem';
 import Pagination from '@/components/Pagination';
-import leftArrow from '@/assets/icons/left-arrow.svg';
 import LoadingSpinner from '@/components/LoadingSpinner';
+import leftArrow from '@/assets/icons/left-arrow.svg';
 
 export default function ActivityList() {
   const router = useRouter();
