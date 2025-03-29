@@ -43,7 +43,7 @@ const Modal = ({ title, onClose, children, fullScreen = false, className = '' }:
       <div
         id='모달'
         ref={modalRef}
-        className={`rounded-md bg-white p-6 ${fullScreen ? 'h-full w-full' : ''} ${className}`}
+        className={`rounded-md bg-white p-6 shadow-lg ${fullScreen ? 'h-full w-full' : ''} ${className}`}
       >
         {title && <div className='text-2xl text-black'>{title}</div>}
         {children}

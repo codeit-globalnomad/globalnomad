@@ -14,13 +14,20 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Input from '@/components/Input';
 import { useState } from 'react';
+import { toast } from 'react-toastify';
+import Modal from '@/components/Modal';
 
 export default function LoginForm() {
   const { mutateAsync: signin } = useLogin();
   const router = useRouter();
 
   const [isShowPassword, setIsShowPassword] = useState(true);
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const modalClassName =
+    errorMessage === '존재하지 않는 유저입니다.'
+      ? 'w-[90%] max-w-[540px] h-[250px]'
+      : 'w-[90%] max-w-[400px] h-[180px]';
   const {
     register,
     handleSubmit,
@@ -30,17 +37,31 @@ export default function LoginForm() {
     resolver: zodResolver(loginSchema),
     mode: 'onChange',
   });
+  const handleModalConfirm = () => {
+    setIsModalOpen(false);
+    if (errorMessage === '존재하지 않는 유저입니다.') {
+      router.push('/signup');
+    }
+  };
 
   const onSubmit = async (data: LoginParams) => {
     try {
       await signin(data);
-      //모달로 변경 예정
-      alert('로그인에 성공했습니다.');
-      router.push('/login');
-    } catch (error) {
-      console.error(error);
+      toast.success('로그인');
+      router.push('/activities');
+    } catch (error: any) {
+      const message = error?.response?.data?.message;
+
+      if (message === '비밀번호가 일치하지 않습니다.' || message === '존재하지 않는 유저입니다.') {
+        setErrorMessage(message);
+        setIsModalOpen(true);
+      } else {
+        toast.error('로그인에 실패했습니다. 다시 시도해주세요.');
+        console.error(error);
+      }
     }
   };
+
   return (
     <div className='flex min-h-screen items-center justify-center'>
       <div className='w-full max-w-xl px-4'>
@@ -103,6 +124,27 @@ export default function LoginForm() {
         </div>
         <SocialButtons />
       </div>
+      {isModalOpen && (
+        <Modal
+          onClose={() => setIsModalOpen(false)}
+          className={`flex flex-col items-center rounded-2xl bg-white p-6 md:h-[250px] ${modalClassName}`}
+        >
+          <div className='text-bold mb-6 pt-8 text-center text-xl md:mb-11 md:pt-12'>
+            {errorMessage === '존재하지 않는 유저입니다.' ? (
+              <>
+                존재하지 않는 유저입니다.
+                <br />
+                확인을 누르면 회원가입 페이지로 이동합니다.
+              </>
+            ) : (
+              errorMessage
+            )}
+          </div>
+          <Button className='px-[22px] py-[8px]' onClick={handleModalConfirm}>
+            확인
+          </Button>
+        </Modal>
+      )}
     </div>
   );
 }

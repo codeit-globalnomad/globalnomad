@@ -9,6 +9,7 @@ import bell from '@/assets/icons/bell.svg';
 import bellHover from '@/assets/icons/bell-hover.svg';
 import Dropdown from '../Dropdown';
 import ProfileImage from '../ProfileImage';
+import { toast } from 'react-toastify';
 
 export default function LoggedInHeader({
   nickname,
@@ -22,6 +23,7 @@ export default function LoggedInHeader({
 
   useEffect(() => {
     if (state?.status) {
+      toast.success('로그아웃');
       router.replace('/login');
     }
   }, [state, router]);

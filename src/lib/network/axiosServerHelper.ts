@@ -27,7 +27,7 @@ axiosServerHelper.interceptors.response.use(
 
       const cookieStore = await cookies();
       const refreshToken = cookieStore.get('refreshToken')?.value;
-      console.log(refreshToken);
+
       let res;
       try {
         res = await fetch(`${baseURL}/auth/tokens`, {

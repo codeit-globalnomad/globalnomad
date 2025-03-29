@@ -15,13 +15,20 @@ import { useState } from 'react';
 import ClosedEye from '@/assets/icons/eye-hidden.svg';
 import OpendEye from '@/assets/icons/eye-visible.svg';
 import Input from '@/components/Input';
+import { toast } from 'react-toastify';
+import Modal from '@/components/Modal';
+import { useLogin } from '@/lib/hooks/useAuth';
 
 export default function SignupForm() {
   const { mutateAsync: signup } = useSignup();
+  const { mutateAsync: signin } = useLogin();
   const router = useRouter();
 
   const [isShowPassword, setIsShowPassword] = useState(true);
   const [isShowPasswordConfirm, setIsShowPasswordConfirm] = useState(true);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   const {
     register,
@@ -37,13 +44,19 @@ export default function SignupForm() {
   const onSubmit = async (data: SignupParams) => {
     try {
       await signup(data);
+      const { email, password } = data;
+      await signin({ email, password });
+      toast.success('회원가입 성공 ');
       reset();
       router.push('/login');
-    } catch (error) {
+    } catch (error: any) {
       try {
-        const response = errorResponse(error);
-        const errorData = await response.json();
-        console.error('Error data:', errorData);
+        const message = error?.response?.data?.message;
+        if (message === '중복된 이메일입니다.') {
+          setErrorMessage(message);
+          setIsModalOpen(true);
+          reset();
+        }
       } catch (err) {
         console.error('  error response:', err);
       }
@@ -146,6 +159,22 @@ export default function SignupForm() {
 
         <SocialButtons />
       </div>
+      {isModalOpen && (
+        <Modal
+          onClose={() => setIsModalOpen(false)}
+          className={`flex h-[180px] w-[90%] max-w-[400px] flex-col items-center rounded-2xl bg-white p-6 md:h-[230px]`}
+        >
+          <div className='text-bold mb-6 pt-8 text-center text-xl md:mb-11 md:pt-12'>{errorMessage}</div>
+          <Button
+            className='px-[22px] py-[8px]'
+            onClick={() => {
+              setIsModalOpen(false);
+            }}
+          >
+            확인
+          </Button>
+        </Modal>
+      )}
     </div>
   );
 }
