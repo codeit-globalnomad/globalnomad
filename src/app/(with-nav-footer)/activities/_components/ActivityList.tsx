@@ -92,7 +92,7 @@ export default function ActivityList() {
           </div>
           <p className='text-black-100 text-lg'>총 {data?.totalCount}개의 결과</p>
 
-          {data?.activities?.length === 0 ? (
+          {data?.activities.length === 0 ? (
             <div className='mx-auto mt-[100px] flex w-full max-w-[1200px] flex-col items-center justify-center'>
               <div className='relative h-[140px] w-[140px] md:h-[200px] md:w-[200px]'>
                 <Image src={empty} fill alt='검색 결과 0개' className='absolute' />
@@ -104,7 +104,7 @@ export default function ActivityList() {
               <div
                 className={`mt-[32px] grid max-h-[1024px] min-h-[715px] gap-x-[8px] gap-y-[20px] md:max-h-[1429px] md:gap-x-[16px] md:gap-y-[32px] lg:h-[922px] lg:gap-x-[24px] lg:gap-y-[48px] ${isPC ? 'grid-cols-4' : isTablet ? 'grid-cols-3' : 'grid-cols-2'}`}
               >
-                {data?.activities?.map((activity) => <AllActivityItem key={activity.id} activity={activity} />)}
+                {data?.activities.map((activity) => <AllActivityItem key={activity.id} activity={activity} />)}
               </div>
               <div className='mt-[100px] flex justify-center'>
                 <Pagination
