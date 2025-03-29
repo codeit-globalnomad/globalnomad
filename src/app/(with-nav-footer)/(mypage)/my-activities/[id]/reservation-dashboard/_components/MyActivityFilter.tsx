@@ -2,11 +2,11 @@
 
 import FilterDropdown from '@/components/FilterDropdown';
 import { useCallback, useEffect, useState } from 'react';
-import MyCalendar from '../reservation-dashboard/_components/MyCalendar';
+import MyCalendar from './MyCalendar';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import arrowFilterDropdown2 from '@/assets/icons/arrow-filter-dropdown2.svg';
 import { MyActivitiesResponse, ReservationDashboardResponse } from '@/lib/types/myActivities';
-import MyActivitiesReservations from '../reservation-dashboard/_components/MyActivitiesReservations';
+import MyActivitiesReservations from './MyActivitiesReservations';
 
 type Props = {
   activity: MyActivitiesResponse;
