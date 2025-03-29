@@ -44,6 +44,7 @@ export default function CancelReservationModal({
         <div className='mt-4 flex w-full justify-center gap-2'>
           <button
             onClick={onClose}
+            aria-label='닫기 버튼'
             className='text-black-200 border-black-200 min-w-[90px] rounded-md border bg-white px-4 py-2 text-lg font-bold'
           >
             아니요
