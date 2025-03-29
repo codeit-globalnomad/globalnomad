@@ -16,6 +16,7 @@ import Input from '@/components/Input';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import Modal from '@/components/Modal';
+import { AxiosError } from 'axios';
 
 export default function LoginForm() {
   const { mutateAsync: signin } = useLogin();
@@ -49,9 +50,9 @@ export default function LoginForm() {
       await signin(data);
       toast.success('로그인');
       router.push('/activities');
-    } catch (error: any) {
-      const message = error?.response?.data?.message;
-
+    } catch (error: unknown) {
+      const err = error as AxiosError<{ message: string }>;
+      const message = err?.response?.data?.message;
       if (message === '비밀번호가 일치하지 않습니다.' || message === '존재하지 않는 유저입니다.') {
         setErrorMessage(message);
         setIsModalOpen(true);

@@ -10,7 +10,7 @@ import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { SignupParams, signupSchema } from '@/lib/types/users';
 import { zodResolver } from '@hookform/resolvers/zod';
-import errorResponse from '@/lib/network/errorResponse';
+
 import { useState } from 'react';
 import ClosedEye from '@/assets/icons/eye-hidden.svg';
 import OpendEye from '@/assets/icons/eye-visible.svg';
@@ -18,6 +18,7 @@ import Input from '@/components/Input';
 import { toast } from 'react-toastify';
 import Modal from '@/components/Modal';
 import { useLogin } from '@/lib/hooks/useAuth';
+import { AxiosError } from 'axios';
 
 export default function SignupForm() {
   const { mutateAsync: signup } = useSignup();
@@ -49,9 +50,10 @@ export default function SignupForm() {
       toast.success('회원가입 성공 ');
       reset();
       router.push('/login');
-    } catch (error: any) {
+    } catch (error: unknown) {
+      const err = error as AxiosError<{ message: string }>;
+      const message = err?.response?.data?.message;
       try {
-        const message = error?.response?.data?.message;
         if (message === '중복된 이메일입니다.') {
           setErrorMessage(message);
           setIsModalOpen(true);
