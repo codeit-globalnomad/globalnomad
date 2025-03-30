@@ -5,8 +5,8 @@ import { ko } from 'date-fns/locale';
 import { DayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
 import { useAvailableSchedule, useCreateReservation } from '@/lib/hooks/useActivities';
-import { createReservationSchema } from '@/lib/types/activities';
 import { useMyReservations } from '@/lib/hooks/useMyReservation';
+import { createReservationSchema } from '@/lib/types/activities';
 
 type DesktopReservationProps = {
   isLoggedIn: boolean;
@@ -37,6 +37,7 @@ export default function DesktopReservation({ isLoggedIn, currentActivityId, pric
   const [selectedDate, setSelectedDate] = useState<Date | undefined>();
   const [availableTimes, setAvailableTimes] = useState<{ id: number; startTime: string; endTime: string }[]>([]);
   const [selectedTimeId, setSelectedTimeId] = useState<number | null>(null);
+
   const [size, setSize] = useState<number>(10);
 
   const today = new Date();
@@ -81,25 +82,10 @@ export default function DesktopReservation({ isLoggedIn, currentActivityId, pric
   const availableDates = availableSchedule?.map((schedule) => new Date(schedule.date)) || [];
 
   const onSubmit = () => {
-    try {
-      if (selectedTimeId === null) {
-        alert('시간을 선택해주세요.');
-        return;
-      }
-
-      const reservationData = {
-        scheduleId: Number(selectedTimeId),
-        headCount: Number(peopleCount),
-      };
-
-      createReservationSchema.parse(reservationData);
-
-      console.log('예약 데이터:', reservationData);
-      createReservation(reservationData);
-    } catch (error) {
-      console.error('Zod validation error:', error);
-      alert('예약 데이터를 확인해주세요.');
-    }
+    createReservation({
+      scheduleId: Number(selectedTimeId),
+      headCount: Number(peopleCount),
+    });
   };
 
   const isDateDisabled = (date: Date) => {
