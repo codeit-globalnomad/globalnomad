@@ -9,6 +9,7 @@ import { createReservationSchema } from '@/lib/types/activities';
 import { useMyReservations } from '@/lib/hooks/useMyReservation';
 
 type DesktopReservationProps = {
+  isLoggedIn: boolean;
   currentActivityId: number;
   price: number;
 };
@@ -19,7 +20,7 @@ type ReservationForm = {
   people: number;
 };
 
-export default function DesktopReservation({ currentActivityId, price }: DesktopReservationProps) {
+export default function DesktopReservation({ isLoggedIn, currentActivityId, price }: DesktopReservationProps) {
   const {
     register,
     handleSubmit,
@@ -211,7 +212,10 @@ export default function DesktopReservation({ currentActivityId, price }: Desktop
           <li className='text-lg font-semibold'>총 합계: ₩ {totalPrice.toLocaleString()}</li>
           <button
             type='submit'
-            className='absolute bottom-0 left-0 w-full rounded-t-none rounded-b-md bg-green-100 py-2 text-white'
+            className={`absolute bottom-0 left-0 w-full cursor-pointer rounded-t-none rounded-b-md py-2 text-white ${
+              !selectedTimeId || !isLoggedIn ? 'cursor-not-allowed bg-gray-300' : 'bg-green-100 hover:bg-green-100'
+            }`}
+            disabled={!selectedTimeId || !isLoggedIn}
           >
             예약하기
           </button>

@@ -58,6 +58,8 @@ export default function ActivityDetailPage({ id }: { id: number }) {
   const address = activityDetail.address;
   const price = activityDetail.price;
 
+  const isLoggedIn = !!userData;
+
   return (
     <div className='relative flex flex-col items-center justify-center scroll-smooth'>
       <div className={`${wrapper} flex-col px-5 lg:mt-10`}>
@@ -91,7 +93,7 @@ export default function ActivityDetailPage({ id }: { id: number }) {
             <MobileReservation />
             <div className='sticky top-3 md:mt-6 md:mb-3'>
               <TabletReservation />
-              <DesktopReservation currentActivityId={currentActivityId} price={price} />
+              <DesktopReservation isLoggedIn={isLoggedIn} currentActivityId={currentActivityId} price={price} />
             </div>
           </section>
         )}
