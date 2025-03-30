@@ -80,7 +80,7 @@ export default function DesktopReservation({ isLoggedIn, currentActivityId, pric
 
   const availableDates = availableSchedule?.map((schedule) => new Date(schedule.date)) || [];
 
-  const onSubmit = (data: ReservationForm) => {
+  const onSubmit = () => {
     try {
       if (selectedTimeId === null) {
         alert('시간을 선택해주세요.');
@@ -132,6 +132,7 @@ export default function DesktopReservation({ isLoggedIn, currentActivityId, pric
                       if (date) {
                         setSelectedDate(date);
                         setValue('date', format(date, 'yyyy-MM-dd'));
+                        field.onChange(date);
                       }
                     }}
                     onMonthChange={handleMonthChange}
