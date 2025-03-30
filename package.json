@@ -24,6 +24,7 @@
     "next": "15.2.1",
     "react": "^19.0.0",
     "react-calendar": "^5.1.0",
+    "react-day-picker": "^9.6.3",
     "react-device-detect": "^2.2.3",
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.54.2",
