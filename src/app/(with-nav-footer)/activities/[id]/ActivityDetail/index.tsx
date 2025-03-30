@@ -56,6 +56,7 @@ export default function ActivityDetailPage({ id }: { id: number }) {
   const currentActivityId = activityDetail.id;
   const description = activityDetail.description;
   const address = activityDetail.address;
+  const price = activityDetail.price;
 
   return (
     <div className='relative flex flex-col items-center justify-center scroll-smooth'>
@@ -90,7 +91,7 @@ export default function ActivityDetailPage({ id }: { id: number }) {
             <MobileReservation />
             <div className='sticky top-3 md:mt-6 md:mb-3'>
               <TabletReservation />
-              <DesktopReservation />
+              <DesktopReservation currentActivityId={currentActivityId} price={price} />
             </div>
           </section>
         )}
