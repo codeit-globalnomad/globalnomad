@@ -22,7 +22,10 @@ export default function MyActivityCard({ activity }: MyActivityCardProps) {
   const editDeleteOption = [{ label: '수정하기' }, { label: '삭제하기', onClick: handleDelete }];
 
   const onClickMyActivityCard = (event: React.MouseEvent<HTMLElement>) => {
-    if ((event.target as HTMLElement).closest('.ignore-click')) return event.stopPropagation();
+    if ((event.target as HTMLElement).closest('.ignore-click')) {
+      event.stopPropagation();
+      return;
+    }
     router.push(`/activities/${activity.id}`);
   };
 
@@ -53,7 +56,7 @@ export default function MyActivityCard({ activity }: MyActivityCardProps) {
                 trigger={<Image src={kebab} alt='케밥' width={28} height={28} />}
                 options={editDeleteOption}
                 onSelect={() => {}}
-                dropdownClassName='left-[-400%] md:left-[-525%]'
+                dropdownClassName='right-0'
               />
             </div>
           </div>
