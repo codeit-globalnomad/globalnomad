@@ -78,6 +78,7 @@ const SideNavMenu = ({ activityId }: SideNavMenuProps) => {
               (item.name === '예약 내역' && pathname === '/my-reservations') ||
               (item.name === '내 체험 관리' && pathname === '/my-activities') ||
               (item.name === '예약 현황' && pathname === `/my-activities/${activityId}/reservation-dashboard`);
+
             return (
               <li key={item.path}>
                 <Link
