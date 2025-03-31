@@ -1,4 +1,4 @@
-import { useQuery, useMutation, useQueryClient, useInfiniteQuery } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient, useInfiniteQuery, QueryFunctionContext } from '@tanstack/react-query';
 import { getMyReservations, cancelMyReservation, writeReviewForReservation } from '../apis/myReservation';
 import {
   GetMyReservationsParams,
@@ -42,12 +42,12 @@ export const useInfiniteMyReservations = (status?: GetMyReservationsParams['stat
   const PAGE_SIZE = 10;
 
   return useInfiniteQuery<GetMyReservationsResponse, Error>({
-    queryKey: ['myReservations', status],
+    queryKey: ['myReservations', status ?? 'all'],
     queryFn: ({ pageParam }) =>
       getMyReservations({
         cursorId: typeof pageParam === 'number' ? pageParam : undefined,
         size: PAGE_SIZE,
-        status,
+        ...(status ? { status } : {}), // status가 없을 때는 아예 status를 전송 안 함
       }),
     getNextPageParam: (lastPage) => lastPage.cursorId ?? undefined,
     initialPageParam: undefined,

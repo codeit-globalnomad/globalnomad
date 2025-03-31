@@ -1,15 +1,14 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import Image from 'next/image';
 import { useInfiniteMyReservations } from '@/lib/hooks/useMyReservation';
-import { ReservationWithActivity } from '@/lib/types/myReservation';
 import MyReservationCard from './MyReservationCard';
 import FilterDropdown from '@/components/FilterDropdown';
 import arrowDownIcon from '@/assets/icons/arrow-filter-dropdown.svg';
-import Image from 'next/image';
 import emptyIcon from '@/assets/icons/empty.svg';
 import type { InfiniteData } from '@tanstack/react-query';
-import type { GetMyReservationsResponse } from '@/lib/types/myReservation';
+import type { ReservationWithActivity, GetMyReservationsResponse } from '@/lib/types/myReservation';
 
 const STATUS_LABEL_MAP = {
   pending: '예약 신청',
@@ -19,33 +18,30 @@ const STATUS_LABEL_MAP = {
   completed: '체험 완료',
 } as const;
 
-const STATUS_OPTIONS = Object.entries(STATUS_LABEL_MAP).map(([value, label]) => ({
-  label,
-  value,
-}));
+type Status = keyof typeof STATUS_LABEL_MAP | undefined; // all 제거, undefined로 사용
 
-type Status = keyof typeof STATUS_LABEL_MAP;
+const STATUS_OPTIONS = [
+  { label: '전체', value: undefined }, // all 제거하고 undefined로 사용
+  ...Object.entries(STATUS_LABEL_MAP).map(([value, label]) => ({
+    label,
+    value,
+  })),
+];
 
 export default function MyReservations() {
-  const [status, setStatus] = useState<Status>('pending');
+  const [status, setStatus] = useState<Status>(undefined);
 
   const { data, fetchNextPage, hasNextPage, isLoading, isFetchingNextPage } = useInfiniteMyReservations(status);
 
-  const dataTyped = data as unknown as InfiniteData<GetMyReservationsResponse>;
-
-  const reservations: ReservationWithActivity[] =
-    dataTyped?.pages.flatMap((page: GetMyReservationsResponse) => page.reservations) ?? [];
+  const reservations = data?.pages.flatMap((page) => page.reservations) ?? [];
 
   const loaderRef = useRef<HTMLDivElement | null>(null);
 
-  // 무한 스크롤 옵저버
   useEffect(() => {
     if (!loaderRef.current || !hasNextPage) return;
 
     const observer = new IntersectionObserver((entries) => {
-      if (entries[0].isIntersecting) {
-        fetchNextPage();
-      }
+      if (entries[0].isIntersecting) fetchNextPage();
     });
 
     observer.observe(loaderRef.current);
@@ -57,27 +53,20 @@ export default function MyReservations() {
 
   return (
     <section className='w-full space-y-6'>
-      {/* 헤더: 제목 + 드롭다운 */}
       <div className='flex items-center justify-between'>
         <h1 className='text-black-200 text-2xl font-bold'>예약 내역</h1>
-
         <FilterDropdown
-          label='예약 상태'
+          label='필터'
           options={STATUS_OPTIONS}
           selected={selectedOption || null}
-          onSelect={(option) => {
-            if (option?.value) {
-              setStatus(option.value as Status);
-            }
-          }}
+          onSelect={(option) => setStatus(option?.value as Status)}
           icon={arrowDownIcon}
-          buttonClassName='min-w-[120px] justify-between border border-gray-300 px-4 py-2 rounded-md bg-white'
-          dropdownClassName='min-w-[120px] border border-gray-300 bg-white shadow-md mt-2'
-          optionClassName='px-4 py-2 text-sm hover:bg-gray-100'
+          buttonClassName='min-w-[120px] justify-between  px-4 py-2 rounded-xl border border-green-100 font-medium whitespace-nowrap text-green-100'
+          dropdownClassName='min-w-[120px] border border-gray-300 bg-white drop-shadow-sm mt-2'
+          optionClassName='text-md text-lg px-4 py-2 text-lg font-medium text-gray-900 hover:bg-gray-100'
         />
       </div>
 
-      {/* 목록 또는 빈 상태 */}
       {isLoading ? (
         <p className='text-center text-gray-400'>불러오는 중...</p>
       ) : reservations.length === 0 ? (
@@ -94,8 +83,6 @@ export default function MyReservations() {
               </li>
             ))}
           </ul>
-
-          {/* 무한 스크롤 감지 요소 */}
           <div ref={loaderRef} className='h-10' />
           {isFetchingNextPage && <p className='text-center text-gray-400'>불러오는 중...</p>}
         </>

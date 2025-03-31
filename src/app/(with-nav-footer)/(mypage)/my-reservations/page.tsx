@@ -1,5 +1,5 @@
 import MyReservations from './_components/MyReservations';
 
-export default function MyReservationsPage() {
+export default function Page() {
   return <MyReservations />;
 }
