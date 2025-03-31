@@ -39,6 +39,7 @@ export const useReservations = (activityId: number, params: GetReservationsParam
   return useQuery({
     queryKey: ['reservations', activityId, params],
     queryFn: () => getReservations(activityId, params),
+    enabled: params.scheduleId !== undefined && !isNaN(params.scheduleId),
   });
 };
 

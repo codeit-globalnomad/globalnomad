@@ -36,6 +36,14 @@ export default function MyActivitiesReservations({ selectedDate, setSelectedDate
   const popupRef = useRef<HTMLDivElement | null>(null);
   const reservations = reservationsData?.reservations || [];
 
+  useEffect(() => {
+    console.log('Fetching reservations with:', {
+      activityId,
+      scheduleId: selectedSchedule?.value,
+      status: activeTab,
+    });
+  }, [activityId, selectedSchedule, activeTab]);
+
   const options = useMemo(() => {
     return dateSchedule
       ? dateSchedule.map((schedule) => ({
@@ -47,7 +55,7 @@ export default function MyActivitiesReservations({ selectedDate, setSelectedDate
 
   useEffect(() => {
     if (options.length > 0 && !selectedSchedule) {
-      setSelectedSchedule(options[0]);
+      setSelectedSchedule(options[0] || null);
     }
   }, [options, selectedSchedule]);
 
@@ -83,7 +91,7 @@ export default function MyActivitiesReservations({ selectedDate, setSelectedDate
 
   const filteredSchedule = selectedSchedule
     ? dateSchedule?.filter((schedule) => schedule.scheduleId === selectedSchedule.value)
-    : null;
+    : undefined;
 
   if (isLoading) {
     return <div>Loading...</div>;
