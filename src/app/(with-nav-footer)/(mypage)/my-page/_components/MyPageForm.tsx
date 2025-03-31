@@ -99,7 +99,7 @@ export default function MyPageForm() {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className='space-around mb-4 flex items-center justify-between'>
-        <h2 className='text-2xl font-bold'>내 정보 페이지</h2>
+        <h2 className='text-2xl font-bold'>내 정보</h2>
         <Button type='submit' disabled={isPending || !isFormValidToSubmit || !isValid} className='px-[20px] py-[11px]'>
           {isPending ? '수정 중...' : '수정하기'}
         </Button>
