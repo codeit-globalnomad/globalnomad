@@ -74,7 +74,7 @@ export default function MyActivityFilter({ activity, monthData }: Props) {
   return (
     <div className='relative'>
       <div className='relative flex flex-col gap-[32px]'>
-        <h1 className='text-[32px] leading-[42px] font-bold'>예약현황</h1>
+        <h1 className='text-[32px] leading-[42px] font-bold'>예약 현황</h1>
         <FilterDropdown
           options={activitiesFilterOption}
           label='내가 등록한 체험'
