@@ -1,5 +1,6 @@
-import Image from 'next/image';
 import { ActivityReviewsResponse } from '@/lib/types/activities';
+import ProfileImage from '@/components/ProfileImage';
+import profileDefault from '@/assets/icons/profile-default.svg';
 
 type Review = ActivityReviewsResponse['reviews'][number];
 
@@ -19,9 +20,6 @@ const getTimeAgo = (dateString: string) => {
   return `${Math.floor(diffInSeconds / 86400)}일 전`;
 };
 
-const DEFAULT_PROFILE_IMAGE_URL =
-  'https://sprint-fe-project.s3.ap-northeast-2.amazonaws.com/globalnomad/profile_image/12-1_1757_1742022258900.png';
-
 export default function ReviewCard({ reviews, firstReview }: ReviewsProps) {
   return (
     <>
@@ -33,19 +31,7 @@ export default function ReviewCard({ reviews, firstReview }: ReviewsProps) {
             <div className='flex justify-between'>
               <ul className='flex items-center gap-3'>
                 <li className='h-[45px] w-[45px] overflow-hidden rounded-full'>
-                  <Image
-                    className='object-cover'
-                    src={review.user.profileImageUrl ?? DEFAULT_PROFILE_IMAGE_URL}
-                    width={45}
-                    height={45}
-                    alt='사용자 프로필 이미지'
-                    style={{
-                      objectFit: 'cover',
-                      objectPosition: 'center',
-                      width: '100%',
-                      height: '100%',
-                    }}
-                  />
+                  <ProfileImage src={review.user.profileImageUrl || profileDefault} />
                 </li>
                 <li>
                   <p className='font-bold'>{review.user.nickname}</p>
