@@ -145,7 +145,7 @@ export type ActivityReviewsResponse = z.infer<typeof activityReviewsResponseSche
 // 체험 예약 신청, 응답 API 타입
 export const createReservationSchema = z.object({
   scheduleId: z.number(),
-  headcount: z.number(),
+  headCount: z.number(),
 });
 
 export type CreateReservationParams = z.infer<typeof createReservationSchema>;
