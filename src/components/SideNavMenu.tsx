@@ -16,11 +16,10 @@ import { useProfileImage as useProfileImageContext } from '@/lib/contexts/Profil
 import { useProfileImage as useProfileImageUpload, useUserdataUpdate } from '@/lib/hooks/useUsers';
 
 interface SideNavMenuProps {
-  userId?: string;
   activityId?: string;
 }
 
-const SideNavMenu = ({ userId, activityId }: SideNavMenuProps) => {
+const SideNavMenu = ({ activityId }: SideNavMenuProps) => {
   const pathname = usePathname();
 
   const { profileImageUrl, setProfileImageUrl } = useProfileImageContext();
@@ -51,7 +50,7 @@ const SideNavMenu = ({ userId, activityId }: SideNavMenuProps) => {
   const NAV_ITEMS = [
     { name: '내 정보', path: '/my-page', icon: MyInfo },
     { name: '예약 내역', path: '/my-reservations', icon: MyReservation },
-    { name: '내 체험 관리', path: `/my-activities/${userId}`, icon: MyActivities },
+    { name: '내 체험 관리', path: `/my-activities`, icon: MyActivities },
     {
       name: '예약 현황',
       path: `/my-activities/${activityId}/reservation-dashboard`,
@@ -77,7 +76,7 @@ const SideNavMenu = ({ userId, activityId }: SideNavMenuProps) => {
             const isActive =
               (item.name === '내 정보' && pathname === '/my-page') ||
               (item.name === '예약 내역' && pathname === '/my-reservations') ||
-              (item.name === '내 체험 관리' && pathname === `/my-activities/${userId}`) ||
+              (item.name === '내 체험 관리' && pathname === '/my-activities') ||
               (item.name === '예약 현황' && pathname === `/my-activities/${activityId}/reservation-dashboard`);
             return (
               <li key={item.path}>
