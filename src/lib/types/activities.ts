@@ -152,14 +152,15 @@ export type CreateReservationParams = z.infer<typeof createReservationSchema>;
 
 export const reservationResponseSchema = z.object({
   id: z.number(),
-  teamId: z.number(),
+  teamId: z.string(),
   userId: z.number(),
   activityId: z.number(),
   scheduleId: z.number(),
   status: z.enum(['pending', 'confirmed', 'declined', 'canceled', 'completed']),
   reviewSubmitted: z.boolean(),
   totalPrice: z.number(),
-  headcount: z.number(),
+  headCount: z.number(),
+  date: z.string(),
   startTime: z.string(),
   endTime: z.string(),
   createdAt: z.string().datetime(),
