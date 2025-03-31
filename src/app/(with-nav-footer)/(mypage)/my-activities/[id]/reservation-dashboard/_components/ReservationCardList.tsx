@@ -24,17 +24,23 @@ type Reservation = {
 
 type Props = {
   status: 'pending' | 'confirmed' | 'declined';
+  activityId: number;
   reservations: Reservation[];
 };
 
-export default function ReservationCardList({ status, reservations }: Props) {
-  console.log(reservations);
-
+export default function ReservationCardList({ status, activityId, reservations }: Props) {
   return (
     <div className='flex flex-col gap-[14px]'>
       {reservations && reservations.length > 0 ? (
         reservations.map((info) => (
-          <ReservationDetails key={info.id} status={status} nickname={info.nickname} headCount={info.headCount} />
+          <ReservationDetails
+            key={info.id}
+            status={status}
+            nickname={info.nickname}
+            headCount={info.headCount}
+            activityId={activityId}
+            reservationId={info.id}
+          />
         ))
       ) : (
         <div className='flex flex-col items-center gap-4 px-[50px] py-[95px]'>

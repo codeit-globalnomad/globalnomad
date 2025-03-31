@@ -157,7 +157,7 @@ export default function MyActivitiesReservations({ selectedDate, setSelectedDate
 
                 {activeTab && selectedSchedule && (
                   <div className='px-2 pt-[27px]'>
-                    <ReservationCardList status={activeTab} reservations={reservations} />
+                    <ReservationCardList status={activeTab} reservations={reservations} activityId={activityId} />
                   </div>
                 )}
               </div>
