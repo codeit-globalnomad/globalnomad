@@ -45,10 +45,7 @@ export default function ReviewsSection({ currentActivityId, reviewCount }: Activ
   const firstReview = reviews.length > 0 ? reviews[reviews.length - 1] : null;
 
   useEffect(() => {
-    console.log('API에서 받은 리뷰 데이터:', activityReviews?.reviews);
-    activityReviews?.reviews.forEach((review) => {
-      console.log('Review User:', review.user);
-    });
+    activityReviews?.reviews.forEach((review) => {});
   }, [activityReviews]);
 
   return (
