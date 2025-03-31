@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Image from 'next/image';
 import starRating from '@/assets/icons/star-rating.svg';
 import { useActivityReviews } from '@/lib/hooks/useActivities';
@@ -43,10 +43,6 @@ export default function ReviewsSection({ currentActivityId, reviewCount }: Activ
 
   const averageRating = activityReviews?.averageRating ?? 0;
   const firstReview = reviews.length > 0 ? reviews[reviews.length - 1] : null;
-
-  useEffect(() => {
-    activityReviews?.reviews.forEach((review) => {});
-  }, [activityReviews]);
 
   return (
     <div id='reviews'>
