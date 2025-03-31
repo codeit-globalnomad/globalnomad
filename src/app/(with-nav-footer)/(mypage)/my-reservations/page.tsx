@@ -1,7 +1,5 @@
-export default function Page() {
-  return (
-    <>
-      <div> 예약내역입니다</div>
-    </>
-  );
+import MyReservations from './_components/MyReservations';
+
+export default function MyReservationsPage() {
+  return <MyReservations />;
 }
