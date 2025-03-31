@@ -3,12 +3,12 @@
 import Button from '@/components/Button';
 
 type Props = {
-  type: 'pending' | 'confirmed' | 'declined';
+  status: 'pending' | 'confirmed' | 'declined';
   nickname: string;
   headCount: number;
 };
 
-export default function ReservationDetails({ type, nickname, headCount }: Props) {
+export default function ReservationDetails({ status, nickname, headCount }: Props) {
   return (
     <div className='w-full rounded-[4px] border border-gray-300 bg-white px-4 pt-[9px] pb-3 shadow-sm'>
       <div className='flex gap-[10px] text-[16px] leading-[26px]'>
@@ -19,7 +19,7 @@ export default function ReservationDetails({ type, nickname, headCount }: Props)
         <div className='font-semibold text-gray-800'>인원</div>
         <span className='text-black-100 font-medium'>{headCount}</span>
       </div>
-      {type === 'pending' && (
+      {status === 'pending' && (
         <div className='flex justify-end gap-2'>
           <Button
             type='button'
@@ -37,14 +37,14 @@ export default function ReservationDetails({ type, nickname, headCount }: Props)
           </Button>
         </div>
       )}
-      {type === 'confirmed' && (
+      {status === 'confirmed' && (
         <div className='text-right'>
           <div className='text-orange-10 inline-block rounded-[26px] bg-orange-100 px-[15px] py-[10px] text-[14px] leading-[24px] font-bold'>
             예약 승인
           </div>
         </div>
       )}
-      {type === 'declined' && (
+      {status === 'declined' && (
         <div className='text-right'>
           <div className='bg-red-10 inline-block rounded-[26px] px-[15px] py-[10px] text-[14px] leading-[24px] font-bold text-red-100'>
             예약 거절

@@ -2,7 +2,7 @@
 
 import CloseImage from '@/assets/icons/close.svg';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { useReservedSchedule } from '@/lib/hooks/useMyActivities';
+import { useReservedSchedule, useReservations } from '@/lib/hooks/useMyActivities';
 import { useClickOutside } from '@/lib/utils/useClickOutside';
 import FilterDropdown from '@/components/FilterDropdown';
 import ReservationCardList from './ReservationCardList';
@@ -28,8 +28,13 @@ export default function MyActivitiesReservations({ selectedDate, setSelectedDate
   const { data: dateSchedule, isLoading, isError } = useReservedSchedule(activityId, selectedDate);
   const [selectedSchedule, setSelectedSchedule] = useState<FilterDropdownOption | null>(null);
   const [activeTab, setActiveTab] = useState<ReservationStatus | null>('pending');
+  const { data: reservationsData } = useReservations(activityId, {
+    scheduleId: Number(selectedSchedule?.value),
+    status: activeTab as ReservationStatus,
+  });
   const [isOpen, setIsOpen] = useState(false);
   const popupRef = useRef<HTMLDivElement | null>(null);
+  const reservations = reservationsData?.reservations || [];
 
   const options = useMemo(() => {
     return dateSchedule
@@ -144,11 +149,7 @@ export default function MyActivitiesReservations({ selectedDate, setSelectedDate
 
                 {activeTab && selectedSchedule && (
                   <div className='px-2 pt-[27px]'>
-                    <ReservationCardList
-                      type={activeTab}
-                      scheduleId={Number(selectedSchedule.value)}
-                      activityId={activityId}
-                    />
+                    <ReservationCardList status={activeTab} reservations={reservations} />
                   </div>
                 )}
               </div>

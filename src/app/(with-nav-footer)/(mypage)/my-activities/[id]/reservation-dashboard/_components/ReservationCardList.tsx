@@ -1,29 +1,40 @@
 'use client';
 
-import { useReservations } from '@/lib/hooks/useMyActivities';
 import ReservationDetails from './ReservationDetails';
 import Image from 'next/image';
 import NoData from '@/assets/icons/No-data.svg';
 
-type Props = {
-  type: 'pending' | 'confirmed' | 'declined';
-  scheduleId: number;
+type Reservation = {
+  id: number;
+  nickname: string;
+  userId: number;
+  teamId: string;
   activityId: number;
+  scheduleId: number;
+  status: string;
+  reviewSubmitted: boolean;
+  totalPrice: number;
+  headCount: number;
+  date: string;
+  startTime: string;
+  endTime: string;
+  createdAt: string;
+  updatedAt: string;
 };
 
-export default function ReservationCardList({ type, scheduleId, activityId }: Props) {
-  const { data } = useReservations(activityId, {
-    scheduleId: scheduleId,
-    status: type,
-  });
+type Props = {
+  status: 'pending' | 'confirmed' | 'declined';
+  reservations: Reservation[];
+};
 
-  const reservations = data?.reservations;
+export default function ReservationCardList({ status, reservations }: Props) {
+  console.log(reservations);
 
   return (
     <div className='flex flex-col gap-[14px]'>
       {reservations && reservations.length > 0 ? (
         reservations.map((info) => (
-          <ReservationDetails key={info.id} type={type} nickname={info.nickname} headCount={info.headCount} />
+          <ReservationDetails key={info.id} status={status} nickname={info.nickname} headCount={info.headCount} />
         ))
       ) : (
         <div className='flex flex-col items-center gap-4 px-[50px] py-[95px]'>
