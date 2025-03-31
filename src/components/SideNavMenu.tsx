@@ -17,7 +17,7 @@ import { useProfileImage as useProfileImageUpload, useUserdataUpdate } from '@/l
 
 interface SideNavMenuProps {
   userId?: string;
-  activityId?: string;
+  activityId?: number;
 }
 
 const SideNavMenu = ({ userId, activityId }: SideNavMenuProps) => {
@@ -78,7 +78,9 @@ const SideNavMenu = ({ userId, activityId }: SideNavMenuProps) => {
               (item.name === '내 정보' && pathname === '/my-page') ||
               (item.name === '예약 내역' && pathname === '/my-reservations') ||
               (item.name === '내 체험 관리' && pathname === `/my-activities/${userId}`) ||
-              (item.name === '예약 현황' && pathname === `/my-activities/${activityId}/reservation-dashboard`);
+              (item.name === '예약 현황' &&
+                pathname.startsWith('/my-activities/') &&
+                pathname.includes('/reservation-dashboard'));
             return (
               <li key={item.path}>
                 <Link

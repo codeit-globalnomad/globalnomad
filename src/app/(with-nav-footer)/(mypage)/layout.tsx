@@ -2,11 +2,13 @@
 
 import SideNavMenu from '@/components/SideNavMenu';
 import { ProfileImageProvider, useProfileImage } from '@/lib/contexts/ProfileImageContext';
+import { useMyActivities } from '@/lib/hooks/useMyActivities';
 import { useMyData } from '@/lib/hooks/useUsers';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 
 function WithProfileImageContext({ children }: { children: React.ReactNode }) {
   const { data: user } = useMyData();
+  const { data: activity } = useMyActivities();
   const { setProfileImageUrl } = useProfileImage();
 
   useEffect(() => {
@@ -15,9 +17,11 @@ function WithProfileImageContext({ children }: { children: React.ReactNode }) {
     }
   }, [user, setProfileImageUrl]);
 
+  const activityId = useMemo(() => activity?.activities?.[0]?.id, [activity?.activities]);
+
   return (
     <div className='flex w-full max-w-[1140px] gap-10'>
-      <SideNavMenu />
+      <SideNavMenu activityId={activityId} />
       <main className='flex-1'>{children}</main>
     </div>
   );

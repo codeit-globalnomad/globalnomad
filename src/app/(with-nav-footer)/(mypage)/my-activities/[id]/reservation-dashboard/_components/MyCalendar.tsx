@@ -1,5 +1,5 @@
 import Calendar from 'react-calendar';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import './myCalendar.css';
 import Image from 'next/image';
 import CalendarPrev from '@/assets/icons/calendar-prev.svg';
@@ -20,7 +20,6 @@ interface MonthReservation {
 }
 
 export interface Props {
-  // value: Date;
   monthTotalData?: MonthReservation[];
   onDateChange: (date: string) => void;
   onActiveStartDateChange?: ({ activeStartDate }: { activeStartDate: Date | null }) => void;
@@ -39,14 +38,14 @@ export default function MyCalendar({ monthTotalData, onDateChange, onActiveStart
       textColor: 'text-gray-900',
     },
     confirmed: {
-      label: (count) => `예약 ${count}`,
-      bgColor: 'bg-blue-100',
-      textColor: 'text-white',
-    },
-    pending: {
       label: (count) => `승인 ${count}`,
       bgColor: 'bg-orange-100',
       textColor: 'text-orange-10',
+    },
+    pending: {
+      label: (count) => `예약 ${count}`,
+      bgColor: 'bg-blue-100',
+      textColor: 'text-white',
     },
   };
 
@@ -100,12 +99,6 @@ export default function MyCalendar({ monthTotalData, onDateChange, onActiveStart
     }
     return null;
   };
-
-  useEffect(() => {
-    if (calendarValue === null) {
-      setCalendarValue(new Date());
-    }
-  }, [calendarValue]);
 
   return (
     <Calendar

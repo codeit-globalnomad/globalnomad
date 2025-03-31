@@ -2,10 +2,11 @@
 
 import FilterDropdown from '@/components/FilterDropdown';
 import { useCallback, useEffect, useState } from 'react';
-import MyCalendar from '../reservation-dashboard/_components/MyCalendar';
+import MyCalendar from './MyCalendar';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import arrowFilterDropdown2 from '@/assets/icons/arrow-filter-dropdown2.svg';
 import { MyActivitiesResponse, ReservationDashboardResponse } from '@/lib/types/myActivities';
+import MyActivitiesReservations from './MyActivitiesReservations';
 
 type Props = {
   activity: MyActivitiesResponse;
@@ -40,16 +41,10 @@ export default function MyActivityFilter({ activity, monthData }: Props) {
       const activityId = Number(id);
       setSelectedActivityId(activityId);
 
-      // URL의 id에 해당하는 옵션을 selectOption에 설정
       const selectedActivity = activitiesFilterOption.find((activity) => activity.value === activityId);
       setSelectOption(selectedActivity || null);
     }
   }, [id, activity.activities]);
-
-  useEffect(() => {
-    const dateStr = `${currentYear}-${currentMonth}`;
-    setSelectedDate(dateStr);
-  }, [currentYear, currentMonth]);
 
   const handleSelectActivity = (option: ActivitiesFilterOption | null) => {
     setSelectOption(option);
@@ -59,10 +54,6 @@ export default function MyActivityFilter({ activity, monthData }: Props) {
       router.push(`/my-activities/${option.value}/reservation-dashboard?year=${currentYear}&month=${currentMonth}`);
     }
   };
-
-  useEffect(() => {
-    console.log('selectedDate:', selectedDate);
-  }, [selectedDate]);
 
   const handleMonthChange = useCallback(
     ({ activeStartDate }: { activeStartDate: Date | null }) => {
@@ -81,9 +72,9 @@ export default function MyActivityFilter({ activity, monthData }: Props) {
   );
 
   return (
-    <div>
+    <div className='relative'>
       <div className='relative flex flex-col gap-[32px]'>
-        <h1 className='text-[32px] leading-[42px] font-bold'>예약현황</h1>
+        <h1 className='text-[32px] leading-[42px] font-bold'>예약 현황</h1>
         <FilterDropdown
           options={activitiesFilterOption}
           label='내가 등록한 체험'
@@ -106,6 +97,13 @@ export default function MyActivityFilter({ activity, monthData }: Props) {
           onDateChange={setSelectedDate}
         />
       </div>
+      {selectedDate && selectedActivityId && (
+        <MyActivitiesReservations
+          selectedDate={selectedDate}
+          setSelectedDate={setSelectedDate}
+          activityId={selectedActivityId}
+        />
+      )}
     </div>
   );
 }

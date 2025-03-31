@@ -1,7 +1,7 @@
 'use client';
 
 import { MyActivitiesResponse, ReservationDashboardResponse } from '@/lib/types/myActivities';
-import MyActivityFilter from '../_compontents/MyActivityFilter';
+import MyActivityFilter from './_components/MyActivityFilter';
 
 type Props = {
   activity: MyActivitiesResponse;

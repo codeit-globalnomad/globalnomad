@@ -1,6 +1,6 @@
 import axiosServerHelper from '@/lib/network/axiosServerHelper';
 import { MyActivitiesResponse, ReservationDashboardResponse } from '@/lib/types/myActivities';
-import MyActivityFilter from '../_compontents/MyActivityFilter';
+import MyActivityFilter from '../reservation-dashboard/_components/MyActivityFilter';
 
 type Props = {
   params: Promise<{ id: string }>;
