@@ -21,7 +21,7 @@ export default function MyActivityCard({ activity }: MyActivityCardProps) {
 
   const editDeleteOption = [{ label: '수정하기' }, { label: '삭제하기', onClick: handleDelete }];
 
-  const onClickMyActivityItem = (event: React.MouseEvent<HTMLElement>) => {
+  const onClickMyActivityCard = (event: React.MouseEvent<HTMLElement>) => {
     if ((event.target as HTMLElement).closest('.ignore-click')) return event.stopPropagation();
     router.push(`/activities/${activity.id}`);
   };
@@ -29,7 +29,7 @@ export default function MyActivityCard({ activity }: MyActivityCardProps) {
   return (
     <div
       className='mb-[24px] h-[128px] w-full max-w-[716px] min-w-[344px] cursor-pointer rounded-2xl whitespace-nowrap shadow-md hover:bg-gray-100 md:h-[156px] lg:h-[204px]'
-      onClick={onClickMyActivityItem}
+      onClick={onClickMyActivityCard}
     >
       <div className='flex'>
         <div className='relative aspect-[1/1] h-[128px] w-[128px] md:h-[156px] md:w-[156px] lg:h-[204px] lg:w-[204px]'>
