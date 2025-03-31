@@ -7,8 +7,6 @@ import MyReservationCard from './MyReservationCard';
 import FilterDropdown from '@/components/FilterDropdown';
 import arrowDownIcon from '@/assets/icons/arrow-filter-dropdown.svg';
 import emptyIcon from '@/assets/icons/empty.svg';
-import type { InfiniteData } from '@tanstack/react-query';
-import type { ReservationWithActivity, GetMyReservationsResponse } from '@/lib/types/myReservation';
 
 const STATUS_LABEL_MAP = {
   pending: '예약 신청',

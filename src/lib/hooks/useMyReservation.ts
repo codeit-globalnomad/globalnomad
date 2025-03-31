@@ -1,4 +1,4 @@
-import { useQuery, useMutation, useQueryClient, useInfiniteQuery, QueryFunctionContext } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient, useInfiniteQuery } from '@tanstack/react-query';
 import { getMyReservations, cancelMyReservation, writeReviewForReservation } from '../apis/myReservation';
 import {
   GetMyReservationsParams,
