@@ -53,19 +53,24 @@ export default function ReviewsSection({ currentActivityId, reviewCount }: Activ
           <div className='flex gap-1'>
             <Image width={20} height={20} src={starRating} alt='별점 아이콘' />
             <span className='text-2lg md:text-[18px]'>
-              <span className='font-bold'>{averageRating}</span>&nbsp;
-              {getRatingText(averageRating)}
+              <span className='font-bold'>{reviews.length === 0 ? '' : averageRating.toFixed(1)}</span>
+              &nbsp;
+              {reviews.length === 0 ? '후기 없음' : getRatingText(averageRating)}
             </span>
           </div>
         </div>
-        <ActivityReviews
-          activityReviews={{
-            totalCount: totalReviews,
-            averageRating: activityReviews?.averageRating ?? 0,
-            reviews: reviews.slice(0, reviewsToShow),
-          }}
-          firstReview={firstReview}
-        />
+        {reviews.length === 0 ? (
+          <p>아직 후기가 없습니다.</p>
+        ) : (
+          <ActivityReviews
+            activityReviews={{
+              totalCount: totalReviews,
+              averageRating: activityReviews?.averageRating ?? 0,
+              reviews: reviews.slice(0, reviewsToShow),
+            }}
+            firstReview={firstReview}
+          />
+        )}
         {hasMoreReviews && (
           <button
             onClick={loadMoreReviews}

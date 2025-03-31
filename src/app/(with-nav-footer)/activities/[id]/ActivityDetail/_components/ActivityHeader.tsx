@@ -131,7 +131,7 @@ export default function ActivityHeader({ activityDetail, isSameUser }: ActivityH
       <div className='align-center flex flex-row gap-4'>
         <div className='font-regular text-md flex gap-1 md:text-lg'>
           <Image src={starRating} alt='별점 아이콘' />
-          <span>{rating}</span>
+          <span>{rating.toFixed(1)}</span>
           <span>({reviewCount})</span>
         </div>
         <div className='text-md font-regular flex gap-1 md:text-lg'>

@@ -53,12 +53,12 @@ export default function ReviewCard({ reviews, firstReview }: ReviewsProps) {
                 </li>
               </ul>
               {isFirstReview && (
-                <span className='h-fit rounded-[3px] border-[1px] border-green-100 bg-white px-2 py-1 text-xs font-bold text-green-100'>
+                <span className='h-fit rounded-[3px] border-[1px] border-green-100 bg-white px-2 py-1 text-xs font-medium text-green-100'>
                   첫 후기
                 </span>
               )}
               {isLast && !isFirstReview && (
-                <span className='h-fit rounded-[3px] bg-green-100 px-2 py-1 text-xs font-bold text-white'>
+                <span className='h-fit rounded-[3px] bg-green-100 px-2 py-1 text-xs font-medium text-white'>
                   최근 후기
                 </span>
               )}
