@@ -1,6 +1,10 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient, useInfiniteQuery, QueryFunctionContext } from '@tanstack/react-query';
 import { getMyReservations, cancelMyReservation, writeReviewForReservation } from '../apis/myReservation';
-import { GetMyReservationsParams, WriteReviewForReservationParams } from '../types/myReservation';
+import {
+  GetMyReservationsParams,
+  GetMyReservationsResponse,
+  WriteReviewForReservationParams,
+} from '../types/myReservation';
 
 // 내 예약 리스트 조회 훅
 export const useMyReservations = (params: GetMyReservationsParams) => {
@@ -30,5 +34,24 @@ export const useWriteReviewForReservation = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['myReservations'] });
     },
+  });
+};
+
+// 내 예약 무한스크롤 조회 훅
+export const useInfiniteMyReservations = (status?: GetMyReservationsParams['status']) => {
+  const PAGE_SIZE = 10;
+
+  return useInfiniteQuery<GetMyReservationsResponse, Error>({
+    queryKey: ['myReservations', status],
+    queryFn: ({ pageParam }) =>
+      getMyReservations({
+        cursorId: typeof pageParam === 'number' ? pageParam : undefined,
+        size: PAGE_SIZE,
+        status,
+      }),
+    getNextPageParam: (lastPage) => lastPage.cursorId ?? undefined,
+    initialPageParam: undefined,
+    staleTime: 0,
+    gcTime: 0,
   });
 };
