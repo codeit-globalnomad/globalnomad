@@ -1,0 +1,84 @@
+.react-calendar {
+  /* border:none; */
+  border-color:#ddd;
+  padding: 5px 10px;
+  border-radius: 12px;
+}
+.react-calendar__navigation {
+  margin-bottom: 0!important;
+}
+
+.react-calendar__navigation button:enabled:hover, .react-calendar__navigation button:enabled:focus {
+  background-color: inherit!important;
+}
+.react-calendar__navigation button:disabled {
+  background-color: inherit;
+  opacity: 0.3;
+}
+
+.react-calendar__tile--now, .react-calendar__tile--now:hover {
+  background-color: #0b3b2d;
+  color: #ffffff;
+  font-weight: bold;
+  border-radius: 8px;
+}
+
+.react-calendar__tile  {
+  font-size: 0.9rem;
+  color:#4b4b4b;
+}
+
+/* 오늘 날짜 스타일 */
+.react-calendar__tile--now {
+  background-color: #0b3b2d;
+  color: #ffffff!important;
+  font-weight: bold;
+  text-decoration: inherit!important;
+}
+
+/* 오늘 날짜에 밑줄만 추가 */
+.react-calendar__tile--today-underline {
+  color: #0b3b2d!important; /* 기본 글자 색 */
+  background-color: #ced8d5!important; /* 예약 가능한 날짜 배경 색 */
+  border-radius: 8px;
+}
+
+.react-calendar__tile--active {
+  background-color: #0b3b2d!important;
+  color: #ffffff!important;
+  border-radius: 8px;
+}
+
+.react-calendar__tile:hover  {
+  background-color: #0b3b2d!important;
+  color: #ffffff!important;
+  border-radius: 8px;
+}
+.react-calendar__month-view__days__day--neighboringMonth:disabled, .react-calendar__decade-view__years__year--neighboringDecade:disabled, .react-calendar__century-view__decades__decade--neighboringCentury:disabled {
+  background:none;
+}
+
+/* 예약 가능한 날짜 스타일 */
+.react-calendar__tile--available {
+    color: #0b3b2d; /* 예약 가능한 날짜 글자 색 */
+    border-radius: 8px;
+    text-decoration: underline;
+    font-weight: bold;
+  }
+  
+  /* 예약 가능한 날짜 호버 스타일 */
+  .react-calendar__tile--available:hover {
+    background-color: #0b3b2d!important; 
+    color: #fff;
+  }
+
+  .react-calendar__month-view__days__day--neighboringMonth, .react-calendar__decade-view__years__year--neighboringDecade, .react-calendar__century-view__decades__decade--neighboringCentury {
+    color:#a4a1a4!important;
+  }
+  .react-calendar__month-view__days__day--weekend{
+    color:#000;
+  }
+
+
+ 
+
