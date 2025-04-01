@@ -1,23 +1,23 @@
 import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
+import { format, isBefore, startOfDay } from 'date-fns';
 import Calendar from 'react-calendar';
 import { useForm, Controller } from 'react-hook-form';
-import { format, isBefore, startOfDay } from 'date-fns';
+import { toast } from 'react-toastify';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Keyboard } from 'swiper/modules';
 import { Swiper as SwiperType } from 'swiper/types';
-import { toast } from 'react-toastify';
+import { useQueryClient } from '@tanstack/react-query';
 import alert from '@/assets/icons/alert.svg';
-import increment from '@/assets/icons/increment.svg';
 import decrement from '@/assets/icons/decrement.svg';
+import increment from '@/assets/icons/increment.svg';
+import leftArrow from '@/assets/icons/left-arrow.svg';
 import { useAvailableSchedule, useCreateReservation } from '@/lib/hooks/useActivities';
 import { useMyReservations } from '@/lib/hooks/useMyReservation';
+import 'react-calendar/dist/Calendar.css';
 import 'swiper/css';
 import 'swiper/css/pagination';
-import leftArrow from '@/assets/icons/left-arrow.svg';
-import 'react-calendar/dist/Calendar.css';
 import './CalendarStyles.css';
-import { useQueryClient } from '@tanstack/react-query';
 
 type DesktopReservationProps = {
   isLoggedIn: boolean;
@@ -32,60 +32,35 @@ type ReservationForm = {
 };
 
 export default function DesktopReservation({ isLoggedIn, currentActivityId, price }: DesktopReservationProps) {
-  const {
-    register,
-    handleSubmit,
-    control,
-    watch,
-    setValue,
-    formState: { errors },
-  } = useForm<ReservationForm>({
+  const { register, handleSubmit, control, watch, setValue } = useForm<ReservationForm>({
     defaultValues: {
       people: 1,
     },
   });
 
+  const today = new Date();
+  const selectedYear = String(today.getFullYear());
+  const selectedMonth = String(today.getMonth() + 1).padStart(2, '0');
+
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
   const [availableTimes, setAvailableTimes] = useState<{ id: number; startTime: string; endTime: string }[]>([]);
   const [selectedTimeId, setSelectedTimeId] = useState<number | null>(null);
-  const [reservationCompleted, setReservationCompleted] = useState(false); // 예약 완료 상태 추가
-
   const [size, setSize] = useState<number>(10);
-
-  const today = new Date();
-  const currentYear = String(today.getFullYear());
-  const currentMonth = String(today.getMonth() + 1).padStart(2, '0');
-
-  const [selectedYear] = useState(currentYear);
-  const [selectedMonth] = useState(currentMonth);
-
-  const queryClient = useQueryClient();
-
+  const [reservationCompleted, setReservationCompleted] = useState(false);
+  const [disabledTimeIds, setDisabledTimeIds] = useState<number[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  const { data: availableSchedule, refetch: refetchAvailableSchedule } = useAvailableSchedule(
-    currentActivityId,
-    selectedYear,
-    selectedMonth,
-  );
-  const { data: myReservations, refetch: refetchMyReservations } = useMyReservations({
-    size: size,
-  });
+  const peopleCount = watch('people', 1);
+  const totalPrice = price * peopleCount;
 
+  const queryClient = useQueryClient();
   const swiperRef = useRef<SwiperType | null>(null);
 
-  useEffect(() => {
-    if (myReservations && myReservations.totalCount) {
-      setSize(myReservations.totalCount);
-    }
-  }, [myReservations]);
-
-  const [pricePerPerson] = useState(price);
-  const peopleCount = watch('people', 1);
-  const totalPrice = pricePerPerson * peopleCount;
-
+  const { data: availableSchedule } = useAvailableSchedule(currentActivityId, selectedYear, selectedMonth);
+  const { data: myReservations } = useMyReservations({
+    size: size,
+  });
   const { mutate: createReservation } = useCreateReservation(currentActivityId);
-  const [disabledTimeIds, setDisabledTimeIds] = useState<number[]>([]);
 
   const availableDates = availableSchedule?.map((schedule) => new Date(schedule.date)) || [];
 
@@ -97,10 +72,48 @@ export default function DesktopReservation({ isLoggedIn, currentActivityId, pric
     setSelectedTimeId((prevTimeId) => (prevTimeId === timeId ? null : timeId));
   };
 
-  const onSubmit = () => {
-    console.log('selectedTimeId:', selectedTimeId);
-    console.log('peopleCount:', peopleCount);
+  const formatCalendarDay = (locale: string | undefined, date: Date): string => {
+    const day = date.getDate();
+    return day < 10 ? `0${day}` : `${day}`;
+  };
 
+  useEffect(() => {
+    myReservations?.totalCount && setSize(myReservations.totalCount);
+  }, [myReservations]);
+
+  const updateDisabledTimeIds = () => {
+    if (myReservations?.reservations) {
+      const updated = myReservations.reservations
+        .filter(({ status }) => ['confirmed', 'completed', 'pending'].includes(status))
+        .map(({ scheduleId }) => scheduleId);
+      setDisabledTimeIds(updated);
+    }
+  };
+
+  useEffect(updateDisabledTimeIds, [myReservations]);
+
+  useEffect(() => {
+    if (selectedDate) {
+      const selectedDateStr = format(selectedDate, 'yyyy-MM-dd');
+      const schedule = availableSchedule?.find(({ date }) => date === selectedDateStr);
+      setAvailableTimes(schedule?.times || []);
+      swiperRef.current?.slideTo(0);
+    }
+  }, [selectedDate, availableSchedule]);
+
+  useEffect(() => {
+    if (swiperRef.current) {
+      swiperRef.current.update();
+    }
+  }, [disabledTimeIds]);
+
+  useEffect(() => {
+    if (selectedDate || selectedTimeId) {
+      setReservationCompleted(false);
+    }
+  }, [selectedDate, selectedTimeId]);
+
+  const onSubmit = () => {
     if (!selectedTimeId) {
       toast.error('예약할 시간을 선택해주세요.');
       return;
@@ -111,84 +124,33 @@ export default function DesktopReservation({ isLoggedIn, currentActivityId, pric
         headCount: Number(peopleCount),
       },
       {
-        onSuccess: (data) => {
-          console.log('Reservation Success:', data);
+        onSuccess: () => {
           toast.success('예약이 완료되었습니다.');
+          setReservationCompleted(true);
+          setSelectedTimeId(null);
+          setValue('people', 1);
 
-          setReservationCompleted(true); // 예약 완료 상태로 설정
-          setSelectedTimeId(null); // 선택한 시간 초기화
-          setValue('people', 1); // 사람 수 초기화
-
-          // 예약 성공 후 scheduleId를 disabledTimeIds에 추가
-          setDisabledTimeIds((prevDisabledTimeIds) => {
-            const updatedDisabledTimeIds = [...prevDisabledTimeIds, Number(selectedTimeId)];
-            console.log('Updated disabledTimeIds:', updatedDisabledTimeIds); // 상태 업데이트 후 확인
-            return updatedDisabledTimeIds;
-          });
+          setDisabledTimeIds((prev) => [...prev, Number(selectedTimeId)]);
+          console.log('Updated disabledTimeIds:', [...disabledTimeIds, Number(selectedTimeId)]);
 
           queryClient.invalidateQueries({
             queryKey: ['availableSchedule', currentActivityId, selectedYear, selectedMonth],
           });
-
-          queryClient.invalidateQueries({
-            queryKey: ['myReservations', { size: size }],
-          });
+          queryClient.invalidateQueries({ queryKey: ['myReservations', { size }] });
         },
-        onError: (error) => {
-          console.error('Reservation Error:', error);
+        onError: () => {
           toast.error('예약에 실패했습니다. 다시 시도해주세요.');
         },
       },
     );
   };
 
-  useEffect(() => {
-    if (selectedDate) {
-      const selectedDateStr = format(selectedDate, 'yyyy-MM-dd');
-      const scheduleForSelectedDate = availableSchedule?.find((schedule) => schedule.date === selectedDateStr);
-      setAvailableTimes(scheduleForSelectedDate?.times || []);
-      if (swiperRef.current) {
-        swiperRef.current.slideTo(0);
-      }
-    }
-  }, [selectedDate, availableSchedule]);
-
-  useEffect(() => {
-    if (myReservations?.reservations) {
-      const updatedDisabledTimeIds =
-        myReservations.reservations
-          ?.filter(
-            (reservation) =>
-              reservation.status === 'confirmed' ||
-              reservation.status === 'completed' ||
-              reservation.status === 'pending',
-          )
-          .map((reservation) => reservation.scheduleId) || [];
-
-      console.log('업데이트된 비활성화시킬 스케쥴아이디', updatedDisabledTimeIds); // 확인을 위한 로그 추가
-      setDisabledTimeIds(updatedDisabledTimeIds);
-    }
-  }, [myReservations]);
-
-  // useEffect를 사용하여 disabledTimeIds가 변경될 때마다 UI 업데이트
-  useEffect(() => {
-    if (swiperRef.current) {
-      swiperRef.current.update(); // Swiper UI 강제 업데이트
-    }
-  }, [disabledTimeIds]);
-
-  useEffect(() => {
-    if (selectedDate || selectedTimeId) {
-      setReservationCompleted(false); // 예약 완료 상태 초기화
-    }
-  }, [selectedDate, selectedTimeId]);
-
   return (
     <div className='hidden rounded-[12px] border-[1px] border-gray-300 md:hidden lg:block'>
       <form onSubmit={handleSubmit(onSubmit)}>
         <ol className='p-5'>
           <li className='mb-4 text-[30px] font-bold'>
-            ₩ {pricePerPerson.toLocaleString()} <span className='text-xl font-normal text-gray-900'>/ 인</span>
+            ₩ {price.toLocaleString()} <span className='text-xl font-normal text-gray-900'>/ 인</span>
             <hr className='mt-2 border-t-1 border-gray-300' />
           </li>
           <li className='mb-4 flex flex-col gap-2'>
@@ -200,6 +162,7 @@ export default function DesktopReservation({ isLoggedIn, currentActivityId, pric
               render={({ field }) => (
                 <div>
                   <Calendar
+                    className='desktopReservation'
                     value={selectedDate || today}
                     onClickDay={(date) => {
                       if (!isDateDisabled(date)) {
@@ -234,12 +197,11 @@ export default function DesktopReservation({ isLoggedIn, currentActivityId, pric
                     calendarType='gregory'
                     prev2Label={null}
                     next2Label={null}
-                    formatDay={(locale, date) => date.getDate().toString()}
+                    formatDay={formatCalendarDay}
                   />
                 </div>
               )}
             />
-            {/* <hr className='mt-2 mb-2 border-t-1 border-gray-300' /> */}
           </li>
           <li className='flex flex-col gap-2'>
             <div className='flex items-center justify-between'>
@@ -269,7 +231,7 @@ export default function DesktopReservation({ isLoggedIn, currentActivityId, pric
                     swiperRef.current = swiper;
                   }}
                   onSlideChange={(swiper) => {
-                    setCurrentIndex(swiper.activeIndex); // activeIndex로 currentIndex 갱신
+                    setCurrentIndex(swiper.activeIndex);
                   }}
                   navigation={{
                     nextEl: '.custom-next',
@@ -293,7 +255,7 @@ export default function DesktopReservation({ isLoggedIn, currentActivityId, pric
                         flexShrink: 0,
                         display: 'flex',
                         alignItems: 'center',
-                        pointerEvents: disabledTimeIds.includes(timeSlot.id) ? 'none' : 'auto', // 비활성화된 시간에 대해 클릭 방지
+                        pointerEvents: disabledTimeIds.includes(timeSlot.id) ? 'none' : 'auto',
                       }}
                     >
                       <label
@@ -315,7 +277,6 @@ export default function DesktopReservation({ isLoggedIn, currentActivityId, pric
                 </Swiper>
               ) : (
                 <></>
-                // <p className='text-red-500'>이 날짜에는 예약 가능한 시간이 없습니다.</p>
               )}
             </div>
             <p className='flex gap-1 text-[15px] text-[#767676]'>
