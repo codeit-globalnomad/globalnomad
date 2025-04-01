@@ -1,6 +1,6 @@
 import axiosServerHelper from '@/lib/network/axiosServerHelper';
 import { MyActivitiesResponse, ReservationDashboardResponse } from '@/lib/types/myActivities';
-import MyActivityFilter from '../reservation-dashboard/_components/MyActivityFilter';
+import MyReservation from './MyReservation';
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -28,5 +28,5 @@ export default async function ReservationDashboard({ params, searchParams }: Pro
     `/my-activities/${activityId}/reservation-dashboard?year=${year}&month=${month}`,
   );
 
-  return <MyActivityFilter activity={myActivityData} monthData={myActivityMonthData} />;
+  return <MyReservation activity={myActivityData} monthData={myActivityMonthData} />;
 }
