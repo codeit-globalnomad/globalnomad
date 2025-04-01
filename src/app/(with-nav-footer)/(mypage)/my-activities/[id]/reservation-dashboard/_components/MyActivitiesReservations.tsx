@@ -25,7 +25,12 @@ type FilterDropdownOption = {
 type ReservationStatus = 'pending' | 'confirmed' | 'declined';
 
 export default function MyActivitiesReservations({ selectedDate, setSelectedDate, activityId }: Props) {
-  const { data: dateSchedule, isLoading, isError } = useReservedSchedule(activityId, selectedDate);
+  const {
+    data: dateSchedule,
+    isLoading,
+    isError,
+    refetch: refetchReservations,
+  } = useReservedSchedule(activityId, selectedDate);
   const [selectedSchedule, setSelectedSchedule] = useState<FilterDropdownOption | null>(null);
   const [activeTab, setActiveTab] = useState<ReservationStatus | null>('pending');
   const { data: reservationsData } = useReservations(activityId, {
@@ -92,6 +97,12 @@ export default function MyActivitiesReservations({ selectedDate, setSelectedDate
   const filteredSchedule = selectedSchedule
     ? dateSchedule?.filter((schedule) => schedule.scheduleId === selectedSchedule.value)
     : undefined;
+
+  useEffect(() => {
+    if (filteredSchedule && filteredSchedule.length > 0) {
+      refetchReservations();
+    }
+  }, [filteredSchedule, selectedSchedule, activeTab, refetchReservations]);
 
   if (isLoading) {
     return <div>Loading...</div>;
