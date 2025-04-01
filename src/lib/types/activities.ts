@@ -63,6 +63,7 @@ export const createActivitySchema = z.object({
   bannerImageUrl: z.string(),
   subImageUrls: z.array(z.string()).max(4, { message: '소개 이미지는 최대 4개까지 등록할 수 있습니다.' }).optional(),
 });
+
 export type CreateActivityParams = z.infer<typeof createActivitySchema>;
 
 export const createActivityResponseSchema = activitiesSchema.extend({

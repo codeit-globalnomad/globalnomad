@@ -6,9 +6,9 @@ import { cookies } from 'next/headers';
 const logout = async () => {
   try {
     const cookieStore = await cookies();
-
     cookieStore.delete('accessToken');
     cookieStore.delete('refreshToken');
+    window.location.reload();
     return {
       status: true,
       error: '',
