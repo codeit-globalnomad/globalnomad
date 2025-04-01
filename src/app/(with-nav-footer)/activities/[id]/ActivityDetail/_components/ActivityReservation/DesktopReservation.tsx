@@ -78,7 +78,9 @@ export default function DesktopReservation({ isLoggedIn, currentActivityId, pric
   };
 
   useEffect(() => {
-    myReservations?.totalCount && setSize(myReservations.totalCount);
+    if (myReservations?.totalCount) {
+      setSize(myReservations.totalCount);
+    }
   }, [myReservations]);
 
   const updateDisabledTimeIds = () => {
