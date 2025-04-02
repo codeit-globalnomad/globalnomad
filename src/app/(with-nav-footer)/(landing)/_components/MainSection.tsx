@@ -3,12 +3,12 @@ import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import Button from '@/components/Button';
 import Image, { StaticImageData } from 'next/image';
-import section1Lg from '@/assets/images/section1-lg.png';
-import section2Lg from '@/assets/images/section2-lg.png';
-import section3Lg from '@/assets/images/section3-lg.png';
-import section1Md from '@/assets/images/section1-md.png';
-import section2Md from '@/assets/images/section2-md.png';
-import section3Md from '@/assets/images/section3-md.png';
+import section1Lg from '@/assets/images/section1-lg.jpg';
+import section2Lg from '@/assets/images/section2-lg.jpg';
+import section3Lg from '@/assets/images/section3-lg.jpg';
+import section1Md from '@/assets/images/section1-md.jpg';
+import section2Md from '@/assets/images/section2-md.jpg';
+import section3Md from '@/assets/images/section3-md.jpg';
 
 const MotionImage = motion.create(Image);
 
@@ -68,6 +68,7 @@ export default function MainSection() {
       <Button
         onClick={() => router.push('/activities')}
         className='md:text-2lg mx-auto mt-[120px] px-[90px] py-[8px] text-lg font-semibold transition-none md:top-[300px] md:mt-[160px] md:px-[132px] md:py-[13px]'
+        aria-label='체험 목록 페이지로 이동'
       >
         지금 예약하기
       </Button>

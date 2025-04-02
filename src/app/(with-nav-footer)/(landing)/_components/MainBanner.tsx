@@ -3,7 +3,7 @@ import { useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import Button from '@/components/Button';
 import Image from 'next/image';
-import banner from '@/assets/images/banner.png';
+import banner from '@/assets/images/banner.jpg';
 import logoXlWhite from '@/assets/logo/logo-xl-white.svg';
 import logoMdWhite from '@/assets/logo/logo-md-white.svg';
 
@@ -69,6 +69,7 @@ export default function MainBanner() {
         <Button
           onClick={() => router.push('/activities')}
           className='md:text-2lg text-black-200 absolute top-[150px] bg-white px-[90px] py-[8px] text-lg font-semibold transition-none hover:text-white md:top-[300px] md:px-[132px] md:py-[13px]'
+          aria-label='체험 목록 페이지로 이동'
         >
           지금 예약하기
         </Button>
