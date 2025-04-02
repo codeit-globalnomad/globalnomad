@@ -10,7 +10,7 @@ import ReservationStatusTabs from './ReservationStatusTabs';
 import NoReservations from './NoReservations';
 import ReservationsTimeSelect from './ReservationsTimeSelect';
 import LoadingSpinner from '@/components/LoadingSpinner';
-import useViewportWidth from '@/lib/hooks/useVIewPortWidth';
+import useViewportWidth from '@/lib/utils/useVIewPortWidth';
 
 type Props = {
   selectedDate: string;
