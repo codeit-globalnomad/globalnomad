@@ -7,6 +7,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import alert from '@/assets/icons/alert.svg';
 import decrement from '@/assets/icons/decrement.svg';
 import increment from '@/assets/icons/increment.svg';
+import Button from '@/components/Button';
 import { useAvailableSchedule, useCreateReservation } from '@/lib/hooks/useActivities';
 import { useMyReservations } from '@/lib/hooks/useMyReservation';
 import 'react-calendar/dist/Calendar.css';
@@ -15,7 +16,6 @@ import 'swiper/css/pagination';
 import './CalendarStyles.css';
 import DesktopCalender from './DesktopCalendar';
 import DesktopAvailableTime from './DesktopAvailableTime';
-import Button from '@/components/Button';
 
 type DesktopReservationProps = {
   isLoggedIn: boolean;
@@ -128,7 +128,7 @@ export default function DesktopReservation({ isLoggedIn, currentActivityId, pric
   };
 
   return (
-    <div className='hidden rounded-[12px] border-[1px] border-gray-300 md:hidden lg:block'>
+    <div className='hidden rounded-[12px] border-[1px] border-gray-300 bg-white md:hidden lg:block'>
       <form onSubmit={handleSubmit(onSubmit)}>
         <ol className='p-5'>
           <li className='mb-4 text-[30px] font-bold'>

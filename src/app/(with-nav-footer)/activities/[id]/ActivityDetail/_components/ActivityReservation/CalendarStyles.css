@@ -4,6 +4,10 @@
   padding: 5px 10px;
   border-radius: 12px;
 }
+
+.react-calendar.tabletReservation {
+  padding:10px;
+}
 .react-calendar__navigation {
   margin-bottom: 0!important;
 }
@@ -11,6 +15,12 @@
 .react-calendar__navigation button:enabled:hover, .react-calendar__navigation button:enabled:focus {
   background-color: inherit!important;
 }
+
+.react-calendar__tile:disabled {
+  background-color: inherit!important;
+  color:#4b4b4b ;
+}
+
 .react-calendar__navigation button:disabled {
   background-color: inherit;
   opacity: 0.3;
