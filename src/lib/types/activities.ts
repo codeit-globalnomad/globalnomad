@@ -172,16 +172,20 @@ export type ReservationResponse = z.infer<typeof reservationResponseSchema>;
 // 체험 이미지 URL 생성(업로드) 요청, 응답 API 타입
 export const activityImageFormSchema = z.object({
   image: z
-    .instanceof(File)
+    .custom<File>()
+    .refine((file): file is File => file instanceof File, {
+      message: '이미지를 선택해 주세요.',
+    })
     .refine(
       (file) => ['image/jpeg', 'image/jpg', 'image/png', 'image/ico', 'image/gif', 'image/webp'].includes(file.type),
       {
         message: '지원되지 않는 이미지 파일입니다.',
       },
     )
-    .refine((file) => file.size < 5 * 1024 * 1024, { message: '5MB 이하의 파일만 등록이 가능합니다.' }),
+    .refine((file) => file.size < 5 * 1024 * 1024, {
+      message: '5MB 이하의 파일만 등록이 가능합니다.',
+    }),
 });
-
 export type ActivityImageForm = z.infer<typeof activityImageFormSchema>;
 
 export const activityImageUploadResponseSchema = z.object({
