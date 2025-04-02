@@ -1,6 +1,7 @@
 import { toast } from 'react-toastify';
 import { useRef } from 'react';
 import { useUploadActivityImage } from '@/lib/hooks/useActivities';
+import Image from 'next/image';
 
 interface ImageUploaderProps {
   value: string | string[];
@@ -69,7 +70,7 @@ export default function ImageUploader({
     <div className='mt-[8px] flex flex-wrap gap-4'>
       {images.map((img, idx) => (
         <div key={idx} className='relative h-32 w-32'>
-          <img src={img} className='h-full w-full rounded object-cover' alt='preview' />
+          <Image src={img} className='h-full w-full rounded object-cover' alt='preview' />
           <button
             type='button'
             onClick={() => handleRemove(idx)}
