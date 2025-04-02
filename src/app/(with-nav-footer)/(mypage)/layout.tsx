@@ -5,7 +5,7 @@ import { ProfileImageProvider, useProfileImage } from '@/lib/contexts/ProfileIma
 import { useMyActivities } from '@/lib/hooks/useMyActivities';
 import { useMyData } from '@/lib/hooks/useUsers';
 import { useEffect, useMemo, useState } from 'react';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 
 function MobileOnlyMenu() {
