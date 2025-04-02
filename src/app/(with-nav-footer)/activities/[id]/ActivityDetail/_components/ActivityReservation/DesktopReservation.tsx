@@ -1,18 +1,18 @@
 'use client';
 
 import Image from 'next/image';
-import { format } from 'date-fns';
 import { Controller } from 'react-hook-form';
+import { format } from 'date-fns';
 import alert from '@/assets/icons/alert.svg';
+import AvailableTimeSelector from './AvailableTimeSelector';
+import PeopleCounter from './PeopleCounter';
+import ActivityReservationCalendar from './ReservationCalendar';
+import ReservationSubmitButton from './ReservationSubmitButton';
 import { useReservation } from './useReservation';
 import 'react-calendar/dist/Calendar.css';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import './ActivityReservationStyles.css';
-import ActivityReservationCalendar from './ActivityReservationCalendar';
-import AvailableTimeSelector from './AvailableTimeSelector';
-import PeopleCounter from './PeopleCounter';
-import ReservationSubmitButton from './ReservationSubmitButton';
 
 type DesktopReservationProps = {
   isLoggedIn: boolean;

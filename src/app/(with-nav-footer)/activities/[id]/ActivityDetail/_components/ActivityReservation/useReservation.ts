@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
+import { format, isBefore, startOfDay } from 'date-fns';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
+import { Swiper as SwiperType } from 'swiper/types';
 import { useQueryClient } from '@tanstack/react-query';
-import { format, isBefore, startOfDay } from 'date-fns';
 import { useAvailableSchedule, useCreateReservation } from '@/lib/hooks/useActivities';
 import { useMyReservations } from '@/lib/hooks/useMyReservation';
-import { Swiper as SwiperType } from 'swiper/types';
 
 type ReservationFormValues = {
   date: string;
@@ -54,7 +54,6 @@ export const useReservation = (currentActivityId: number, price: number) => {
         swiperRef.current.slideTo(0);
         swiperRef.current.update();
       }
-
       setValue('people', 1);
     }
   }, [selectedDate, availableSchedule, setValue]);

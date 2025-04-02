@@ -1,11 +1,13 @@
+'use client';
+
 import { useEffect } from 'react';
 import Image from 'next/image';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Keyboard } from 'swiper/modules';
-import 'swiper/css';
-import leftArrow from '@/assets/icons/left-arrow.svg';
-import alert from '@/assets/icons/alert.svg';
 import { Swiper as SwiperType } from 'swiper/types';
+import alert from '@/assets/icons/alert.svg';
+import leftArrow from '@/assets/icons/left-arrow.svg';
+import 'swiper/css';
 
 type AvailableTime = {
   id: number;
@@ -14,11 +16,11 @@ type AvailableTime = {
 };
 
 type AvailableTimeSelectorProps = {
-  availableTimes: AvailableTime[]; // 선택한 날짜의 예약 가능한 시간 목록
-  selectedTimeId: number | null; // 선택된 시간 ID (없을 수도 있으므로 null 허용)
-  disabledTimeIds: number[]; // 예약 불가능한 시간 ID 목록
-  selectedDate: Date | undefined; // 선택한 날짜 (없을 수도 있음)
-  onSelectTime: (timeId: number) => void; // 시간 선택 핸들
+  availableTimes: AvailableTime[];
+  selectedTimeId: number | null;
+  disabledTimeIds: number[];
+  selectedDate: Date | undefined;
+  onSelectTime: (timeId: number) => void;
   swiperRef: React.RefObject<SwiperType | null>;
 };
 
@@ -41,7 +43,6 @@ const AvailableTimeSelector = ({
 
   return (
     <li className='flex flex-col gap-2'>
-      {/* 헤더 */}
       <div className='flex items-center justify-between'>
         <p className='text-[22px] font-bold md:text-xl'>예약 가능한 시간</p>
         <div className='z-10 mr-[-10px] flex cursor-pointer'>
@@ -53,18 +54,13 @@ const AvailableTimeSelector = ({
           </div>
         </div>
       </div>
-
-      {/* 시간 선택 슬라이더 */}
       <div className='flex space-x-2'>
         {availableTimes.length > 0 ? (
           <Swiper
             modules={[Navigation, Keyboard]}
             onSwiper={(swiper) => {
-              swiperRef.current = swiper; // 최신 swiper 인스턴스를 항상 유지
+              swiperRef.current = swiper;
             }}
-            // onSlideChange={(swiper) => {
-            //   setCurrentIndex(swiper.activeIndex);
-            // }}
             navigation={{
               nextEl: '.custom-next',
               prevEl: '.custom-prev',
@@ -75,8 +71,7 @@ const AvailableTimeSelector = ({
             loop={false}
             className='m-0 h-auto'
             centeredSlides={false}
-            // key={`${availableTimes.length}-${selectedDate?.toISOString() ?? 'default'}`}
-            key={selectedDate?.toISOString() || 'default'} // 리렌더링 최소화
+            key={selectedDate?.toISOString() || 'default'}
           >
             {availableTimes.map((timeSlot) => (
               <SwiperSlide
@@ -102,8 +97,6 @@ const AvailableTimeSelector = ({
           </Swiper>
         ) : null}
       </div>
-
-      {/* 예약 불가능 메시지 */}
       <p className='flex w-full items-center gap-1 overflow-hidden text-lg text-ellipsis whitespace-nowrap text-[#767676]'>
         <Image src={alert} width={16} height={16} alt='경고 아이콘' />
         <span className='overflow-hidden text-ellipsis whitespace-nowrap'>

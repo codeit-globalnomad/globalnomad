@@ -2,21 +2,21 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
-import { Controller } from 'react-hook-form';
-import Button from '@/components/Button';
-import Modal from '@/components/Modal';
 import { format } from 'date-fns';
+import { Controller } from 'react-hook-form';
 import alert from '@/assets/icons/alert.svg';
 import close from '@/assets/icons/close-fill.svg';
+import Button from '@/components/Button';
+import Modal from '@/components/Modal';
+import AvailableTimeSelector from './AvailableTimeSelector';
+import PeopleCounter from './PeopleCounter';
+import ActivityReservationCalendar from './ReservationCalendar';
+import ReservationSubmitButton from './ReservationSubmitButton';
+import { useReservation } from './useReservation';
 import 'react-calendar/dist/Calendar.css';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import './ActivityReservationStyles.css';
-import { useReservation } from './useReservation';
-import ActivityReservationCalendar from './ActivityReservationCalendar';
-import AvailableTimeSelector from './AvailableTimeSelector';
-import PeopleCounter from './PeopleCounter';
-import ReservationSubmitButton from './ReservationSubmitButton';
 
 type TabletReservationProps = {
   isLoggedIn: boolean;
@@ -58,6 +58,7 @@ export default function TabletReservation({ isLoggedIn, currentActivityId, price
   const selectedTimeSlot = availableTimes.find((slot) => slot.id === selectedTimeId);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+
   const handleOpenModal = () => setIsModalOpen(true);
   const handleCloseModal = () => setIsModalOpen(false);
 
@@ -81,7 +82,6 @@ export default function TabletReservation({ isLoggedIn, currentActivityId, price
                   ? `${formatDate(selectedDate)} / ${selectedTimeSlot.startTime} - ${selectedTimeSlot.endTime}`
                   : '선택하기'}
               </button>
-
               {isModalOpen && (
                 <Modal onClose={handleCloseModal} className='relative w-[380px]'>
                   <ol className='flex flex-col gap-[20px]'>

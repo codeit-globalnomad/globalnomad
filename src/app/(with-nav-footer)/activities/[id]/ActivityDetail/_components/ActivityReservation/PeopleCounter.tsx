@@ -1,7 +1,7 @@
 import Image from 'next/image';
+import { UseFormRegister, UseFormSetValue } from 'react-hook-form';
 import decrement from '@/assets/icons/decrement.svg';
 import increment from '@/assets/icons/increment.svg';
-import { UseFormRegister, UseFormSetValue } from 'react-hook-form';
 
 type ReservationFormValues = {
   date: string;
@@ -25,9 +25,7 @@ const PeopleCounter = ({ peopleCount, setValue, register }: PeopleCounterProps) 
       >
         <Image src={decrement} width={18} height={18} alt='감소 버튼 아이콘' />
       </button>
-
       <input type='text' {...register('people', { required: true })} readOnly className='w-[40px] p-2 text-center' />
-
       <button
         type='button'
         className='w-[40px] p-2 text-center md:cursor-pointer'
