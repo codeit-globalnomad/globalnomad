@@ -119,6 +119,18 @@
   font-weight: bold;
 }
 
-.custom-next.swiper-button-disabled {
+.custom-next.swiper-button-disabled, .custom-prev.swiper-button-disabled {
   opacity: 0.5;
+}
+
+@media (max-width: 860px) {
+  .custom-md-size-top span, .custom-md-size-middle p:first-child, .custom-md-size-bottom span:first-child {
+    font-size: 16px; /* 860px 이하에서 크기 줄이기 */
+  }
+  .custom-md-size-top, .custom-md-size-bottom span:last-child {
+    font-size: 24px; /* 860px 이하에서 크기 줄이기 */
+  }
+  .custom-md-size-middle .second {
+    font-size: 14px;
+  }
 }
