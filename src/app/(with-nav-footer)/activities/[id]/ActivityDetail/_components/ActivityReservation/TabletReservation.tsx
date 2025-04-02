@@ -76,7 +76,7 @@ export default function TabletReservation({ isLoggedIn, currentActivityId, price
               <button
                 type='button'
                 onClick={handleOpenModal}
-                className='align-left cursor-pointer text-lg font-semibold text-green-100 underline'
+                className='cursor-pointer text-left text-lg font-semibold text-green-100 underline'
               >
                 {selectedDate && selectedTimeSlot
                   ? `${formatDate(selectedDate)} / ${selectedTimeSlot.startTime} - ${selectedTimeSlot.endTime}`
