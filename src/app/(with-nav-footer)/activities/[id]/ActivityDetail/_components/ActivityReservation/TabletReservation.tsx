@@ -44,6 +44,7 @@ export default function TabletReservation({ isLoggedIn, currentActivityId, price
     peopleCount,
     swiperRef,
     setValue,
+    setSelectedTimeId,
   } = useReservation(currentActivityId, price);
 
   const formatDate = (date?: Date) => {
@@ -100,6 +101,7 @@ export default function TabletReservation({ isLoggedIn, currentActivityId, price
                             availableDates={availableDates}
                             onSelectDate={(date) => {
                               setSelectedDate(date);
+                              setSelectedTimeId(null);
                               field.onChange(format(date, 'yyyy-MM-dd'));
                             }}
                             className='tabletReservation'
