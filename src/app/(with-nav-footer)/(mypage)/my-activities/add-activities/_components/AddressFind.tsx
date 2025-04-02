@@ -5,8 +5,18 @@ import Input from '@/components/Input';
 
 declare global {
   interface Window {
-    daum?: any;
+    daum?: {
+      Postcode: new (options: { oncomplete: (data: DaumPostcodeData) => void }) => { open(): void };
+    };
   }
+}
+
+interface DaumPostcodeData {
+  address: string;
+  addressType: string;
+  bname: string;
+  buildingName: string;
+  zonecode: string;
 }
 
 interface AddressFindProps {
@@ -19,13 +29,13 @@ export default function AddressFind({ value, onChange, error }: AddressFindProps
   const [isLoaded, setIsLoaded] = useState(false);
 
   const handlePostcode = () => {
-    if (!isLoaded || !window.daum?.Postcode) {
+    if (typeof window === 'undefined' || !isLoaded || !window.daum?.Postcode) {
       alert('주소 검색 스크립트가 아직 로드되지 않았습니다.');
       return;
     }
 
     new window.daum.Postcode({
-      oncomplete: function (data: any) {
+      oncomplete: function (data: DaumPostcodeData) {
         const addr = data.address;
         onChange(addr);
       },
@@ -33,6 +43,8 @@ export default function AddressFind({ value, onChange, error }: AddressFindProps
   };
 
   useEffect(() => {
+    if (typeof window === 'undefined' || typeof document === 'undefined') return;
+
     if (!document.getElementById('daum-postcode-script')) {
       const script = document.createElement('script');
       script.id = 'daum-postcode-script';
@@ -50,7 +62,7 @@ export default function AddressFind({ value, onChange, error }: AddressFindProps
       <div className='flex-1'>
         <Input
           label='주소'
-          placeholder='주소를 입력해주세요'
+          placeholder='주소를 검색해주세요'
           value={value}
           onChange={(e) => onChange(e.target.value)}
           error={error}

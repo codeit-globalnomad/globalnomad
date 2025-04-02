@@ -4,7 +4,7 @@ import { useUploadActivityImage } from '@/lib/hooks/useActivities';
 
 interface ImageUploaderProps {
   value: string | string[];
-  onChange: (val: string | string[] | any) => void;
+  onChange: (val: string | string[]) => void;
   single?: boolean;
   multiple?: boolean;
   limit?: number;
@@ -45,6 +45,7 @@ export default function ImageUploader({
         onChange(updated);
       }
     } catch (err) {
+      console.log(err);
       toast.error('이미지 업로드에 실패했습니다.');
     }
   };

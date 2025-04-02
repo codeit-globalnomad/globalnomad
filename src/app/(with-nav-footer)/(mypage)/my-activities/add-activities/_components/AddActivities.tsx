@@ -149,8 +149,8 @@ export default function AddActivitiesForm() {
           <ImageUploader
             value={bannerImageUrl}
             onChange={(url) => {
-              setBannerImageUrl(url);
-              setValue('bannerImageUrl', url, { shouldValidate: true });
+              setBannerImageUrl(url as string);
+              setValue('bannerImageUrl', url as string, { shouldValidate: true });
             }}
             single
           />
@@ -163,8 +163,8 @@ export default function AddActivitiesForm() {
           <ImageUploader
             value={subImageUrls}
             onChange={(urls) => {
-              setSubImageUrls(urls);
-              setValue('subImageUrls', urls, { shouldValidate: true });
+              setSubImageUrls(urls as string[]);
+              setValue('subImageUrls', urls as string[], { shouldValidate: true });
             }}
             multiple
             limit={4}
