@@ -21,12 +21,14 @@ interface FilterDropdownProps {
   iconVisibleOnMobile?: boolean;
   autoSelectFirstOption?: boolean;
   selected?: FilterDropdownOption | null;
+  value?: string;
 }
 
 export default function FilterDropdown({
   options,
   label,
   onSelect,
+  value,
   buttonClassName = '',
   dropdownClassName = '',
   optionClassName = '',
@@ -34,7 +36,6 @@ export default function FilterDropdown({
   includeAllOption = false,
   iconVisibleOnMobile = false,
   autoSelectFirstOption = false,
-  selected = null,
 }: FilterDropdownProps) {
   const ref = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -43,8 +44,11 @@ export default function FilterDropdown({
   useClickOutside(ref, () => setIsOpen(false));
 
   useEffect(() => {
-    setUpdatedOptions(includeAllOption && !autoSelectFirstOption ? [{ label: '전체' }, ...options] : options);
+    const newOptions = includeAllOption && !autoSelectFirstOption ? [{ label: '전체' }, ...options] : options;
+    setUpdatedOptions(newOptions);
   }, [includeAllOption, autoSelectFirstOption, options]);
+
+  const selectedOption = updatedOptions.find((opt) => opt.label === value) || null;
 
   const handleSelect = (option: FilterDropdownOption) => {
     onSelect(option.label === '전체' ? null : option);
@@ -54,12 +58,13 @@ export default function FilterDropdown({
   return (
     <div ref={ref} className='relative'>
       <button
+        type='button'
         onClick={() => setIsOpen(!isOpen)}
         className={`flex cursor-pointer items-center whitespace-nowrap ${
-          selected ? 'opacity-100' : 'text-gray-700'
+          selectedOption ? 'opacity-100' : 'text-gray-700'
         } ${iconVisibleOnMobile ? 'justify-center' : 'justify-between'} ${buttonClassName}`}
       >
-        {selected ? selected.label : label}
+        {selectedOption ? selectedOption.label : label}
         <Image
           src={icon}
           width={20}
@@ -75,7 +80,9 @@ export default function FilterDropdown({
             <li
               key={`${option.label}-${idx}`}
               onClick={() => handleSelect(option)}
-              className={`cursor-pointer text-center hover:bg-gray-100 ${idx === 0 ? 'rounded-t-xl' : ''} ${idx === updatedOptions.length - 1 ? 'rounded-b-xl' : 'border-b border-gray-300'} ${optionClassName}`}
+              className={`cursor-pointer text-center hover:bg-gray-100 ${
+                idx === 0 ? 'rounded-t-xl' : ''
+              } ${idx === updatedOptions.length - 1 ? 'rounded-b-xl' : 'border-b border-gray-300'} ${optionClassName}`}
             >
               {option.label}
             </li>

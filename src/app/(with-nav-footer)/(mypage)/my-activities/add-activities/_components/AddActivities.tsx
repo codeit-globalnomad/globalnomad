@@ -12,6 +12,7 @@ import { useCreateActivity } from '@/lib/hooks/useActivities';
 import FilterDropdown from '@/components/FilterDropdown';
 import arrowFilterDropdown2 from '@/assets/icons/arrow-filter-dropdown2.svg';
 import AddressFind from './AddressFind';
+import { toast } from 'react-toastify';
 
 export default function AddActivitiesForm() {
   const { mutate: createActivity, isPending } = useCreateActivity();
@@ -44,13 +45,12 @@ export default function AddActivitiesForm() {
     control,
     handleSubmit,
     setValue,
+    reset,
     formState: { errors, isValid },
   } = methods;
 
   const [bannerImageUrl, setBannerImageUrl] = useState<string>('');
   const [subImageUrls, setSubImageUrls] = useState<string[]>([]);
-
-  console.log(methods.formState.errors);
 
   const onSubmit = (data: CreateActivityParams) => {
     const finalData = {
@@ -60,6 +60,8 @@ export default function AddActivitiesForm() {
     };
 
     createActivity(finalData);
+    toast.success('내 체험 등록 성공');
+    reset();
   };
 
   return (
