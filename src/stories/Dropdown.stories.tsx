@@ -26,7 +26,7 @@ const options2 = [
   {
     label: '마이 페이지',
     onClick: () => {
-      window.location.reload;
+      window.location.reload();
     },
   },
   { label: '로그아웃' },
