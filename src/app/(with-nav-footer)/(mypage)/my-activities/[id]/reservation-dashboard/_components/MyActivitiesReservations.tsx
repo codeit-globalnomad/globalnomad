@@ -37,6 +37,7 @@ export default function MyActivitiesReservations({ selectedDate, setSelectedDate
   const { data: reservationsData } = useReservations(activityId, {
     scheduleId: Number(selectedSchedule?.value),
     status: activeTab as ReservationStatus,
+    size: 3,
   });
   const [isOpen, setIsOpen] = useState(false);
   const popupRef = useRef<HTMLDivElement | null>(null);
@@ -87,10 +88,10 @@ export default function MyActivitiesReservations({ selectedDate, setSelectedDate
     : undefined;
 
   useEffect(() => {
-    if (filteredSchedule && filteredSchedule.length > 0) {
+    if (!isLoading && filteredSchedule && filteredSchedule.length > 0) {
       refetchReservations();
     }
-  }, [filteredSchedule, selectedSchedule, activeTab, refetchReservations]);
+  }, [filteredSchedule, selectedSchedule, refetchReservations, isLoading]);
 
   if (isLoading) return <LoadingSpinner />;
 
@@ -99,7 +100,7 @@ export default function MyActivitiesReservations({ selectedDate, setSelectedDate
   return (
     <div ref={popupRef}>
       {isOpen && (
-        <div className='text-black-100 absolute top-[220px] right-0 flex h-[697px] min-h-[582px] w-[429px] flex-col gap-[27px] overflow-hidden rounded-[24px] border border-gray-300 bg-white px-6 py-6 shadow-md'>
+        <div className='text-black-100 absolute top-[220px] right-0 flex h-[697px] min-h-[582px] w-[429px] flex-col gap-[27px] rounded-[24px] border border-gray-300 bg-white px-6 py-6 shadow-md'>
           <div className='flex items-center justify-between'>
             <h1 className='text-[24px] leading-[32px] font-bold'>예약 정보</h1>
             <Image
@@ -123,7 +124,7 @@ export default function MyActivitiesReservations({ selectedDate, setSelectedDate
           />
           {filteredSchedule && filteredSchedule.length > 0 ? (
             <>
-              <div className='h-[500px] rounded-b-[24px] bg-gray-100'>
+              <div className='h-[420px] rounded-b-[24px] bg-gray-100'>
                 <ReservationStatusTabs
                   activeTab={activeTab}
                   setActiveTab={setActiveTab}
@@ -131,8 +132,13 @@ export default function MyActivitiesReservations({ selectedDate, setSelectedDate
                 />
 
                 {activeTab && selectedSchedule && (
-                  <div className='px-2 pt-[27px]'>
-                    <ReservationCardList status={activeTab} reservations={reservations} activityId={activityId} />
+                  <div className='px-2 py-[27px]'>
+                    <ReservationCardList
+                      status={activeTab}
+                      reservations={reservations}
+                      activityId={activityId}
+                      scheduleId={Number(selectedSchedule?.value)}
+                    />
                   </div>
                 )}
               </div>
