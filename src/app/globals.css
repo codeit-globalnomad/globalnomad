@@ -67,6 +67,25 @@
   --color-blue-100: #0085ff;
 }
 
+@keyframes glow-effect {
+  0% {
+    opacity: 0.1;
+    transform: translateX(-150%);
+  }
+  50% {
+    opacity: 1;
+    transform: translateX(150%);
+  }
+  100% {
+    opacity: 0.1;
+    transform: translateX(-150%);
+  }
+}
+
+.animate-glow {
+  animation: glow-effect 4s infinite ease-in-out;
+}
+
 body {
   min-width: 375px;
 }
