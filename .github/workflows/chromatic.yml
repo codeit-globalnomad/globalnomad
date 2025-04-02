@@ -12,6 +12,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Install dependencies
         run: npm install
@@ -20,11 +22,8 @@ jobs:
         run: npm run build-storybook
 
       - name: Publish to Chromatic
-        run: | 
-         npx chromatic \
-          --project-token=${{ secrets.CHROMATIC_PROJECT_TOKEN }} \
-          --exit-zero-on-changes \
-          --exit-once-uploaded
-
-
-  
+        run: |
+          npx chromatic \
+           --project-token=${{ secrets.CHROMATIC_PROJECT_TOKEN }} \
+           --exit-zero-on-changes \
+           --exit-once-uploaded
