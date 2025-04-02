@@ -95,7 +95,13 @@ export default function ReservationCardList({ status, activityId, reservations, 
   }, [hasMore, isLoading, reservations.length, currentReservations]);
 
   return (
-    <div className='h-[340px] overflow-y-auto'>
+    <div className='custom-scrollbar h-[340px] overflow-y-auto'>
+      <style jsx>{`
+        .custom-scrollbar::-webkit-scrollbar {
+          display: none;
+        }
+      `}</style>
+
       <div className='flex flex-col gap-[14px]'>
         {currentReservations.length > 0 ? (
           currentReservations.map((info) => (

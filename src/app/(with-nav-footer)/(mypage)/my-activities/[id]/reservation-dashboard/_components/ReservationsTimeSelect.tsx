@@ -21,7 +21,7 @@ export default function ReservationsTimeSelect({
   handleSelect,
 }: ReservationDetailsProps) {
   return (
-    <div>
+    <div className='text-black-100'>
       <div className='mb-4 text-[20px] font-semibold'>예약 날짜</div>
       <div className='mb-1 text-[20px] leading-[32px] font-normal'>{formattedDate}</div>
       <FilterDropdown
@@ -30,7 +30,7 @@ export default function ReservationsTimeSelect({
         label='시간대 선택'
         icon={arrowFilterDropdown2}
         selected={selectedSchedule || { label: '시작시간 ~ 종료시간', value: '' }}
-        buttonClassName='w-full rounded-[4px] h-[56px] border border-gray-800 py-2 px-4 text-black-100 bg-white'
+        buttonClassName='w-full rounded-[4px] h-[56px] border border-gray-800 py-2 px-4 bg-white'
         optionClassName='border-gray-800 p-3'
         dropdownClassName='w-full border rounded-[4px] border-gray-800 overflow-y-auto overflow-x-auto bg-white'
       />

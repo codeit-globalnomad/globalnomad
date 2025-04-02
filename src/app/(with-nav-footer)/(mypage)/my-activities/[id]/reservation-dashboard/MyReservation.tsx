@@ -72,7 +72,7 @@ export default function MyReservation({ activity, monthData }: Props) {
   );
 
   return (
-    <div className='relative'>
+    <div className='text-black-100 relative'>
       <div className='relative flex flex-col gap-[32px]'>
         <h1 className='flex items-center text-2xl leading-[42px] font-bold'>예약 현황</h1>
         <FilterDropdown
@@ -80,9 +80,9 @@ export default function MyReservation({ activity, monthData }: Props) {
           label='내가 등록한 체험'
           onSelect={handleSelectActivity}
           icon={arrowFilterDropdown2}
-          buttonClassName='h-[56px] w-full border text-black-100 border-gray-800 rounded-lg md:justify-between px-[15px] py-[12px] md:h-[56px] md:px-[15px] md:py-[15px]'
-          dropdownClassName='rounded-xl w-full border border-gray-300 bg-white drop-shadow-sm max-h-[200px] overflow-x-hidden overflow-y-auto'
-          optionClassName='text-md md:text-lg w-full h-[40px] leading-[40px] md:h-[50px] md:leading-[50px]'
+          buttonClassName='w-full rounded-[4px] h-[56px] border border-gray-800 py-2 px-4 bg-white'
+          optionClassName='border-gray-800 p-3'
+          dropdownClassName='w-full border rounded-[4px] border-gray-800 overflow-y-auto overflow-x-auto bg-white'
           includeAllOption={false}
           iconVisibleOnMobile={false}
           autoSelectFirstOption={false}

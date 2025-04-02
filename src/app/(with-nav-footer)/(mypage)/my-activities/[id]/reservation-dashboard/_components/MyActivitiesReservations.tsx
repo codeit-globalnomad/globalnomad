@@ -10,6 +10,7 @@ import ReservationStatusTabs from './ReservationStatusTabs';
 import NoReservations from './NoReservations';
 import ReservationsTimeSelect from './ReservationsTimeSelect';
 import LoadingSpinner from '@/components/LoadingSpinner';
+import useViewportWidth from '@/lib/hooks/useVIewPortWidth';
 
 type Props = {
   selectedDate: string;
@@ -41,6 +42,9 @@ export default function MyActivitiesReservations({ selectedDate, setSelectedDate
   });
   const [isOpen, setIsOpen] = useState(false);
   const popupRef = useRef<HTMLDivElement | null>(null);
+  const width = useViewportWidth();
+  const isSmallScreen = width <= 375;
+
   const reservations = reservationsData?.reservations || [];
 
   const options = useMemo(() => {
@@ -98,9 +102,13 @@ export default function MyActivitiesReservations({ selectedDate, setSelectedDate
   if (isError) return <div>에러가 발생했습니다</div>;
 
   return (
-    <div ref={popupRef}>
+    <div ref={popupRef} className='text-black-100'>
       {isOpen && (
-        <div className='text-black-100 absolute top-[220px] right-0 flex h-[697px] min-h-[582px] w-[429px] flex-col gap-[27px] rounded-[24px] border border-gray-300 bg-white px-6 py-6 shadow-md'>
+        <div
+          className={`absolute right-0 flex ${
+            isSmallScreen ? 'fixed top-0 h-[777px] border-white' : 'top-[220px] h-[697px] rounded-2xl border-gray-300'
+          } shadow-md' min-h-[582px] max-w-[429px] min-w-[375px] flex-col gap-7 border bg-white p-6`}
+        >
           <div className='flex items-center justify-between'>
             <h1 className='text-[24px] leading-[32px] font-bold'>예약 정보</h1>
             <Image
