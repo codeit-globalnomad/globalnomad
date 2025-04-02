@@ -3,11 +3,13 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import Modal from '@/components/Modal';
+import Button from '@/components/Button';
 import starIcon from '@/assets/icons/star.svg';
 import starFilledIcon from '@/assets/icons/star-hover.svg';
 import closeIcon from '@/assets/icons/close-fill.svg';
 import { ReservationWithActivity } from '@/lib/types/myReservation';
 import { useWriteReviewForReservation } from '@/lib/hooks/useMyReservation';
+import { toast } from 'react-toastify';
 
 type WriteReviewModalProps = {
   isOpen: boolean;
@@ -41,11 +43,11 @@ export default function WriteReviewModal({ isOpen, onClose, reservation }: Write
       },
       {
         onSuccess: () => {
-          alert('후기가 작성되었습니다.');
+          toast.success('후기가 작성되었습니다!');
           onClose();
         },
         onError: () => {
-          alert('후기 작성에 실패했습니다.');
+          toast.error('후기 작성에 실패했습니다.');
         },
       },
     );
@@ -110,13 +112,14 @@ export default function WriteReviewModal({ isOpen, onClose, reservation }: Write
         />
 
         {/* 버튼 */}
-        <button
+        <Button
+          variant='default'
           onClick={handleSubmit}
           disabled={isPending}
-          className='bg-black-200 mt-4 w-full rounded-md py-3 font-bold text-white hover:bg-gray-900 disabled:bg-gray-300'
+          className='mt-4 w-full py-3 text-lg font-bold'
         >
           {isPending ? '작성 중...' : '작성하기'}
-        </button>
+        </Button>
       </div>
     </Modal>
   );

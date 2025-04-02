@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { ReservationWithActivity } from '@/lib/types/myReservation';
 import CancelReservationModal from './CancelReservationModal';
 import WriteReviewModal from './WriteReviewModal';
+import Button from '@/components/Button';
 
 const STATUS_LABEL_MAP = {
   pending: '예약 신청',
@@ -48,66 +49,67 @@ export default function MyReservationCard({ reservation }: MyReservationCardProp
 
   return (
     <>
-      <div className='flex w-full overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm'>
-        {/* 썸네일 */}
-        <div className='h-[204px] w-[204px] flex-shrink-0 overflow-hidden rounded-l-lg'>
-          <Image
-            src={activity.bannerImageUrl}
-            alt={activity.title}
-            width={204}
-            height={204}
-            className='h-full w-full object-cover'
-          />
-        </div>
-
-        {/* 텍스트 정보 */}
-        <div className='flex flex-1 flex-col justify-between px-6 py-4'>
-          <div className='flex flex-col gap-4'>
-            <p className={`text-lg font-bold ${statusColorClass}`}>{statusLabel}</p>
-            <h3 className='text-black-200 text-xl font-bold'>{activity.title}</h3>
-            <p className='text-2lg text-black-200 font-regular'>{formattedDate}</p>
+      <div className='mb-6 w-full max-w-[792px] min-w-[344px] rounded-2xl shadow-md hover:bg-gray-100'>
+        <div className='flex'>
+          {/* 이미지 */}
+          <div className='relative aspect-[1/1] w-[128px] md:w-[156px] lg:w-[204px]'>
+            <Image
+              src={activity.bannerImageUrl}
+              alt={activity.title}
+              fill
+              sizes='(max-width: 768px) 128px, (max-width: 1024px) 156px, 204px'
+              className='absolute rounded-tl-2xl rounded-bl-2xl object-cover'
+            />
           </div>
 
-          <div className='flex items-end justify-between'>
-            <p className='text-black-200 text-2xl font-medium'>₩{totalPrice.toLocaleString()}</p>
+          {/* 텍스트 영역 */}
+          <div className='flex w-full flex-col px-[24px] py-[10px] md:py-[14px]'>
+            <div className='flex flex-col gap-1 leading-normal'>
+              <p className={`text-lg font-bold ${statusColorClass}`}>{statusLabel}</p>
+              <h3 className='text-black-200 md:text-2lg overflow-hidden text-lg font-bold text-ellipsis whitespace-nowrap lg:text-2xl'>
+                {activity.title}
+              </h3>
+              <p className='text-black-200 md:text-md lg:text-2lg font-regular text-xs'>{formattedDate}</p>
+            </div>
 
-            {/* 버튼 영역 */}
-            {status === 'pending' && (
-              <button
-                onClick={() => setIsCancelModalOpen(true)}
-                className='border-black-200 text-black-200 rounded-md border px-3 py-2 text-lg font-bold hover:bg-gray-300'
-              >
-                예약 취소
-              </button>
-            )}
+            <div className='mt-2 flex flex-row flex-wrap items-center justify-between gap-2'>
+              <p className='text-black-200 text-md font-medium md:text-xl'>₩ {totalPrice.toLocaleString()}</p>
 
-            {status === 'completed' && !reviewSubmitted && (
-              <button
-                onClick={() => setIsReviewModalOpen(true)}
-                className='bg-black-200 rounded-md px-3 py-2 text-lg font-bold text-white hover:bg-gray-900'
-              >
-                후기 작성
-              </button>
-            )}
+              {status === 'pending' && (
+                <Button
+                  variant='outline'
+                  onClick={() => setIsCancelModalOpen(true)}
+                  className='!w-fit px-4 py-2 text-xs font-bold md:text-sm'
+                >
+                  예약 취소
+                </Button>
+              )}
 
-            {status === 'completed' && reviewSubmitted && (
-              <span className='text-lg font-bold text-gray-400'>후기 작성 완료</span>
-            )}
+              {status === 'completed' && !reviewSubmitted && (
+                <Button
+                  variant='default'
+                  onClick={() => setIsReviewModalOpen(true)}
+                  className='!w-fit px-4 py-2 text-xs font-bold md:text-sm'
+                >
+                  후기 작성
+                </Button>
+              )}
+
+              {status === 'completed' && reviewSubmitted && (
+                <span className='text-xs font-bold text-green-100 md:text-sm'>후기 작성 완료</span>
+              )}
+            </div>
           </div>
         </div>
       </div>
 
-      {/* 예약 취소 모달 */}
+      {/* 모달 */}
       <CancelReservationModal
         isOpen={isCancelModalOpen}
         onClose={() => setIsCancelModalOpen(false)}
         reservationId={reservationId}
-        onCancel={() => {
-          setIsCancelModalOpen(false);
-        }}
+        onCancel={() => setIsCancelModalOpen(false)}
       />
-
-      {/* 후기 작성 모달 */}
       <WriteReviewModal
         isOpen={isReviewModalOpen}
         onClose={() => setIsReviewModalOpen(false)}
