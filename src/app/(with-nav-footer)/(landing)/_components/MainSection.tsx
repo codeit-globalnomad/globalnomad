@@ -7,8 +7,8 @@ import section1Lg from '@/assets/images/section1-lg.png';
 import section2Lg from '@/assets/images/section2-lg.png';
 import section3Lg from '@/assets/images/section3-lg.png';
 import section1Md from '@/assets/images/section1-md.png';
-import section2Md from '@/assets/images/section2-Md.png';
-import section3Md from '@/assets/images/section3-Md.png';
+import section2Md from '@/assets/images/section2-md.png';
+import section3Md from '@/assets/images/section3-md.png';
 
 const MotionImage = motion.create(Image);
 
