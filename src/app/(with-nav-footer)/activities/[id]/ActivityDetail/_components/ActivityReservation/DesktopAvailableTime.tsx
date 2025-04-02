@@ -48,7 +48,7 @@ export default function DesktopAvailableTime({
             <Image src={leftArrow} width={26} height={26} alt='이전 화살표 아이콘' />
           </div>
           <div
-            className={`custom-next ${currentIndex === availableTimes.length - 1 ? 'pointer-events-none opacity-50' : ''}`}
+            className={`custom-next ${availableTimes.length === 0 || currentIndex === availableTimes.length - 1 ? 'pointer-events-none opacity-50' : ''}`}
           >
             <Image src={leftArrow} width={26} height={26} alt='다음 화살표 아이콘' className='scale-x-[-1] transform' />
           </div>

@@ -55,7 +55,7 @@ export default function TabletReservation({ isLoggedIn, currentActivityId, price
     if (date instanceof Date) {
       setSelectedDate(date);
     } else if (Array.isArray(date) && date[0] instanceof Date) {
-      setSelectedDate(date[0]); // 시작 날짜만 선택
+      setSelectedDate(date[0]);
     }
     setSelectedTimeId(null);
   };
@@ -129,6 +129,7 @@ export default function TabletReservation({ isLoggedIn, currentActivityId, price
       const schedule = availableSchedule?.find(({ date }) => date === selectedDateStr);
       setAvailableTimes(schedule?.times || []);
       swiperRef.current?.slideTo(0);
+      setValue('people', 1);
     }
   }, [selectedDate, availableSchedule]);
 
@@ -205,7 +206,7 @@ export default function TabletReservation({ isLoggedIn, currentActivityId, price
               </button>
 
               {isModalOpen && (
-                <Modal onClose={handleCloseModal} className='relative w-[350px]'>
+                <Modal onClose={handleCloseModal} className='relative w-[380px]'>
                   <ol className='flex flex-col gap-[20px]'>
                     <li className='flex items-center justify-between'>
                       <h2 className='text-2xl font-bold'>날짜 / 시간</h2>
@@ -265,7 +266,7 @@ export default function TabletReservation({ isLoggedIn, currentActivityId, price
                             <Image src={leftArrow} width={26} height={26} alt='이전 화살표 아이콘' />
                           </div>
                           <div
-                            className={`custom-next ${currentIndex === availableTimes.length - 1 ? 'pointer-events-none opacity-50' : ''}`}
+                            className={`custom-next ${availableTimes.length === 0 || currentIndex === availableTimes.length - 1 ? 'pointer-events-none opacity-50' : ''}`}
                           >
                             <Image
                               src={leftArrow}

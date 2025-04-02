@@ -8,6 +8,35 @@
 .react-calendar.tabletReservation {
   padding:10px;
 }
+
+.react-calendar.mobileReservation {
+  border:none;
+  width:100%;
+}
+
+.tabletReservation .react-calendar__tile {
+  aspect-ratio: 1 / 1; 
+}
+
+.mobileReservation .react-calendar__tile {
+  flex-grow: 1;
+  height: auto; 
+  aspect-ratio: 1 / 0.7; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 500px) {
+  .react-calendar.mobileReservation {
+    padding: 10px;
+  }
+  .mobileReservation .react-calendar__tile {
+    aspect-ratio: 1 / 1; 
+  }
+}
+
+
 .react-calendar__navigation {
   margin-bottom: 0!important;
 }
@@ -90,5 +119,6 @@
   font-weight: bold;
 }
 
- 
-
+.custom-next.swiper-button-disabled {
+  opacity: 0.5;
+}

@@ -90,7 +90,7 @@ export default function ActivityDetailPage({ id }: { id: number }) {
         </section>
         {!isSameUser && (
           <section className='md: fixed bottom-0 left-0 z-50 w-full md:relative md:top-0 md:right-0 md:w-[28%]'>
-            <MobileReservation />
+            <MobileReservation isLoggedIn={isLoggedIn} currentActivityId={currentActivityId} price={price} />
             <div className='sticky top-3 md:mt-6 md:mb-3'>
               <TabletReservation isLoggedIn={isLoggedIn} currentActivityId={currentActivityId} price={price} />
               <DesktopReservation isLoggedIn={isLoggedIn} currentActivityId={currentActivityId} price={price} />
