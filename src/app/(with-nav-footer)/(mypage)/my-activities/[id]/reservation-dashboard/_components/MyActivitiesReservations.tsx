@@ -9,7 +9,6 @@ import Image from 'next/image';
 import ReservationStatusTabs from './ReservationStatusTabs';
 import NoReservations from './NoReservations';
 import ReservationsTimeSelect from './ReservationsTimeSelect';
-import LoadingSpinner from '@/components/LoadingSpinner';
 import useViewportWidth from '@/lib/utils/useVIewPortWidth';
 
 type Props = {
@@ -96,8 +95,6 @@ export default function MyActivitiesReservations({ selectedDate, setSelectedDate
       refetchReservations();
     }
   }, [filteredSchedule, selectedSchedule, refetchReservations, isLoading]);
-
-  if (isLoading) return <LoadingSpinner />;
 
   if (isError) return <div>에러가 발생했습니다</div>;
 

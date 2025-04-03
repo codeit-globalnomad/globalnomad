@@ -7,6 +7,7 @@ import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import arrowFilterDropdown2 from '@/assets/icons/arrow-filter-dropdown2.svg';
 import { MyActivitiesResponse, ReservationDashboardResponse } from '@/lib/types/myActivities';
 import MyActivitiesReservations from './_components/MyActivitiesReservations';
+import LoadingSpinner from '@/components/LoadingSpinner';
 
 type Props = {
   activity: MyActivitiesResponse;
@@ -35,6 +36,21 @@ export default function MyReservation({ activity, monthData }: Props) {
     label: act.title,
     value: act.id,
   }));
+
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (id) {
+      setLoading(true);
+      const activityId = Number(id);
+      setSelectedActivityId(activityId);
+
+      const selectedActivity = activitiesFilterOption.find((activity) => activity.value === activityId);
+      setSelectOption(selectedActivity || null);
+
+      setLoading(false);
+    }
+  }, [id, activity.activities]);
 
   useEffect(() => {
     if (id) {
@@ -70,6 +86,10 @@ export default function MyReservation({ activity, monthData }: Props) {
     },
     [selectedActivityId, currentYear, currentMonth],
   );
+
+  if (loading) {
+    return <LoadingSpinner />;
+  }
 
   return (
     <div className='text-black-100 relative'>
