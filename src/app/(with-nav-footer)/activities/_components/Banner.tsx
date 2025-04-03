@@ -7,9 +7,10 @@ import { Autoplay, EffectFade, Pagination } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/effect-fade';
 import 'swiper/css/pagination';
+import RetryError from '@/components/RetryError';
 
 export default function Banner() {
-  const { data, isLoading, isError } = useActivities({
+  const { data, isLoading, isError, refetch } = useActivities({
     method: 'offset',
     sort: 'most_reviewed',
   });
@@ -17,7 +18,7 @@ export default function Banner() {
   const bestActivitiesBanner = data?.activities?.slice(0, 4);
 
   if (isLoading) return <BannerSkeleton />;
-  if (isError) return <div>에러가 발생했습니다.</div>;
+  if (isError) return <RetryError onRetry={refetch} className='py-40' />;
 
   return (
     <section aria-label='체험 목록 페이지 배너' className='relative h-[240px] w-full md:h-[550px]'>
