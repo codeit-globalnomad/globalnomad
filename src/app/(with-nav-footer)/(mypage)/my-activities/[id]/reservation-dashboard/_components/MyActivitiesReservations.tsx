@@ -78,6 +78,18 @@ export default function MyActivitiesReservations({ selectedDate, setSelectedDate
     setSelectedDate('');
   });
 
+  useEffect(() => {
+    if (isOpen && isSmallScreen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isOpen, isSmallScreen]);
+
   const handleSelect = (option: FilterDropdownOption | null) => {
     setSelectedSchedule(option);
   };
