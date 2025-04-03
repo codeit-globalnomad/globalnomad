@@ -58,10 +58,10 @@ export default function MyActivitiesReservations({ selectedDate, setSelectedDate
   }, [dateSchedule]);
 
   useEffect(() => {
-    if (options.length > 0 && !selectedSchedule) {
+    if (isOpen && options.length > 0) {
       setSelectedSchedule(options[0] || null);
     }
-  }, [options, selectedSchedule]);
+  }, [isOpen, options]);
 
   useEffect(() => {
     if (dateSchedule && dateSchedule.length > 0 && !activeTab) {
@@ -105,15 +105,21 @@ export default function MyActivitiesReservations({ selectedDate, setSelectedDate
     : undefined;
 
   useEffect(() => {
-    if (!isLoading && filteredSchedule && filteredSchedule.length > 0) {
+    if (!isLoading && selectedSchedule) {
       refetchReservations();
     }
-  }, [filteredSchedule, selectedSchedule, refetchReservations, isLoading]);
+  }, [selectedSchedule, refetchReservations, isLoading]);
 
   useEffect(() => {
     setSelectedSchedule(null);
     setActiveTab('pending');
-  }, [selectedDate]);
+    refetchReservations();
+  }, [selectedDate, refetchReservations]);
+
+  useEffect(() => {
+    setSelectedSchedule(null);
+    refetchReservations();
+  }, [refetchReservations]);
 
   useEffect(() => {
     setSelectedSchedule(selectedSchedule);

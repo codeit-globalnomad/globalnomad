@@ -101,6 +101,13 @@ export default function ReservationCardList({
     return () => observer.disconnect();
   }, [hasMore, isFetching]);
 
+  useEffect(() => {
+    setCurrentReservations([]);
+    cursorIdRef.current = undefined;
+    setHasMore(true);
+    fetchReservations();
+  }, [status, activityId, scheduleId]);
+
   return (
     <div
       className={`${isSmallScreen ? (currentReservations.length > 0 ? 'h-[300px] min-h-[250px]' : 'h-auto') : currentReservations.length > 0 ? 'h-[340px]' : 'h-auto'} custom-scrollbar relative overflow-y-auto`}
