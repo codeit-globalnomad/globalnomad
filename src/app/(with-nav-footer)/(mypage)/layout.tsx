@@ -1,42 +1,19 @@
 'use client';
 
 import SideNavMenu from '@/components/SideNavMenu';
-import { ProfileImageProvider, useProfileImage } from '@/lib/contexts/ProfileImageContext';
-import { useMyActivities } from '@/lib/hooks/useMyActivities';
-import { useMyData } from '@/lib/hooks/useUsers';
-import { useEffect, useMemo, useState } from 'react';
+import { ProfileImageProvider } from '@/lib/contexts/ProfileImageContext';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
+import { useState, useEffect } from 'react';
+import { useProfileInit } from '@/lib/utils/useProfileInit';
 
 function MobileOnlyMenu() {
-  const { data: user } = useMyData();
-  const { data: activity } = useMyActivities();
-  const { setProfileImageUrl } = useProfileImage();
-
-  useEffect(() => {
-    if (user?.profileImageUrl) {
-      setProfileImageUrl(user.profileImageUrl);
-    }
-  }, [user, setProfileImageUrl]);
-
-  const activityId = useMemo(() => activity?.activities?.[0]?.id, [activity?.activities]);
-
+  const activityId = useProfileInit();
   return <SideNavMenu activityId={activityId} />;
 }
 
 function WithProfileImageContext({ children }: { children: React.ReactNode }) {
-  const { data: user } = useMyData();
-  const { data: activity } = useMyActivities();
-  const { setProfileImageUrl } = useProfileImage();
-
-  useEffect(() => {
-    if (user?.profileImageUrl) {
-      setProfileImageUrl(user.profileImageUrl);
-    }
-  }, [user, setProfileImageUrl]);
-
-  const activityId = useMemo(() => activity?.activities?.[0]?.id, [activity?.activities]);
-
+  const activityId = useProfileInit();
   return (
     <div className='flex w-full max-w-[1140px] gap-4'>
       <SideNavMenu activityId={activityId} />

@@ -1,25 +1,13 @@
 'use client';
 
 import SideNavMenu from '@/components/SideNavMenu';
-import { useMyActivities } from '@/lib/hooks/useMyActivities';
-import { useMyData } from '@/lib/hooks/useUsers';
-import { useEffect, useMemo } from 'react';
-import { ProfileImageProvider, useProfileImage } from '@/lib/contexts/ProfileImageContext';
-import { useRouter, usePathname } from 'next/navigation';
+import { ProfileImageProvider } from '@/lib/contexts/ProfileImageContext';
+import { usePathname, useRouter } from 'next/navigation';
+import { useEffect } from 'react';
+import { useProfileInit } from '@/lib/utils/useProfileInit';
 
 function MobileSideNavWrapper() {
-  const { data: user } = useMyData();
-  const { data: activity } = useMyActivities();
-  const { setProfileImageUrl } = useProfileImage();
-
-  const activityId = useMemo(() => activity?.activities?.[0]?.id, [activity?.activities]);
-
-  useEffect(() => {
-    if (user?.profileImageUrl) {
-      setProfileImageUrl(user.profileImageUrl);
-    }
-  }, [user, setProfileImageUrl]);
-
+  const activityId = useProfileInit();
   return <SideNavMenu activityId={activityId} />;
 }
 
@@ -37,9 +25,15 @@ export default function Page() {
       }
     };
 
+    let timeoutId: NodeJS.Timeout;
+    const debouncedResize = () => {
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(handleResize, 100);
+    };
+
     handleResize();
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    window.addEventListener('resize', debouncedResize);
+    return () => window.removeEventListener('resize', debouncedResize);
   }, [pathname, router]);
 
   return (
