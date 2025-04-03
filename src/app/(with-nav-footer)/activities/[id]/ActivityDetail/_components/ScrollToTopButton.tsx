@@ -24,7 +24,7 @@ export default function ScrollToTopButton({ onClick }: ScrollToTopButtonProps) {
     showButton && (
       <button
         onClick={onClick}
-        className='fixed right-5 bottom-[70px] z-70 cursor-pointer rounded-full border-1 border-gray-200 bg-white p-3 md:bottom-5'
+        className='fixed right-5 bottom-[100px] z-45 cursor-pointer rounded-full border-1 border-gray-200 bg-white p-3 md:bottom-[10px]'
       >
         <Image src={arrowTop} alt='상단으로 이동' className='h-[16px] w-[16px]' />
       </button>
