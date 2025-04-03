@@ -98,6 +98,15 @@ export default function MyActivitiesReservations({ selectedDate, setSelectedDate
     }
   }, [filteredSchedule, selectedSchedule, refetchReservations, isLoading]);
 
+  useEffect(() => {
+    setSelectedSchedule(null);
+    setActiveTab('pending');
+  }, [selectedDate]);
+
+  useEffect(() => {
+    setSelectedSchedule(selectedSchedule);
+  }, [selectedSchedule]);
+
   if (isError) return <div>에러가 발생했습니다</div>;
 
   return (
@@ -143,6 +152,7 @@ export default function MyActivitiesReservations({ selectedDate, setSelectedDate
                 {activeTab && selectedSchedule && (
                   <div className='px-2 py-[27px]'>
                     <ReservationCardList
+                      key={selectedSchedule?.value}
                       status={activeTab}
                       reservations={reservations}
                       activityId={activityId}
