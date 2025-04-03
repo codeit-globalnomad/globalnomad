@@ -12,6 +12,7 @@ import Pagination from '@/components/Pagination';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import leftArrow from '@/assets/icons/left-arrow.svg';
 import empty from '@/assets/icons/empty.svg';
+import RetryError from '@/components/RetryError';
 
 export default function ActivityList() {
   const router = useRouter();
@@ -22,7 +23,7 @@ export default function ActivityList() {
   const isTablet = useMediaQuery('(min-width: 768px) and (max-width: 1023px)');
   const itemsPerPage = isPC ? 8 : isTablet ? 9 : 4;
 
-  const { data, isLoading, isError } = useActivities({
+  const { data, isLoading, isError, refetch } = useActivities({
     method: 'offset',
     keyword: searchTerm || undefined,
     page: currentPage,
@@ -62,7 +63,7 @@ export default function ActivityList() {
   }, [searchParams]);
 
   if (isLoading) return <LoadingSpinner />;
-  if (isError) return <div>에러가 발생했습니다.</div>;
+  if (isError) return <RetryError onRetry={refetch} className='py-40' />;
 
   return (
     <>
