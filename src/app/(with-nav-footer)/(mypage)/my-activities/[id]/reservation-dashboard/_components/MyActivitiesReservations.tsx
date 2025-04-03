@@ -39,12 +39,14 @@ export default function MyActivitiesReservations({ selectedDate, setSelectedDate
     status: activeTab as ReservationStatus,
     size: 3,
   });
+
   const [isOpen, setIsOpen] = useState(false);
   const popupRef = useRef<HTMLDivElement | null>(null);
   const width = useViewportWidth();
   const isSmallScreen = width <= 375;
 
   const reservations = reservationsData?.reservations || [];
+  const firstCursorId = reservations.at(-1)?.id;
 
   const options = useMemo(() => {
     return dateSchedule
@@ -145,6 +147,7 @@ export default function MyActivitiesReservations({ selectedDate, setSelectedDate
                       reservations={reservations}
                       activityId={activityId}
                       scheduleId={Number(selectedSchedule?.value)}
+                      firstCursorId={reservations ? firstCursorId : undefined}
                       isSmallScreen={isSmallScreen}
                     />
                   </div>
