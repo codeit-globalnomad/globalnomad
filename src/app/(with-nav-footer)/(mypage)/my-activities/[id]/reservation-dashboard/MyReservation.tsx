@@ -31,35 +31,24 @@ export default function MyReservation({ activity, monthData }: Props) {
   const [selectOption, setSelectOption] = useState<ActivitiesFilterOption | null>(null);
   const [selectedDate, setSelectedDate] = useState('');
   const [selectedActivityId, setSelectedActivityId] = useState<number | null>(null);
+  const [loading, setLoading] = useState(true);
 
   const activitiesFilterOption = activity.activities.map((act) => ({
     label: act.title,
     value: act.id,
   }));
 
-  const [loading, setLoading] = useState(true);
-
   useEffect(() => {
-    if (id) {
-      setLoading(true);
-      const activityId = Number(id);
-      setSelectedActivityId(activityId);
+    if (!id) return;
 
-      const selectedActivity = activitiesFilterOption.find((activity) => activity.value === activityId);
-      setSelectOption(selectedActivity || null);
+    setLoading(true);
+    const activityId = Number(id);
+    setSelectedActivityId(activityId);
 
-      setLoading(false);
-    }
-  }, [id, activity.activities]);
+    const selectedActivity = activitiesFilterOption.find((activity) => activity.value === activityId);
+    setSelectOption(selectedActivity || null);
 
-  useEffect(() => {
-    if (id) {
-      const activityId = Number(id);
-      setSelectedActivityId(activityId);
-
-      const selectedActivity = activitiesFilterOption.find((activity) => activity.value === activityId);
-      setSelectOption(selectedActivity || null);
-    }
+    setLoading(false);
   }, [id, activity.activities]);
 
   const handleSelectActivity = (option: ActivitiesFilterOption | null) => {
@@ -78,13 +67,11 @@ export default function MyReservation({ activity, monthData }: Props) {
       const newYear = activeStartDate.getFullYear();
       const newMonth = activeStartDate.getMonth() + 1;
 
-      if (selectedActivityId) {
-        router.push(
-          `/my-activities/${selectedActivityId}/reservation-dashboard?year=${newYear}&month=${newMonth.toString().padStart(2, '0')}`,
-        );
-      }
+      router.push(
+        `/my-activities/${selectedActivityId}/reservation-dashboard?year=${newYear}&month=${newMonth.toString().padStart(2, '0')}`,
+      );
     },
-    [selectedActivityId, currentYear, currentMonth],
+    [selectedActivityId],
   );
 
   if (loading) {
@@ -107,6 +94,7 @@ export default function MyReservation({ activity, monthData }: Props) {
           iconVisibleOnMobile={false}
           autoSelectFirstOption={false}
           selected={selectOption}
+          value={selectOption?.label}
         />
         <span className='absolute top-[65px] left-[16px] bg-white px-2 text-[14px] font-normal'>체험명</span>
       </div>

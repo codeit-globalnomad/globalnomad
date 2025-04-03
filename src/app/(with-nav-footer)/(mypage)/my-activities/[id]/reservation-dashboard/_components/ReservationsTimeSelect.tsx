@@ -30,6 +30,7 @@ export default function ReservationsTimeSelect({
         label='시간대 선택'
         icon={arrowFilterDropdown2}
         selected={selectedSchedule || { label: '시작시간 ~ 종료시간', value: '' }}
+        value={selectedSchedule?.label} // 🔥 value 추가
         buttonClassName='w-full rounded-[4px] h-[56px] border border-gray-800 py-2 px-4 bg-white'
         optionClassName='border-gray-800 p-3'
         dropdownClassName='w-full border rounded-[4px] border-gray-800 overflow-y-auto overflow-x-auto bg-white'
