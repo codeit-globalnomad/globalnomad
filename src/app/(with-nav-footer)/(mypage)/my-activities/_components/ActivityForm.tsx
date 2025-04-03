@@ -107,15 +107,15 @@ export default function ActivityForm({
             />
           )}
         />
-        {errors.category && <p className='text-sm text-red-500'>{errors.category.message}</p>}
+        {errors.category && <p className='text-sm text-red-100'>{errors.category.message}</p>}
 
         <label className='text-black-100 inline-flex items-center gap-1 text-lg font-medium'>설명</label>
         <textarea
-          className='h-[260px] w-full rounded-[4px] border border-gray-800 px-4 py-2 focus:border-green-100 focus:ring-1 focus:ring-green-100 focus:outline-none'
+          className='h-[260px] w-full rounded-[4px] border border-gray-800 px-4 py-3 focus:border-green-100 focus:ring-1 focus:ring-green-100 focus:outline-none'
           placeholder='설명을 입력해주세요'
           {...register('description')}
         />
-        {errors.description && <p className='text-sm text-red-500'>{errors.description.message}</p>}
+        {errors.description && <p className='text-sm text-red-100'>{errors.description.message}</p>}
 
         <Controller
           control={control}
