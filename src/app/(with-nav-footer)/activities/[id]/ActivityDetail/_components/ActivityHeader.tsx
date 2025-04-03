@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -48,6 +48,11 @@ export default function ActivityHeader({ activityDetail, isSameUser }: ActivityH
   };
 
   const xShareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(`${title}\n📍 ${address}\n`)}&url=${window.location.origin}${pathname}`;
+
+  const kakaoShare = useMemo(
+    () => <KakaoShare title={title} description={description} bannerImageUrl={bannerImageUrl} pathname={pathname} />,
+    [title, description, bannerImageUrl, pathname],
+  );
 
   const dropdownOptions = [
     { label: '수정하기', onClick: () => router.push(`/my-activities/${id}`) },
@@ -97,12 +102,13 @@ export default function ActivityHeader({ activityDetail, isSameUser }: ActivityH
                   <p className='text-md font-regular'>링크복사</p>
                 </li>
                 <li className='text-center'>
-                  <KakaoShare
+                  {/* <KakaoShare
                     title={title}
                     description={description}
                     bannerImageUrl={bannerImageUrl}
                     pathname={pathname}
-                  />
+                  /> */}
+                  {kakaoShare}
                   <p className='text-md font-regular'>카카오톡</p>
                 </li>
                 <li className='text-center'>
