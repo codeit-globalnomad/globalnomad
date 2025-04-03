@@ -102,12 +102,6 @@ export default function ActivityHeader({ activityDetail, isSameUser }: ActivityH
                   <p className='text-md font-regular'>링크복사</p>
                 </li>
                 <li className='text-center'>
-                  {/* <KakaoShare
-                    title={title}
-                    description={description}
-                    bannerImageUrl={bannerImageUrl}
-                    pathname={pathname}
-                  /> */}
                   {kakaoShare}
                   <p className='text-md font-regular'>카카오톡</p>
                 </li>
