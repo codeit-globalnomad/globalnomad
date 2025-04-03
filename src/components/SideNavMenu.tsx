@@ -59,16 +59,18 @@ const SideNavMenu = ({ activityId }: SideNavMenuProps) => {
   ];
 
   return (
-    <aside className='h-[432px] w-[251px] flex-none rounded-lg border border-gray-300 bg-white p-4 shadow-md md:w-[384px]'>
-      <div className='relative flex flex-col items-center gap-4'>
-        <ProfileImage size='large' src={previewImage || profileImageUrl || undefined} />
-        <label
-          className='hover:bg-green-10 absolute right-7 bottom-0 flex h-11 w-11 cursor-pointer items-center justify-center rounded-full bg-green-100 transition md:right-24'
-          aria-label='프로필 수정'
-        >
-          <Image src={EditIcon} alt='프로필 수정' width={24} height={24} />
-          <input type='file' accept='image/*' className='hidden' onChange={handleFileChange} />
-        </label>
+    <aside className='mx-auto h-[432px] w-[384px] flex-none rounded-lg border border-gray-300 bg-white p-4 shadow-md sm:w-[251px] md:w-[344px]'>
+      <div className='flex justify-center'>
+        <div className='relative w-fit'>
+          <ProfileImage size='large' src={previewImage || profileImageUrl || undefined} />
+          <label
+            className='hover:bg-green-10 absolute -right-0 -bottom-0 flex h-11 w-11 cursor-pointer items-center justify-center rounded-full bg-green-100 transition'
+            aria-label='프로필 수정'
+          >
+            <Image src={EditIcon} alt='프로필 수정' width={24} height={24} />
+            <input type='file' accept='image/*' className='hidden' onChange={handleFileChange} />
+          </label>
+        </div>
       </div>
       <nav className='mt-6'>
         <ul className='flex flex-col gap-1'>
@@ -85,7 +87,7 @@ const SideNavMenu = ({ activityId }: SideNavMenuProps) => {
                 <Link
                   href={item.path}
                   className={`group flex w-full items-center gap-3 rounded-lg p-3 text-lg font-bold transition ${
-                    isActive ? 'text-black-200 bg-gray-200' : 'hover:bg-green-10 hover:text-black-200 text-gray-700'
+                    isActive ? 'text-black-200 bg-white' : 'hover:bg-green-10 hover:text-black-200 text-gray-700'
                   }`}
                 >
                   <Image

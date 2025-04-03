@@ -7,6 +7,7 @@ import MyReservationCard from './MyReservationCard';
 import FilterDropdown from '@/components/FilterDropdown';
 import arrowDownIcon from '@/assets/icons/arrow-filter-dropdown.svg';
 import emptyIcon from '@/assets/icons/empty.svg';
+import LoadingSpinner from '@/components/LoadingSpinner';
 
 const STATUS_LABEL_MAP = {
   pending: '예약 신청',
@@ -16,10 +17,10 @@ const STATUS_LABEL_MAP = {
   completed: '체험 완료',
 } as const;
 
-type Status = keyof typeof STATUS_LABEL_MAP | undefined; // all 제거, undefined로 사용
+type Status = keyof typeof STATUS_LABEL_MAP | undefined;
 
 const STATUS_OPTIONS = [
-  { label: '전체', value: undefined }, // all 제거하고 undefined로 사용
+  { label: '전체', value: undefined },
   ...Object.entries(STATUS_LABEL_MAP).map(([value, label]) => ({
     label,
     value,
@@ -47,12 +48,13 @@ export default function MyReservations() {
     return () => observer.disconnect();
   }, [fetchNextPage, hasNextPage]);
 
-  const selectedOption = STATUS_OPTIONS.find((opt) => opt.value === status);
+  const selectedOption =
+    status === undefined ? { label: '필터', value: undefined } : STATUS_OPTIONS.find((opt) => opt.value === status);
 
   return (
     <section className='w-full space-y-6'>
       <div className='flex items-center justify-between'>
-        <h1 className='text-black-200 text-2xl font-bold'>예약 내역</h1>
+        <h1 className='text-black-200 mb-0 text-2xl font-bold'>예약 내역</h1>
         <FilterDropdown
           label='필터'
           options={STATUS_OPTIONS}
@@ -60,13 +62,13 @@ export default function MyReservations() {
           onSelect={(option) => setStatus(option?.value as Status)}
           icon={arrowDownIcon}
           buttonClassName='min-w-[120px] justify-between  px-4 py-2 rounded-xl border border-green-100 font-medium whitespace-nowrap text-green-100'
-          dropdownClassName='min-w-[120px] border border-gray-300 bg-white drop-shadow-sm mt-2'
-          optionClassName='text-md text-lg px-4 py-2 text-lg font-medium text-gray-900 hover:bg-gray-100'
+          dropdownClassName='min-w-[120px] border border-gray-300 bg-white drop-shadow-sm rounded-xl'
+          optionClassName='text-md font-medium px-4 py-2  text-gray-900 hover:bg-gray-100'
         />
       </div>
 
       {isLoading ? (
-        <p className='text-center text-gray-400'>불러오는 중...</p>
+        <LoadingSpinner />
       ) : reservations.length === 0 ? (
         <div className='flex flex-col items-center justify-center py-20 text-center'>
           <Image src={emptyIcon} alt='예약 없음 아이콘' width={120} height={120} className='mb-6' />
@@ -74,7 +76,7 @@ export default function MyReservations() {
         </div>
       ) : (
         <>
-          <ul className='mx-auto w-full max-w-[680px] space-y-4 px-4'>
+          <ul className='w-full max-w-[680px] space-y-4 px-4'>
             {reservations.map((reservation) => (
               <li key={reservation.id}>
                 <MyReservationCard reservation={reservation} />
