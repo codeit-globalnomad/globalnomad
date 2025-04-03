@@ -22,7 +22,15 @@ export default meta;
 type Story = StoryObj<typeof Dropdown>;
 
 const options1 = [{ label: '수정하기' }, { label: '삭제하기' }];
-const options2 = [{ label: '마이 페이지', onClick: () => console.log('마이 페이지 클릭됨') }, { label: '로그아웃' }];
+const options2 = [
+  {
+    label: '마이 페이지',
+    onClick: () => {
+      window.location.reload();
+    },
+  },
+  { label: '로그아웃' },
+];
 
 export const EditDeleteDropdown: Story = {
   args: {

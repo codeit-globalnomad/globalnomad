@@ -56,22 +56,34 @@ export const createActivitySchema = z.object({
   description: z
     .string()
     .min(1, { message: '설명을 입력해주세요.' })
-    .regex(/^[a-zA-Z0-9가-힣\s]*$/, { message: '설명은 문자열로 입력해주세요.' }),
+    .regex(/^[a-zA-Z0-9가-힣\s.,!?]*$/, { message: '설명은 문자열로 입력해주세요.' }),
   address: z.string().min(1, { message: '주소를 입력해주세요.' }),
-  price: z.number().min(1, { message: '가격은 숫자로 입력해주세요.' }).int({ message: '가격은 정수로 입력해주세요.' }),
+  price: z.preprocess(
+    (val) => (val === '' ? undefined : val),
+    z
+      .number({ invalid_type_error: '가격은 필수 입력값입니다.' })
+      .min(1000, { message: '가격은 1000원 이상이어야 합니다.' })
+      .int({ message: '가격은 정수여야 합니다.' }),
+  ),
+
   schedules: z.array(createScheduleSchema).min(1, { message: '예약 가능한 시간대는 최소 1개 이상 등록해주세요.' }),
   bannerImageUrl: z.string(),
   subImageUrls: z.array(z.string()).max(4, { message: '소개 이미지는 최대 4개까지 등록할 수 있습니다.' }).optional(),
 });
+
 export type CreateActivityParams = z.infer<typeof createActivitySchema>;
 
 export const createActivityResponseSchema = activitiesSchema.extend({
   schedules: z.array(
     z.object({
-      id: z.number(),
       date: z.string(),
-      startTime: z.string(),
-      endTime: z.string(),
+      times: z.array(
+        z.object({
+          id: z.number(),
+          startTime: z.string(),
+          endTime: z.string(),
+        }),
+      ),
     }),
   ),
   subImages: z.array(
@@ -172,16 +184,20 @@ export type ReservationResponse = z.infer<typeof reservationResponseSchema>;
 // 체험 이미지 URL 생성(업로드) 요청, 응답 API 타입
 export const activityImageFormSchema = z.object({
   image: z
-    .instanceof(File)
+    .custom<File>()
+    .refine((file): file is File => file instanceof File, {
+      message: '이미지를 선택해 주세요.',
+    })
     .refine(
       (file) => ['image/jpeg', 'image/jpg', 'image/png', 'image/ico', 'image/gif', 'image/webp'].includes(file.type),
       {
         message: '지원되지 않는 이미지 파일입니다.',
       },
     )
-    .refine((file) => file.size < 5 * 1024 * 1024, { message: '5MB 이하의 파일만 등록이 가능합니다.' }),
+    .refine((file) => file.size < 5 * 1024 * 1024, {
+      message: '5MB 이하의 파일만 등록이 가능합니다.',
+    }),
 });
-
 export type ActivityImageForm = z.infer<typeof activityImageFormSchema>;
 
 export const activityImageUploadResponseSchema = z.object({
