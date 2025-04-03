@@ -103,7 +103,7 @@ export default function ReservationCardList({
 
   return (
     <div
-      className={`${isSmallScreen ? (currentReservations.length > 0 ? 'h-[500px]' : 'h-auto') : currentReservations.length > 0 ? 'h-[340px]' : 'h-auto'} custom-scrollbar relative overflow-y-auto`}
+      className={`${isSmallScreen ? (currentReservations.length > 0 ? 'h-[300px] min-h-[250px]' : 'h-auto') : currentReservations.length > 0 ? 'h-[340px]' : 'h-auto'} custom-scrollbar relative overflow-y-auto`}
     >
       <style jsx>{`
         .custom-scrollbar::-webkit-scrollbar {
@@ -130,10 +130,10 @@ export default function ReservationCardList({
               />
             ))
           ) : (
-            <div className={`${isSmallScreen ? 'h-[500px]' : 'h-[340px]'} flex items-center justify-center`}>
+            <div className={`${isSmallScreen ? 'h-[300px]' : 'h-[340px]'} flex items-center justify-center`}>
               <div className='flex flex-col items-center gap-3'>
-                <Image src={NoData} width={80} height={80} alt='예약된 데이터가 없습니다.' />
-                <div className='text-center text-gray-500'>예약된 데이터가 없습니다.</div>
+                <Image src={NoData} width={80} height={80} alt='신청된 예약이 없습니다.' />
+                <div className='text-center text-gray-500'>신청된 예약이 없습니다.</div>
               </div>
             </div>
           )}

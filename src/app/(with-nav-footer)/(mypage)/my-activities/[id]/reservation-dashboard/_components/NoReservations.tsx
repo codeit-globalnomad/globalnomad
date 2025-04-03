@@ -16,8 +16,8 @@ export default function NoReservations({ isLoading }: Props) {
 
   return (
     <div className='flex flex-col items-center justify-center gap-3'>
-      <Image src={NoData} width={80} height={80} alt='선택된 시간대에 대한 예약이 없습니다.' />
-      <div className='text-center text-gray-500'>선택된 시간대에 대한 예약이 없습니다.</div>
+      <Image src={NoData} width={80} height={80} alt='신청된 예약이 없습니다.' />
+      <div className='text-center text-gray-500'>신청된 예약이 없습니다.</div>
     </div>
   );
 }

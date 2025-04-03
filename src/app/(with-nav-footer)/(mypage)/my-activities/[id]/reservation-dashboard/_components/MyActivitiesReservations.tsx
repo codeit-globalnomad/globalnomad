@@ -131,12 +131,6 @@ export default function MyActivitiesReservations({ selectedDate, setSelectedDate
               : 'top-[220px] h-[697px] w-[429px] rounded-2xl border-gray-300'
           } shadow-md' min-h-[582px] flex-col gap-7 border bg-white p-6`}
         >
-          <style jsx>{`
-            .custom-scrollbar::-webkit-scrollbar {
-              display: none;
-            }
-          `}</style>
-
           <div className='flex items-center justify-between'>
             <h1 className='text-[24px] leading-[32px] font-bold'>예약 정보</h1>
             <Image
@@ -160,7 +154,7 @@ export default function MyActivitiesReservations({ selectedDate, setSelectedDate
           />
           {filteredSchedule && filteredSchedule.length > 0 ? (
             <>
-              <div className={`${isSmallScreen ? 'h-[600px]' : 'h-[420px]'} rounded-b-[24px] bg-gray-100`}>
+              <div className={`${isSmallScreen ? 'h-[380px]' : 'h-[420px]'} rounded-b-[24px] bg-gray-100`}>
                 <ReservationStatusTabs
                   activeTab={activeTab}
                   setActiveTab={setActiveTab}
@@ -184,7 +178,7 @@ export default function MyActivitiesReservations({ selectedDate, setSelectedDate
             </>
           ) : (
             <div
-              className={`${isSmallScreen ? 'h-[600px]' : 'h-[420px]'} relative flex items-center justify-center rounded-b-[24px] bg-gray-100`}
+              className={`${isSmallScreen ? 'h-[300px]' : 'h-[420px]'} relative flex items-center justify-center rounded-b-[24px] bg-gray-100`}
             >
               <NoReservations isLoading={isLoading} />
             </div>
