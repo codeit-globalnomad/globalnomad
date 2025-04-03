@@ -63,9 +63,9 @@ export default function MobileReservation({ isLoggedIn, currentActivityId, price
   const handleCloseModal = () => setIsModalOpen(false);
 
   return (
-    <div className='h-[84px] rounded-t-[12px] border-t-1 border-gray-200 bg-white px-5 py-3 md:hidden'>
+    <div className='rounded-t-[12px] border-t-1 border-gray-200 bg-white px-5 py-3 md:hidden'>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <ol className='grid h-full grid-cols-[70%_30%] items-center'>
+        <ol className={`grid h-full grid-cols-[60%_40%] ${!isLoggedIn ? 'items-baseline' : 'items-center'}`}>
           <li>
             <div className='text-[22px] font-bold'>
               ₩ {totalPrice.toLocaleString()}
@@ -143,13 +143,18 @@ export default function MobileReservation({ isLoggedIn, currentActivityId, price
               </div>
             </div>
           </li>
-          <li className='flex h-full justify-end'>
+          <li className='flex flex-col justify-end'>
             <ReservationSubmitButton
               reservationCompleted={reservationCompleted}
               selectedTimeId={selectedTimeId}
               isLoggedIn={isLoggedIn}
               size='mobile'
             />
+            {!isLoggedIn && (
+              <p className='overflow-hidden text-center text-sm text-ellipsis whitespace-nowrap text-red-500'>
+                로그인 후 예약 가능
+              </p>
+            )}{' '}
           </li>
         </ol>
       </form>

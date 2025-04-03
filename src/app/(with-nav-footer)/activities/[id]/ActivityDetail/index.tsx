@@ -94,6 +94,9 @@ export default function ActivityDetailPage({ id }: { id: number }) {
             <div className='sticky top-3 md:mt-6 md:mb-3'>
               <TabletReservation isLoggedIn={isLoggedIn} currentActivityId={currentActivityId} price={price} />
               <DesktopReservation isLoggedIn={isLoggedIn} currentActivityId={currentActivityId} price={price} />
+              {!isLoggedIn && (
+                <p className='mt-2 mb-4 hidden text-center text-sm text-red-500 md:block'>로그인 후 예약 가능합니다.</p>
+              )}
             </div>
           </section>
         )}
