@@ -129,6 +129,7 @@ export default function ActivityForm({
           label='가격'
           placeholder='숫자만 입력'
           type='number'
+          onWheel={(e) => e.currentTarget.blur()}
           {...register('price', { valueAsNumber: true })}
           error={errors.price?.message}
           className='appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none'

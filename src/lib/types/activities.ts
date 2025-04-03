@@ -76,10 +76,14 @@ export type CreateActivityParams = z.infer<typeof createActivitySchema>;
 export const createActivityResponseSchema = activitiesSchema.extend({
   schedules: z.array(
     z.object({
-      id: z.number(),
       date: z.string(),
-      startTime: z.string(),
-      endTime: z.string(),
+      times: z.array(
+        z.object({
+          id: z.number(),
+          startTime: z.string(),
+          endTime: z.string(),
+        }),
+      ),
     }),
   ),
   subImages: z.array(
