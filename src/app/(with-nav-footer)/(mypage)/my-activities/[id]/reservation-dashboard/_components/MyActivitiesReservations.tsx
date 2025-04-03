@@ -59,18 +59,23 @@ export default function MyActivitiesReservations({ selectedDate, setSelectedDate
 
   useEffect(() => {
     if (isOpen && options.length > 0) {
-      setSelectedSchedule(options[0] || null);
+      setSelectedSchedule((prev) => prev ?? options[0]);
     }
   }, [isOpen, options]);
 
   useEffect(() => {
-    if (dateSchedule && dateSchedule.length > 0 && !activeTab) {
-      setActiveTab('pending');
+    if (Array.isArray(dateSchedule) && dateSchedule.length > 0) {
+      setActiveTab((prev) => prev ?? 'pending');
     }
-  }, [dateSchedule, activeTab]);
+  }, [dateSchedule]);
 
   useEffect(() => {
-    if (selectedDate) return setIsOpen(true);
+    if (selectedDate) {
+      setIsOpen(true);
+      setSelectedSchedule(null);
+      setActiveTab('pending');
+      refetchReservations();
+    }
   }, [selectedDate]);
 
   useClickOutside(popupRef, () => {
@@ -84,11 +89,13 @@ export default function MyActivitiesReservations({ selectedDate, setSelectedDate
     } else {
       document.body.style.overflow = '';
     }
-
-    return () => {
-      document.body.style.overflow = '';
-    };
   }, [isOpen, isSmallScreen]);
+
+  useEffect(() => {
+    if (selectedSchedule) {
+      refetchReservations();
+    }
+  }, [selectedSchedule]);
 
   const handleSelect = (option: FilterDropdownOption | null) => {
     setSelectedSchedule(option);
@@ -105,25 +112,10 @@ export default function MyActivitiesReservations({ selectedDate, setSelectedDate
     : undefined;
 
   useEffect(() => {
-    if (!isLoading && selectedSchedule) {
+    if (filteredSchedule && filteredSchedule.length > 0) {
       refetchReservations();
     }
-  }, [selectedSchedule, refetchReservations, isLoading]);
-
-  useEffect(() => {
-    setSelectedSchedule(null);
-    setActiveTab('pending');
-    refetchReservations();
-  }, [selectedDate, refetchReservations]);
-
-  useEffect(() => {
-    setSelectedSchedule(null);
-    refetchReservations();
-  }, [refetchReservations]);
-
-  useEffect(() => {
-    setSelectedSchedule(selectedSchedule);
-  }, [selectedSchedule]);
+  }, [filteredSchedule, selectedSchedule, activeTab, refetchReservations]);
 
   if (isError) return <div>에러가 발생했습니다</div>;
 
