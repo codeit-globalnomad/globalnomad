@@ -17,10 +17,8 @@ export const FacebookShare = ({ currentUrl, title, address }: FacebookShareProps
 
   const shareFacebook = async () => {
     if (isMobile) {
-      // 모바일 환경: 로그인 상태 확인 및 공유
       window.FB.getLoginStatus((response) => {
         if (response.status === 'connected') {
-          // 이미 로그인된 상태에서 공유
           window.FB.ui(
             {
               method: 'share',
@@ -35,10 +33,8 @@ export const FacebookShare = ({ currentUrl, title, address }: FacebookShareProps
             },
           );
         } else {
-          // 로그인 필요
           window.FB.login((loginResponse) => {
             if (loginResponse.authResponse) {
-              // 로그인 성공 후 바로 공유
               window.FB.ui(
                 {
                   method: 'share',
@@ -59,7 +55,6 @@ export const FacebookShare = ({ currentUrl, title, address }: FacebookShareProps
         }
       });
     } else {
-      // PC 환경: 단순 팝업 공유
       window.location.href = facebookUrl;
     }
   };
