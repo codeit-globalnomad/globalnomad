@@ -56,6 +56,9 @@ export default function ActivityDetailPage({ id }: { id: number }) {
   const currentActivityId = activityDetail.id;
   const description = activityDetail.description;
   const address = activityDetail.address;
+  const price = activityDetail.price;
+
+  const isLoggedIn = !!userData;
 
   return (
     <div className='relative flex flex-col items-center justify-center scroll-smooth'>
@@ -87,10 +90,13 @@ export default function ActivityDetailPage({ id }: { id: number }) {
         </section>
         {!isSameUser && (
           <section className='md: fixed bottom-0 left-0 z-50 w-full md:relative md:top-0 md:right-0 md:w-[28%]'>
-            <MobileReservation />
+            <MobileReservation isLoggedIn={isLoggedIn} currentActivityId={currentActivityId} price={price} />
             <div className='sticky top-3 md:mt-6 md:mb-3'>
-              <TabletReservation />
-              <DesktopReservation />
+              <TabletReservation isLoggedIn={isLoggedIn} currentActivityId={currentActivityId} price={price} />
+              <DesktopReservation isLoggedIn={isLoggedIn} currentActivityId={currentActivityId} price={price} />
+              {!isLoggedIn && (
+                <p className='mt-2 mb-4 hidden text-center text-sm text-red-500 md:block'>로그인 후 예약 가능합니다.</p>
+              )}
             </div>
           </section>
         )}
