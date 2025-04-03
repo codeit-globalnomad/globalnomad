@@ -32,7 +32,7 @@ export default function MyCalendar({ monthTotalData, onDateChange, onActiveStart
   const year = Number(searchParams.get('year')) || new Date().getFullYear();
   const month = Number(searchParams.get('month')) || new Date().getMonth() + 1;
 
-  const initialDate = new Date(year, month - 1, 1); // URL 기반 초기 날짜 설정
+  const initialDate = new Date(year, month - 1, 1);
   const [calendarValue, setCalendarValue] = useState<Value>(initialDate);
 
   const reservationStatusMap: Record<
@@ -103,7 +103,7 @@ export default function MyCalendar({ monthTotalData, onDateChange, onActiveStart
 
   useEffect(() => {
     setCalendarValue(initialDate);
-  }, [year, month]); // URL이 변경되면 calendarValue도 업데이트
+  }, [year, month]);
 
   return (
     <Calendar
