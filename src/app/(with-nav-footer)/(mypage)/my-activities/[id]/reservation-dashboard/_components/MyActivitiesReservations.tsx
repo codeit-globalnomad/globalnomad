@@ -103,8 +103,10 @@ export default function MyActivitiesReservations({ selectedDate, setSelectedDate
       {isOpen && (
         <div
           className={`absolute right-0 flex ${
-            isSmallScreen ? 'fixed top-0 h-[777px] border-white' : 'top-[220px] h-[697px] rounded-2xl border-gray-300'
-          } shadow-md' min-h-[582px] max-w-[429px] min-w-[375px] flex-col gap-7 border bg-white p-6`}
+            isSmallScreen
+              ? 'fixed top-0 h-full w-full border-white'
+              : 'top-[220px] h-[697px] w-[429px] rounded-2xl border-gray-300'
+          } shadow-md' min-h-[582px] flex-col gap-7 border bg-white p-6`}
         >
           <div className='flex items-center justify-between'>
             <h1 className='text-[24px] leading-[32px] font-bold'>예약 정보</h1>
@@ -129,7 +131,7 @@ export default function MyActivitiesReservations({ selectedDate, setSelectedDate
           />
           {filteredSchedule && filteredSchedule.length > 0 ? (
             <>
-              <div className='h-[420px] rounded-b-[24px] bg-gray-100'>
+              <div className={`${isSmallScreen ? 'h-[600px]' : 'h-[420px]'} rounded-b-[24px] bg-gray-100`}>
                 <ReservationStatusTabs
                   activeTab={activeTab}
                   setActiveTab={setActiveTab}
@@ -143,13 +145,18 @@ export default function MyActivitiesReservations({ selectedDate, setSelectedDate
                       reservations={reservations}
                       activityId={activityId}
                       scheduleId={Number(selectedSchedule?.value)}
+                      isSmallScreen={isSmallScreen}
                     />
                   </div>
                 )}
               </div>
             </>
           ) : (
-            <NoReservations />
+            <div
+              className={`${isSmallScreen ? 'h-[600px]' : 'h-[420px]'} relative flex items-center justify-center rounded-b-[24px] bg-gray-100`}
+            >
+              <NoReservations isLoading={isLoading} />
+            </div>
           )}
         </div>
       )}

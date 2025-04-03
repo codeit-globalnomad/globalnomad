@@ -1,16 +1,23 @@
 import Image from 'next/image';
 import NoData from '@/assets/icons/No-data.svg';
 
-export default function NoReservations() {
-  return (
-    <div className='rounded-b-[24px] bg-gray-100'>
-      <div className='h-[1px] w-full bg-gray-300'></div>
-      <div className='flex flex-col items-center gap-4 px-[50px] py-[145px]'>
-        <Image src={NoData} width={80} height={80} alt='선택된 시간대에 대한 예약 정보가 없습니다.' />
-        <div className='items-center justify-center text-center text-gray-500'>
-          선택된 시간대에 대한 예약 정보가 없습니다.
-        </div>
+type Props = {
+  isLoading: boolean;
+};
+
+export default function NoReservations({ isLoading }: Props) {
+  if (isLoading) {
+    return (
+      <div className='flex h-full w-full items-center justify-center bg-gray-100'>
+        <div className='spinner-border h-7 w-7 animate-spin rounded-full border-4 border-solid border-green-100 border-t-transparent'></div>
       </div>
+    );
+  }
+
+  return (
+    <div className='flex flex-col items-center justify-center gap-3'>
+      <Image src={NoData} width={80} height={80} alt='선택된 시간대에 대한 예약이 없습니다.' />
+      <div className='text-center text-gray-500'>선택된 시간대에 대한 예약이 없습니다.</div>
     </div>
   );
 }

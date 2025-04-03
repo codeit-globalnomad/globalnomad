@@ -29,9 +29,10 @@ type Props = {
   activityId: number;
   reservations: Reservation[];
   scheduleId: number;
+  isSmallScreen: boolean;
 };
 
-export default function ReservationCardList({ status, activityId, reservations, scheduleId }: Props) {
+export default function ReservationCardList({ status, activityId, reservations, scheduleId, isSmallScreen }: Props) {
   const [currentReservations, setCurrentReservations] = useState(reservations);
   const [cursorId, setCursorId] = useState<number | undefined>(undefined);
   const [hasMore, setHasMore] = useState(true);
@@ -95,36 +96,42 @@ export default function ReservationCardList({ status, activityId, reservations, 
   }, [hasMore, isLoading, reservations.length, currentReservations]);
 
   return (
-    <div className='custom-scrollbar h-[340px] overflow-y-auto'>
+    <div className={`${isSmallScreen ? 'h-[500px]' : 'h-[340px]'} custom-scrollbar relative overflow-y-auto`}>
       <style jsx>{`
         .custom-scrollbar::-webkit-scrollbar {
           display: none;
         }
       `}</style>
-
-      <div className='flex flex-col gap-[14px]'>
-        {currentReservations.length > 0 ? (
-          currentReservations.map((info) => (
-            <ReservationDetails
-              key={info.id}
-              status={status}
-              nickname={info.nickname}
-              headCount={info.headCount}
-              activityId={activityId}
-              reservationId={info.id}
-            />
-          ))
-        ) : (
-          <div className='flex flex-col items-center gap-4 px-[50px] py-[95px]'>
-            <Image src={NoData} width={80} height={80} alt='예약된 데이터가 없습니다.' />
-            <div className='items-center justify-center text-center text-gray-500'>예약된 데이터가 없습니다.</div>
+      {isLoading ? (
+        <div className='flex h-full items-center justify-center bg-gray-100'>
+          <div className='absolute left-1/2 -translate-x-1/2 -translate-y-1/2'>
+            <div className='spinner-border h-7 w-7 animate-spin rounded-full border-4 border-solid border-green-100 border-t-transparent'></div>
           </div>
-        )}
-
-        {isLoading && <p>로딩 중...</p>}
-
-        {hasMore && <div ref={observerRef} className='h-[120px]' />}
-      </div>
+        </div>
+      ) : (
+        <div className='flex flex-col gap-[14px]'>
+          {currentReservations.length > 0 ? (
+            currentReservations.map((info) => (
+              <ReservationDetails
+                key={info.id}
+                status={status}
+                nickname={info.nickname}
+                headCount={info.headCount}
+                activityId={activityId}
+                reservationId={info.id}
+              />
+            ))
+          ) : (
+            <div className={`${isSmallScreen ? 'h-[500px]' : 'h-[340px]'} flex items-center justify-center`}>
+              <div className='flex flex-col items-center gap-3'>
+                <Image src={NoData} width={80} height={80} alt='예약된 데이터가 없습니다.' />
+                <div className='text-center text-gray-500'>예약된 데이터가 없습니다.</div>
+              </div>
+            </div>
+          )}
+          {hasMore && <div ref={observerRef} className='h-[120px]' />}
+        </div>
+      )}
     </div>
   );
 }
