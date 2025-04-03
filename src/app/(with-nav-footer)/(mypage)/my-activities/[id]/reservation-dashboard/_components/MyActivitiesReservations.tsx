@@ -89,6 +89,9 @@ export default function MyActivitiesReservations({ selectedDate, setSelectedDate
     } else {
       document.body.style.overflow = '';
     }
+    return () => {
+      document.body.style.overflow = '';
+    };
   }, [isOpen, isSmallScreen]);
 
   useEffect(() => {
