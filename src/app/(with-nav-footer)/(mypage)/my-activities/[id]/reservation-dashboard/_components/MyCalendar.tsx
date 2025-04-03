@@ -1,9 +1,10 @@
 import Calendar from 'react-calendar';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './myCalendar.css';
 import Image from 'next/image';
 import CalendarPrev from '@/assets/icons/calendar-prev.svg';
 import CalendarNext from '@/assets/icons/calendar-next.svg';
+import { useSearchParams } from 'next/navigation';
 
 type ValuePiece = Date | null;
 type Value = ValuePiece | [ValuePiece, ValuePiece];
@@ -26,7 +27,13 @@ export interface Props {
 }
 
 export default function MyCalendar({ monthTotalData, onDateChange, onActiveStartDateChange }: Props) {
-  const [calendarValue, setCalendarValue] = useState<Value>(null);
+  const searchParams = useSearchParams();
+
+  const year = Number(searchParams.get('year')) || new Date().getFullYear();
+  const month = Number(searchParams.get('month')) || new Date().getMonth() + 1;
+
+  const initialDate = new Date(year, month - 1, 1); // URL 기반 초기 날짜 설정
+  const [calendarValue, setCalendarValue] = useState<Value>(initialDate);
 
   const reservationStatusMap: Record<
     keyof ReservationStatus,
@@ -54,18 +61,12 @@ export default function MyCalendar({ monthTotalData, onDateChange, onActiveStart
   const handleChange = (newValue: Value) => {
     if (!newValue) return;
 
-    if (Array.isArray(newValue)) {
-      const [startDate] = newValue;
-      if (startDate) {
-        setCalendarValue(startDate);
-        onDateChange(startDate.toLocaleDateString('sv-SE'));
-      }
-    } else {
-      setCalendarValue(newValue);
-      onDateChange(newValue.toLocaleDateString('sv-SE'));
+    const selectedDate = Array.isArray(newValue) ? newValue[0] : newValue;
+    if (selectedDate) {
+      setCalendarValue(selectedDate);
+      onDateChange(selectedDate.toLocaleDateString('sv-SE'));
     }
   };
-
   const renderTile = ({ date, view }: { date: Date; view: string }) => {
     if (view === 'month') {
       const formattedDate = date.toLocaleDateString('sv-SE');
@@ -99,6 +100,10 @@ export default function MyCalendar({ monthTotalData, onDateChange, onActiveStart
     }
     return null;
   };
+
+  useEffect(() => {
+    setCalendarValue(initialDate);
+  }, [year, month]); // URL이 변경되면 calendarValue도 업데이트
 
   return (
     <Calendar
