@@ -43,7 +43,7 @@ export default function MyActivitiesReservations({ selectedDate, setSelectedDate
   const [isOpen, setIsOpen] = useState(false);
   const popupRef = useRef<HTMLDivElement | null>(null);
   const width = useViewportWidth();
-  const isSmallScreen = width <= 375;
+  const isSmallScreen = width <= 460;
 
   const reservations = reservationsData?.reservations || [];
   const firstCursorId = reservations.at(-1)?.id;
