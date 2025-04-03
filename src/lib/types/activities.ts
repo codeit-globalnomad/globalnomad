@@ -56,9 +56,16 @@ export const createActivitySchema = z.object({
   description: z
     .string()
     .min(1, { message: '설명을 입력해주세요.' })
-    .regex(/^[a-zA-Z0-9가-힣\s]*$/, { message: '설명은 문자열로 입력해주세요.' }),
+    .regex(/^[a-zA-Z0-9가-힣\s.,!?]*$/, { message: '설명은 문자열로 입력해주세요.' }),
   address: z.string().min(1, { message: '주소를 입력해주세요.' }),
-  price: z.number().min(1, { message: '가격은 숫자로 입력해주세요.' }).int({ message: '가격은 정수로 입력해주세요.' }),
+  price: z.preprocess(
+    (val) => (val === '' ? undefined : val),
+    z
+      .number({ invalid_type_error: '가격은 필수 입력값입니다.' })
+      .min(1000, { message: '가격은 1000원 이상이어야 합니다.' })
+      .int({ message: '가격은 정수여야 합니다.' }),
+  ),
+
   schedules: z.array(createScheduleSchema).min(1, { message: '예약 가능한 시간대는 최소 1개 이상 등록해주세요.' }),
   bannerImageUrl: z.string(),
   subImageUrls: z.array(z.string()).max(4, { message: '소개 이미지는 최대 4개까지 등록할 수 있습니다.' }).optional(),

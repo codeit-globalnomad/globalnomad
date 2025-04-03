@@ -1,0 +1,169 @@
+// ActivityForm.tsx
+'use client';
+
+import { FormProvider, useForm, Controller } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { createActivitySchema, CreateActivityParams } from '@/lib/types/activities';
+import Input from '@/components/Input';
+import Button from '@/components/Button';
+import ScheduleList from './SchduleList';
+import ImageUploader from './ImageUploader';
+import FilterDropdown from '@/components/FilterDropdown';
+import arrowFilterDropdown2 from '@/assets/icons/arrow-filter-dropdown2.svg';
+import AddressFind from './AddressFind';
+import { useEffect, useState } from 'react';
+
+type ActivityFormProps = {
+  onSubmit: (data: CreateActivityParams) => void;
+  isSubmitting?: boolean;
+  defaultValues?: Partial<CreateActivityParams>;
+  mode?: 'create' | 'edit';
+};
+
+export default function ActivityForm({
+  onSubmit,
+  isSubmitting = false,
+  defaultValues,
+  mode = 'create',
+}: ActivityFormProps) {
+  const methods = useForm<CreateActivityParams>({
+    mode: 'onChange',
+    resolver: zodResolver(createActivitySchema),
+    defaultValues: {
+      title: '',
+      category: '',
+      description: '',
+      address: '',
+      price: undefined,
+      schedules: [],
+      subImageUrls: [],
+      bannerImageUrl: '',
+      ...defaultValues,
+    },
+  });
+
+  const {
+    register,
+    control,
+    handleSubmit,
+    setValue,
+    formState: { errors, isValid },
+  } = methods;
+
+  const [bannerImageUrl, setBannerImageUrl] = useState<string>(defaultValues?.bannerImageUrl || '');
+  const [subImageUrls, setSubImageUrls] = useState<string[]>(defaultValues?.subImageUrls || []);
+
+  useEffect(() => {
+    setValue('bannerImageUrl', bannerImageUrl);
+    setValue('subImageUrls', subImageUrls);
+  }, [bannerImageUrl, subImageUrls, setValue]);
+
+  const categoryOptions = [
+    { label: '문화 · 예술', onClick: () => {} },
+    { label: '식음료', onClick: () => {} },
+    { label: '스포츠', onClick: () => {} },
+    { label: '투어', onClick: () => {} },
+    { label: '관광', onClick: () => {} },
+    { label: '웰빙', onClick: () => {} },
+  ];
+
+  return (
+    <FormProvider {...methods}>
+      <form
+        className='space-y-6'
+        onSubmit={handleSubmit((data) =>
+          onSubmit({
+            ...data,
+            bannerImageUrl,
+            subImageUrls,
+          }),
+        )}
+      >
+        <div className='flex items-center justify-between'>
+          <h2 className='text-2xl font-bold'>{mode === 'create' ? '내 체험 등록' : '내 체험 수정'}</h2>
+          <Button type='submit' disabled={isSubmitting || !isValid} className='px-[20px] py-[11px]'>
+            {isSubmitting ? '처리 중...' : mode === 'create' ? '등록하기' : '수정하기'}
+          </Button>
+        </div>
+
+        <Input label='제목' placeholder='제목을 입력하세요' {...register('title')} error={errors.title?.message} />
+
+        <label className='text-black-100 inline-flex items-center gap-1 text-lg font-medium'>카테고리</label>
+        <Controller
+          control={control}
+          name='category'
+          render={({ field }) => (
+            <FilterDropdown
+              label='카테고리'
+              options={categoryOptions}
+              onSelect={(option) => field.onChange(option?.label || '')}
+              icon={arrowFilterDropdown2}
+              buttonClassName='border lg:w-[792px] w-[343px] md:w-[429px] text-black-100 border-gray-800 rounded-lg md:justify-between px-[15px] py-[15px]'
+              dropdownClassName='rounded-xl lg:w-[792px] w-[343px] md:w-[429px] border border-gray-300 bg-white drop-shadow-sm'
+              optionClassName='text-md md:text-lg h-[41px] lg:w-[792px] w-[343px] md:w-[429px] leading-[41px] md:h-[58px] md:leading-[58px]'
+              includeAllOption={false}
+              iconVisibleOnMobile={false}
+              value={field.value}
+            />
+          )}
+        />
+        {errors.category && <p className='text-sm text-red-500'>{errors.category.message}</p>}
+
+        <label className='text-black-100 inline-flex items-center gap-1 text-lg font-medium'>설명</label>
+        <textarea
+          className='h-[260px] w-full rounded-[4px] border border-gray-800 px-4 py-2 focus:border-green-100 focus:ring-1 focus:ring-green-100 focus:outline-none'
+          placeholder='설명을 입력해주세요'
+          {...register('description')}
+        />
+        {errors.description && <p className='text-sm text-red-500'>{errors.description.message}</p>}
+
+        <Controller
+          control={control}
+          name='address'
+          render={({ field }) => (
+            <AddressFind value={field.value} onChange={field.onChange} error={errors.address?.message} />
+          )}
+        />
+
+        <Input
+          label='가격'
+          placeholder='숫자만 입력'
+          type='number'
+          {...register('price', { valueAsNumber: true })}
+          error={errors.price?.message}
+          className='appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none'
+        />
+
+        <div>
+          <label className='text-black-100 inline-flex items-center gap-1 text-lg font-medium'>
+            예약 가능한 시간대
+          </label>
+          <Controller
+            control={control}
+            name='schedules'
+            render={({ field }) => (
+              <ScheduleList value={field.value} onChange={field.onChange} error={errors.schedules?.message} />
+            )}
+          />
+        </div>
+
+        <div>
+          <label className='text-black-100 inline-flex items-center gap-1 text-lg font-medium'>배너 이미지</label>
+          <ImageUploader value={bannerImageUrl} onChange={(url) => setBannerImageUrl(url as string)} single />
+        </div>
+
+        <div className='mb-[32px]'>
+          <label className='text-black-100 inline-flex items-center gap-1 text-lg font-medium'>
+            소개 이미지 (최대 4장)
+          </label>
+          <ImageUploader
+            value={subImageUrls}
+            onChange={(urls) => setSubImageUrls(urls as string[])}
+            multiple
+            limit={4}
+          />
+        </div>
+      </form>
+    </FormProvider>
+  );
+}

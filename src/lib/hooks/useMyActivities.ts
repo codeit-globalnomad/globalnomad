@@ -1,12 +1,12 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { 
-  getMyActivities, 
-  getReservationDashboard, 
-  getReservedSchedule, 
-  getReservations, 
-  updateReservationStatus, 
-  deleteActivity, 
-  updateActivity 
+import {
+  getMyActivities,
+  getReservationDashboard,
+  getReservedSchedule,
+  getReservations,
+  updateReservationStatus,
+  deleteActivity,
+  updateActivity,
 } from '../apis/myActivities';
 import { GetReservationsParams, UpdateActivityRequest } from '../types/myActivities';
 
@@ -35,10 +35,7 @@ export const useReservedSchedule = (activityId: number, date: string) => {
 };
 
 // 내 체험 예약 시간대별 예약 내역 조회 훅
-export const useReservations = (
-  activityId: number,
-  params: GetReservationsParams,
-) => {
+export const useReservations = (activityId: number, params: GetReservationsParams) => {
   return useQuery({
     queryKey: ['reservations', activityId, params],
     queryFn: () => getReservations(activityId, params),
@@ -53,7 +50,7 @@ export const useUpdateReservationStatus = () => {
       updateReservationStatus(data.activityId, data.reservationId, data.status),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['reservations'] });
-    }
+    },
   });
 };
 
@@ -69,10 +66,10 @@ export const useDeleteActivity = () => {
 };
 
 // 내 체험 수정 훅
-export const useUpdateActivity = () => {
+export const useUpdateActivity = (activityId: number) => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (params: { activityId: number, data: UpdateActivityRequest }) => updateActivity(params.activityId, params.data),
+    mutationFn: (data: UpdateActivityRequest) => updateActivity(activityId, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['myActivities'] });
     },
