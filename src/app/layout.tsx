@@ -17,7 +17,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='ko'>
-      <body className={Pretendard.className}>
+      <body className={`${Pretendard.className} bg-gray-100`}>
         <QueryClientProvider>{children}</QueryClientProvider>
         <ToastContainer position='top-right' />
       </body>

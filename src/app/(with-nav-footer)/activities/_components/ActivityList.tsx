@@ -1,18 +1,19 @@
 'use client';
+
 import { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useActivities } from '@/lib/hooks/useActivities';
 import useMediaQuery from '@/lib/utils/useMediaQuery';
-import Image from 'next/image';
 import BestActivities from './BestActivities';
-import SearchBar from './SearchBar';
 import AllActivities from './AllActivities';
 import AllActivityItem from './AllActivityItem';
+import SearchBar from './SearchBar';
 import Pagination from '@/components/Pagination';
 import LoadingSpinner from '@/components/LoadingSpinner';
+import RetryError from '@/components/RetryError';
+import Image from 'next/image';
 import leftArrow from '@/assets/icons/left-arrow.svg';
 import empty from '@/assets/icons/empty.svg';
-import RetryError from '@/components/RetryError';
 
 export default function ActivityList() {
   const router = useRouter();
@@ -30,10 +31,16 @@ export default function ActivityList() {
     size: itemsPerPage,
   });
 
+  useEffect(() => {
+    const keyword = searchParams.get('keyword');
+    const page = searchParams.get('page');
+    if (keyword !== null) setSearchTerm(keyword);
+    if (page !== null) setCurrentPage(Number(page));
+  }, [searchParams]);
+
   const getEndingParticle = (keyword: string) => {
     const lastChar = keyword[keyword.length - 1];
     const lastCharCode = lastChar.charCodeAt(0);
-
     return (lastCharCode - 0xac00) % 28 === 0 ? '로' : '으로';
   };
 
@@ -54,14 +61,6 @@ export default function ActivityList() {
     router.push('/activities');
   };
 
-  useEffect(() => {
-    const keyword = searchParams.get('keyword');
-    const page = searchParams.get('page');
-
-    if (keyword !== null) setSearchTerm(keyword);
-    if (page !== null) setCurrentPage(Number(page));
-  }, [searchParams]);
-
   if (isLoading) return <LoadingSpinner />;
   if (isError) return <RetryError onRetry={refetch} className='py-40' />;
 
@@ -71,7 +70,7 @@ export default function ActivityList() {
         <SearchBar onSearch={handleSearch} searchTerm={searchTerm} />
       </div>
 
-      {searchTerm === '' ? (
+      {!searchTerm ? (
         <div>
           <div className='mt-[100px] md:mt-[158px]'>
             <BestActivities />
@@ -88,12 +87,12 @@ export default function ActivityList() {
             </button>
             <section className='text-black-100 text-2lg font-bold md:text-3xl'>
               {searchTerm}
-              <span className='font-normal'>{searchTerm && getEndingParticle(searchTerm)} 검색한 결과입니다.</span>
+              <span className='font-normal'>{getEndingParticle(searchTerm)} 검색한 결과입니다.</span>
             </section>
           </div>
-          <p className='text-black-100 text-lg'>총 {data?.totalCount}개의 결과</p>
+          <p className='text-black-100 text-md md:text-lg'>총 {data?.totalCount}개의 결과</p>
 
-          {data?.activities.length === 0 ? (
+          {!data?.activities.length ? (
             <div className='mx-auto mt-[100px] flex w-full max-w-[1200px] flex-col items-center justify-center'>
               <div className='relative h-[140px] w-[140px] md:h-[200px] md:w-[200px]'>
                 <Image src={empty} fill alt='검색 결과 0개' className='absolute' />
