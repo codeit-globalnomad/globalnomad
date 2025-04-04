@@ -15,6 +15,7 @@ type ActivityReviewsProps = {
 export default function ReviewsSection({ currentActivityId, reviewCount }: ActivityReviewsProps) {
   const [reviewsToShow, setReviewsToShow] = useState(3);
   const [reviews, setReviews] = useState<ActivityReviewsResponse['reviews']>([]);
+
   const { data: activityReviews } = useActivityReviews(currentActivityId, 1, reviewCount);
 
   if (activityReviews && activityReviews.reviews !== reviews) {
@@ -75,6 +76,7 @@ export default function ReviewsSection({ currentActivityId, reviewCount }: Activ
           <button
             onClick={loadMoreReviews}
             className='mt-4 flex cursor-pointer items-center justify-center gap-2 rounded-[4px] border-1 border-black bg-white px-1 py-[8px]'
+            aria-label='더보기'
           >
             더보기
             <span className='text-sm'>

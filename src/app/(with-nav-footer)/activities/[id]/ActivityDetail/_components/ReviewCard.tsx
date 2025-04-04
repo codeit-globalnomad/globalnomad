@@ -1,6 +1,6 @@
-import { ActivityReviewsResponse } from '@/lib/types/activities';
-import ProfileImage from '@/components/ProfileImage';
 import profileDefault from '@/assets/icons/profile-default.svg';
+import ProfileImage from '@/components/ProfileImage';
+import { ActivityReviewsResponse } from '@/lib/types/activities';
 
 type Review = ActivityReviewsResponse['reviews'][number];
 
