@@ -44,7 +44,7 @@ const KakaoShare = ({ title, description, bannerImageUrl, pathname }: KakaoShare
           }
           setKakaoReady(true);
         };
-        script.onerror = (error) => {
+        script.onerror = () => {
           toast.error('카카오 SDK 로드에 실패했습니다.');
           setKakaoReady(false);
         };
