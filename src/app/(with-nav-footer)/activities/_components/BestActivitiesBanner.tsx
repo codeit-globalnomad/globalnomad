@@ -10,6 +10,16 @@ import 'swiper/css';
 import 'swiper/css/effect-fade';
 import 'swiper/css/pagination';
 
+const swiperOptions = {
+  spaceBetween: 50,
+  slidesPerView: 1,
+  effect: 'fade',
+  autoplay: { delay: 3000, disableOnInteraction: false, pauseOnMouseEnter: false },
+  loop: true,
+  modules: [Autoplay, EffectFade, Pagination],
+  pagination: { clickable: true },
+};
+
 export default function BestActivitiesBanner() {
   const { data, isLoading, isError, refetch } = useActivities({
     method: 'offset',
@@ -23,16 +33,7 @@ export default function BestActivitiesBanner() {
 
   return (
     <section aria-label='체험 목록 페이지 배너' className='relative h-[240px] w-full md:h-[550px]'>
-      <Swiper
-        spaceBetween={50}
-        slidesPerView={1}
-        effect='fade'
-        autoplay={{ delay: 3000, disableOnInteraction: false, pauseOnMouseEnter: false }}
-        loop={true}
-        modules={[Autoplay, EffectFade, Pagination]}
-        pagination={{ clickable: true }}
-        className='relative h-full w-full'
-      >
+      <Swiper {...swiperOptions} className='relative h-full w-full'>
         {bestActivitiesBanner?.map((activity, index) => {
           const [firstLine, secondLine] = [
             activity.title.split(' ').slice(0, 2).join(' '),
@@ -46,7 +47,7 @@ export default function BestActivitiesBanner() {
                   src={activity.bannerImageUrl}
                   alt={`${activity.title} 배너 이미지`}
                   fill
-                  priority={index === 0 ? true : false}
+                  priority={index === 0}
                   sizes='100vw'
                   quality={100}
                   className='object-cover'
