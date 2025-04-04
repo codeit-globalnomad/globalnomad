@@ -51,8 +51,10 @@ export default function ReviewsSection({ currentActivityId, reviewCount }: Activ
       <div className='flex flex-col gap-3'>
         <div className='flex items-center justify-between'>
           <h3 className='text-xl font-bold md:text-[22px]'>체험 후기 {totalCount}개</h3>
-          <div className='flex gap-1'>
-            <Image width={20} height={20} src={starRating} alt='별점 아이콘' />
+          <div className='flex items-center gap-1'>
+            <div className='relative h-[20px] w-[20px]'>
+              <Image src={starRating} fill style={{ objectFit: 'contain' }} alt='별점 아이콘' />
+            </div>
             <span className='text-2lg md:text-[18px]'>
               <span className='font-bold'>{reviews.length === 0 ? '' : averageRating.toFixed(1)}</span>
               &nbsp;
