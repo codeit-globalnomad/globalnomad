@@ -24,14 +24,14 @@ type AvailableTimeSelectorProps = {
   swiperRef: React.RefObject<SwiperType | null>;
 };
 
-const AvailableTimeSelector = ({
+export default function AvailableTimeSelector({
   availableTimes = [],
   selectedTimeId,
   disabledTimeIds = [],
   selectedDate,
   onSelectTime,
   swiperRef,
-}: AvailableTimeSelectorProps) => {
+}: AvailableTimeSelectorProps) {
   useEffect(() => {
     if (swiperRef.current && selectedTimeId) {
       const timeIndex = availableTimes.findIndex((timeSlot) => timeSlot.id === selectedTimeId);
@@ -108,6 +108,4 @@ const AvailableTimeSelector = ({
       <hr className='mt-2 mb-2 w-full border-t-1 border-gray-300' />
     </li>
   );
-};
-
-export default AvailableTimeSelector;
+}

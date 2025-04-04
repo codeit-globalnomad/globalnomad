@@ -7,12 +7,12 @@ type ReservationSubmitButtonProps = {
   size?: 'desktop' | 'tablet' | 'mobile';
 };
 
-const ReservationSubmitButton = ({
+export default function ReservationSubmitButton({
   reservationCompleted,
   selectedTimeId,
   isLoggedIn,
   size = 'desktop',
-}: ReservationSubmitButtonProps) => {
+}: ReservationSubmitButtonProps) {
   const height = size === 'desktop' ? 'h-[60px]' : 'h-[50px]';
   const rounded = size === 'mobile' ? 'rounded-md' : 'rounded-t-none rounded-b-md';
   const disabled = !selectedTimeId || !isLoggedIn;
@@ -23,10 +23,9 @@ const ReservationSubmitButton = ({
       type='submit'
       className={`w-full py-2 font-bold text-white ${height} ${rounded} ${bgColor}`}
       disabled={disabled || reservationCompleted}
+      aria-label='예약'
     >
       {reservationCompleted ? '예약 완료' : '예약하기'}
     </Button>
   );
-};
-
-export default ReservationSubmitButton;
+}
