@@ -10,7 +10,7 @@ import Button from '@/components/Button';
 import Modal from '@/components/Modal';
 import AvailableTimeSelector from './AvailableTimeSelector';
 import PeopleCounter from './PeopleCounter';
-import ActivityReservationCalendar from './ReservationCalendar';
+import ReservationCalendar from './ReservationCalendar';
 import ReservationSubmitButton from './ReservationSubmitButton';
 import { useReservation } from './useReservation';
 import 'react-calendar/dist/Calendar.css';
@@ -77,6 +77,7 @@ export default function MobileReservation({ isLoggedIn, currentActivityId, price
                   type='button'
                   onClick={handleOpenModal}
                   className='cursor-pointer text-lg font-semibold text-green-100 underline'
+                  aria-label='선택하기'
                 >
                   {selectedDate && selectedTimeSlot
                     ? `${formatDate(selectedDate)} / ${selectedTimeSlot.startTime}-${selectedTimeSlot.endTime}`
@@ -90,7 +91,7 @@ export default function MobileReservation({ isLoggedIn, currentActivityId, price
                   >
                     <div className='sticky top-0 z-10 flex items-center justify-between bg-white p-6'>
                       <h2 className='text-2xl font-bold'>날짜 / 시간</h2>
-                      <button onClick={handleCloseModal} className='cursor-pointer'>
+                      <button onClick={handleCloseModal} className='cursor-pointer' aria-label='닫기'>
                         <Image src={close} width={36} height={36} alt='닫기 아이콘' />
                       </button>
                     </div>
@@ -100,7 +101,7 @@ export default function MobileReservation({ isLoggedIn, currentActivityId, price
                           name='date'
                           control={control}
                           render={({ field }) => (
-                            <ActivityReservationCalendar
+                            <ReservationCalendar
                               selectedDate={selectedDate}
                               availableDates={availableDates}
                               onSelectDate={(date) => {
@@ -134,7 +135,13 @@ export default function MobileReservation({ isLoggedIn, currentActivityId, price
                       </li>
                     </ol>
                     <div className='sticky bottom-0 z-10 bg-white p-6'>
-                      <Button type='button' variant='default' onClick={handleCloseModal} className='w-full p-[10px]'>
+                      <Button
+                        type='button'
+                        variant='default'
+                        onClick={handleCloseModal}
+                        className='w-full p-[10px]'
+                        aria-label='선택 완료'
+                      >
                         선택 완료
                       </Button>
                     </div>

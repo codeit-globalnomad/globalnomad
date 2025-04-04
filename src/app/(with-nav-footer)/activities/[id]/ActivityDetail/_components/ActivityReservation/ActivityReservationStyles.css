@@ -101,6 +101,7 @@
 .react-calendar__month-view__days__day--neighboringMonth, .react-calendar__decade-view__years__year--neighboringDecade, .react-calendar__century-view__decades__decade--neighboringCentury {
   color:#a4a1a4!important;
 }
+
 .react-calendar__month-view__days__day--weekend{
   color:#4b4b4b;
 }

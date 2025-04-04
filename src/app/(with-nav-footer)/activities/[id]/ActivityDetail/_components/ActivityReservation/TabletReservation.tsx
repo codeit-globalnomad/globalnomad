@@ -10,7 +10,7 @@ import Button from '@/components/Button';
 import Modal from '@/components/Modal';
 import AvailableTimeSelector from './AvailableTimeSelector';
 import PeopleCounter from './PeopleCounter';
-import ActivityReservationCalendar from './ReservationCalendar';
+import ReservationCalendar from './ReservationCalendar';
 import ReservationSubmitButton from './ReservationSubmitButton';
 import { useReservation } from './useReservation';
 import 'react-calendar/dist/Calendar.css';
@@ -77,6 +77,7 @@ export default function TabletReservation({ isLoggedIn, currentActivityId, price
                 type='button'
                 onClick={handleOpenModal}
                 className='cursor-pointer text-left text-lg font-semibold text-green-100 underline'
+                aria-label='선택하기'
               >
                 {selectedDate && selectedTimeSlot
                   ? `${formatDate(selectedDate)} / ${selectedTimeSlot.startTime} - ${selectedTimeSlot.endTime}`
@@ -87,7 +88,7 @@ export default function TabletReservation({ isLoggedIn, currentActivityId, price
                   <ol className='flex flex-col gap-[20px]'>
                     <li className='flex items-center justify-between'>
                       <h2 className='text-2xl font-bold'>날짜 / 시간</h2>
-                      <button onClick={handleCloseModal} className='cursor-pointer'>
+                      <button onClick={handleCloseModal} className='cursor-pointer' aria-label='닫기'>
                         <Image src={close} width={36} height={36} alt='닫기 아이콘' />
                       </button>
                     </li>
@@ -96,7 +97,7 @@ export default function TabletReservation({ isLoggedIn, currentActivityId, price
                         name='date'
                         control={control}
                         render={({ field }) => (
-                          <ActivityReservationCalendar
+                          <ReservationCalendar
                             selectedDate={selectedDate}
                             availableDates={availableDates}
                             onSelectDate={(date) => {
@@ -119,7 +120,13 @@ export default function TabletReservation({ isLoggedIn, currentActivityId, price
                       swiperRef={swiperRef}
                     />
                     <li>
-                      <Button type='button' variant='default' onClick={handleCloseModal} className='w-full p-[10px]'>
+                      <Button
+                        type='button'
+                        variant='default'
+                        onClick={handleCloseModal}
+                        className='w-full p-[10px]'
+                        aria-label='선택 완료'
+                      >
                         선택 완료
                       </Button>
                     </li>
@@ -136,7 +143,6 @@ export default function TabletReservation({ isLoggedIn, currentActivityId, price
               <Image src={alert} width={16} height={16} alt='경고 아이콘' />
               <span className='overflow-hidden text-ellipsis whitespace-nowrap'>최소 참여 인원 수는 1명 입니다.</span>
             </p>
-
             <hr className='w-full border-t-1 border-gray-300' />
           </li>
           <li className='custom-md-size-bottom flex items-center justify-between font-bold'>

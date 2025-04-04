@@ -6,7 +6,7 @@ import { format } from 'date-fns';
 import alert from '@/assets/icons/alert.svg';
 import AvailableTimeSelector from './AvailableTimeSelector';
 import PeopleCounter from './PeopleCounter';
-import ActivityReservationCalendar from './ReservationCalendar';
+import ReservationCalendar from './ReservationCalendar';
 import ReservationSubmitButton from './ReservationSubmitButton';
 import { useReservation } from './useReservation';
 import 'react-calendar/dist/Calendar.css';
@@ -56,7 +56,7 @@ export default function DesktopReservation({ isLoggedIn, currentActivityId, pric
               control={control}
               rules={{ required: '날짜를 선택해주세요.' }}
               render={({ field }) => (
-                <ActivityReservationCalendar
+                <ReservationCalendar
                   selectedDate={selectedDate}
                   availableDates={availableDates}
                   onSelectDate={(date) => {
