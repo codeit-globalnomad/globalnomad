@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
-import kakaoIcon from '@/assets/icons/share-kakao.svg';
 import { toast } from 'react-toastify';
+import kakaoIcon from '@/assets/icons/share-kakao.svg';
 
 type KakaoShareProps = {
   title: string;
@@ -17,16 +17,14 @@ const KakaoShare = ({ title, description, bannerImageUrl, pathname }: KakaoShare
 
   useEffect(() => {
     const loadKakaoScript = () => {
-      return new Promise<void>((resolve, reject) => {
+      return new Promise<void>((resolve) => {
         if (window.Kakao && window.Kakao.isInitialized()) {
-          console.log('[Kakao SDK] 이미 초기화됨');
           setKakaoReady(true);
           return;
         }
 
         const existingScript = document.getElementById('kakao-sdk');
         if (existingScript) {
-          console.log('[Kakao SDK] 이미 로드됨');
           return resolve();
         }
         console.log('[Kakao SDK] 로드 시작');
@@ -34,7 +32,6 @@ const KakaoShare = ({ title, description, bannerImageUrl, pathname }: KakaoShare
         script.id = 'kakao-sdk';
         script.src = 'https://developers.kakao.com/sdk/js/kakao.js';
         script.onload = () => {
-          console.log('[Kakao SDK] 로드 완료');
           const kakaoApiKey = process.env.NEXT_PUBLIC_KAKAO_API_KEY;
           if (!kakaoApiKey) {
             toast.error('Kakao API key가 설정되지 않았습니다.');
@@ -48,7 +45,6 @@ const KakaoShare = ({ title, description, bannerImageUrl, pathname }: KakaoShare
           setKakaoReady(true);
         };
         script.onerror = (error) => {
-          console.error('[Kakao SDK] 로드 실패', error);
           toast.error('카카오 SDK 로드에 실패했습니다.');
           setKakaoReady(false);
         };
@@ -88,8 +84,8 @@ const KakaoShare = ({ title, description, bannerImageUrl, pathname }: KakaoShare
   };
 
   return (
-    <button onClick={kakaoShare} className='cursor-pointer'>
-      <Image src={kakaoIcon} alt='카카오톡 공유하기 아이콘' />
+    <button onClick={kakaoShare} className='cursor-pointer' aria-label='카카오톡 공유하기'>
+      <Image src={kakaoIcon} width={50} height={50} alt='카카오톡 공유하기 아이콘' />
     </button>
   );
 };
