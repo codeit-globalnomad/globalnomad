@@ -67,8 +67,8 @@ export default function ActivityGallery({ activityDetail }: ActivityGalleryProps
         loop={false}
         effect='fade'
         navigation={{
-          nextEl: '.custom-next',
-          prevEl: '.custom-prev',
+          nextEl: '.custom-next-gallery',
+          prevEl: '.custom-prev-gallery',
         }}
         keyboard={{
           enabled: true,
@@ -101,7 +101,7 @@ export default function ActivityGallery({ activityDetail }: ActivityGalleryProps
       </Swiper>
       <div className='absolute bottom-4 left-1/2 z-40 flex -translate-x-1/2 items-center gap-2 rounded-full bg-black/80 px-4 py-2 text-white'>
         <button
-          className={`custom-prev cursor-pointer ${currentIndex === 1 ? 'pointer-events-none opacity-30' : ''}`}
+          className={`custom-prev-gallery cursor-pointer ${currentIndex === 1 ? 'pointer-events-none opacity-30' : ''}`}
           aria-label='이전 슬라이드'
         >
           <Image src={prevArrow} alt='이전 화살표 아이콘' />
@@ -110,7 +110,7 @@ export default function ActivityGallery({ activityDetail }: ActivityGalleryProps
           <span className='font-bold'>{currentIndex}</span> / {images.length}
         </span>
         <button
-          className={`custom-next cursor-pointer ${currentIndex === images.length ? 'pointer-events-none opacity-30' : ''}`}
+          className={`custom-next-gallery cursor-pointer ${currentIndex === images.length ? 'pointer-events-none opacity-30' : ''}`}
           aria-label='다음 슬라이드'
         >
           <Image src={prevArrow} alt='다음 화살표 아이콘' className='scale-x-[-1] transform' />

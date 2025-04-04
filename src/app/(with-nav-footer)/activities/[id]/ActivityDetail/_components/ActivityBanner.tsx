@@ -70,11 +70,11 @@ export default function ActivityBanner({ category, currentActivityId }: Activity
       <div className='relative flex items-center justify-between'>
         <h3 className='text-xl font-bold'>{category} 추천 체험</h3>
         <div className='z-10 mr-[-10px] flex cursor-pointer'>
-          <div className={`custom-prev ${currentIndex === 0 ? 'pointer-events-none opacity-50' : ''}`}>
+          <div className={`custom-prev-banner ${currentIndex === 0 ? 'pointer-events-none opacity-50' : ''}`}>
             <Image src={leftArrow} width={32} height={32} alt='이전 화살표 아이콘' />
           </div>
           <div
-            className={`custom-next ${currentIndex === selectedBanners.length - 1 ? 'pointer-events-none opacity-50' : ''}`}
+            className={`custom-next-banner ${currentIndex === selectedBanners.length - 1 ? 'pointer-events-none opacity-50' : ''}`}
           >
             <Image src={leftArrow} width={32} height={32} alt='다음 화살표 아이콘' className='scale-x-[-1] transform' />
           </div>
@@ -87,8 +87,8 @@ export default function ActivityBanner({ category, currentActivityId }: Activity
           slidesPerView={1}
           loop={false}
           navigation={{
-            nextEl: '.custom-next',
-            prevEl: '.custom-prev',
+            nextEl: '.custom-next-banner',
+            prevEl: '.custom-prev-banner',
           }}
           keyboard={{
             enabled: true,
