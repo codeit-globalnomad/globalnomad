@@ -2,6 +2,7 @@
 
 import Button from '@/components/Button';
 import { useUpdateReservationStatus } from '@/lib/hooks/useMyActivities';
+import { useRouter } from 'next/navigation';
 
 type Props = {
   status: 'pending' | 'confirmed' | 'declined';
@@ -13,13 +14,21 @@ type Props = {
 
 export default function ReservationDetails({ status, nickname, headCount, activityId, reservationId }: Props) {
   const { mutate: updateReservationStatus } = useUpdateReservationStatus();
+  const router = useRouter();
 
   const handleStatusChange = (newStatus: 'confirmed' | 'declined') => {
-    updateReservationStatus({
-      activityId,
-      reservationId,
-      status: newStatus,
-    });
+    updateReservationStatus(
+      {
+        activityId,
+        reservationId,
+        status: newStatus,
+      },
+      {
+        onSuccess: () => {
+          router.refresh();
+        },
+      },
+    );
   };
 
   return (

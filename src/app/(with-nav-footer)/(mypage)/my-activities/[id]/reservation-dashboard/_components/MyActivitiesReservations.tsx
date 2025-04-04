@@ -74,7 +74,7 @@ export default function MyActivitiesReservations({ selectedDate, setSelectedDate
       setIsOpen(true);
       setSelectedSchedule(null);
       setActiveTab('pending');
-      refetchReservations();
+      // refetchReservations();
     }
   }, [selectedDate]);
 
@@ -93,12 +93,6 @@ export default function MyActivitiesReservations({ selectedDate, setSelectedDate
       document.body.style.overflow = '';
     };
   }, [isOpen, isSmallScreen]);
-
-  useEffect(() => {
-    if (selectedSchedule) {
-      refetchReservations();
-    }
-  }, [selectedSchedule]);
 
   const handleSelect = (option: FilterDropdownOption | null) => {
     setSelectedSchedule(option);
