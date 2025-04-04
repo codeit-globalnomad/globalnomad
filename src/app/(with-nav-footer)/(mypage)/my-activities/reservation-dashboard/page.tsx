@@ -1,15 +1,7 @@
-'use client';
-
 import Empty from '@/assets/icons/empty.svg';
 import Image from 'next/image';
-import { useMyActivities } from '@/lib/hooks/useMyActivities';
-import LoadingSpinner from '@/components/LoadingSpinner';
 
 export default function NotActivitiesPage() {
-  const { isLoading, isError } = useMyActivities(undefined, 4);
-
-  if (isLoading) return <LoadingSpinner />;
-  if (isError) return <div>에러가 발생했습니다.</div>;
   return (
     <>
       <h1 className='flex items-center text-2xl leading-[42px] font-bold'>예약 현황</h1>
