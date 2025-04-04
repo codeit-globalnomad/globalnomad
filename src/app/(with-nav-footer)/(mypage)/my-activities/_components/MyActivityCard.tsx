@@ -19,7 +19,15 @@ export default function MyActivityCard({ activity }: MyActivityCardProps) {
     if (confirm('체험을 삭제하시겠습니까?')) deleteActivity(activity.id);
   };
 
-  const editDeleteOption = [{ label: '수정하기' }, { label: '삭제하기', onClick: handleDelete }];
+  const editDeleteOption = [
+    {
+      label: '수정하기',
+      onClick: () => {
+        router.push(`/my-activities/${activity.id}/edit-activities`);
+      },
+    },
+    { label: '삭제하기', onClick: handleDelete },
+  ];
 
   const onClickMyActivityCard = (event: React.MouseEvent<HTMLElement>) => {
     if ((event.target as HTMLElement).closest('.ignore-click')) {

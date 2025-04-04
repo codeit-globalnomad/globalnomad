@@ -20,6 +20,16 @@ export default function EditActivityPage({ activityId }: { activityId: number })
       defaultValues={activity}
       isSubmitting={isPending}
       onSubmit={(formData) => {
+        const schedulesToAdd = formData.schedules.filter(
+          (newSchedule) =>
+            !activity.schedules.some(
+              (existingSchedule) =>
+                existingSchedule.date === newSchedule.date &&
+                existingSchedule.startTime === newSchedule.startTime &&
+                existingSchedule.endTime === newSchedule.endTime,
+            ),
+        );
+
         const transformedData = {
           activityId,
           data: {
@@ -31,7 +41,7 @@ export default function EditActivityPage({ activityId }: { activityId: number })
             bannerImageUrl: formData.bannerImageUrl,
             subImageUrlsToAdd: formData.subImageUrls || [],
             subImageIdsToRemove: [],
-            schedulesToAdd: formData.schedules,
+            schedulesToAdd,
             scheduleIdsToRemove: [],
           },
         };
@@ -39,8 +49,7 @@ export default function EditActivityPage({ activityId }: { activityId: number })
         updateActivity(transformedData.data, {
           onSuccess: () => {
             toast.success('수정이 완료되었습니다!');
-
-            router.push('/my-activities');
+            window.location.href = '/my-activities';
           },
           onError: () => {
             toast.error('수정에 실패했습니다.');

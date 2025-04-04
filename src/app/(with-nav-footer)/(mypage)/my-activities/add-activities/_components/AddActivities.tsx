@@ -14,7 +14,7 @@ export default function CreateActivityPage() {
     createActivity(data, {
       onSuccess: () => {
         toast.success('체험이 등록되었습니다!');
-        router.push('/my-activities');
+        window.location.href = '/my-activities';
       },
       onError: () => {
         toast.error('체험 등록에 실패했습니다.');

@@ -50,7 +50,7 @@ export default function ActivityHeader({ activityDetail, isSameUser }: ActivityH
   const xShareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(`${title}\n📍 ${address}\n`)}&url=${window.location.origin}${pathname}`;
 
   const dropdownOptions = [
-    { label: '수정하기', onClick: () => router.push(`/my-activities/${id}`) },
+    { label: '수정하기', onClick: () => router.push(`/my-activities/${id}/edit-activities`) },
     {
       label: '삭제하기',
       onClick: () => {
