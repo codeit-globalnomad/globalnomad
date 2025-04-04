@@ -87,7 +87,7 @@ const SideNavMenu = ({ activityId }: SideNavMenuProps) => {
                 <Link
                   href={item.path}
                   className={`group flex w-full items-center gap-3 rounded-lg p-3 text-lg font-bold transition ${
-                    isActive ? 'text-black-200 bg-white' : 'hover:bg-green-10 hover:text-black-200 text-gray-700'
+                    isActive ? 'text-black-200 bg-gray-200' : 'hover:bg-green-10 hover:text-black-200 text-gray-700'
                   }`}
                 >
                   <Image

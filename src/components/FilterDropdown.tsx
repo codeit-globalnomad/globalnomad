@@ -28,7 +28,7 @@ export default function FilterDropdown({
   options,
   label,
   onSelect,
-  value,
+  selected,
   buttonClassName = '',
   dropdownClassName = '',
   optionClassName = '',
@@ -48,7 +48,7 @@ export default function FilterDropdown({
     setUpdatedOptions(newOptions);
   }, [includeAllOption, autoSelectFirstOption, options]);
 
-  const selectedOption = updatedOptions.find((opt) => opt.label === value) || null;
+  const selectedOption = selected || null;
 
   const handleSelect = (option: FilterDropdownOption) => {
     onSelect(option.label === '전체' ? null : option);
