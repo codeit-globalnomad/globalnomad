@@ -10,6 +10,7 @@ import ReservationStatusTabs from './ReservationStatusTabs';
 import NoReservations from './NoReservations';
 import ReservationsTimeSelect from './ReservationsTimeSelect';
 import useViewportWidth from '@/lib/utils/useVIewPortWidth';
+import RetryError from '@/components/RetryError';
 
 type Props = {
   selectedDate: string;
@@ -29,7 +30,7 @@ export default function MyActivitiesReservations({ selectedDate, setSelectedDate
   const {
     data: dateSchedule,
     isLoading,
-    isError,
+    isError: isReservaedScheduleError,
     refetch: refetchReservations,
   } = useReservedSchedule(activityId, selectedDate);
   const [selectedSchedule, setSelectedSchedule] = useState<FilterDropdownOption | null>(null);
@@ -40,6 +41,7 @@ export default function MyActivitiesReservations({ selectedDate, setSelectedDate
     size: 3,
   });
 
+  const [isStatusPatchError, setIsStatusPatchError] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const popupRef = useRef<HTMLDivElement | null>(null);
   const width = useViewportWidth();
@@ -74,7 +76,6 @@ export default function MyActivitiesReservations({ selectedDate, setSelectedDate
       setIsOpen(true);
       setSelectedSchedule(null);
       setActiveTab('pending');
-      // refetchReservations();
     }
   }, [selectedDate]);
 
@@ -114,8 +115,6 @@ export default function MyActivitiesReservations({ selectedDate, setSelectedDate
     }
   }, [filteredSchedule, selectedSchedule, activeTab, refetchReservations]);
 
-  if (isError) return <div>에러가 발생했습니다</div>;
-
   return (
     <div ref={popupRef} className='text-black-100'>
       {isOpen && (
@@ -141,42 +140,55 @@ export default function MyActivitiesReservations({ selectedDate, setSelectedDate
               aria-label='예약 현황창 닫기'
             />
           </div>
-          <ReservationsTimeSelect
-            formattedDate={formattedDate}
-            options={options}
-            selectedSchedule={selectedSchedule}
-            handleSelect={handleSelect}
-          />
-          {filteredSchedule && filteredSchedule.length > 0 ? (
-            <>
-              <div className={`${isSmallScreen ? 'h-[380px]' : 'h-[420px]'} rounded-b-[24px] bg-gray-100`}>
-                <ReservationStatusTabs
-                  activeTab={activeTab}
-                  setActiveTab={setActiveTab}
-                  count={filteredSchedule[0].count}
-                />
-
-                {activeTab && selectedSchedule && (
-                  <div className='px-2 py-[27px]'>
-                    <ReservationCardList
-                      key={selectedSchedule?.value}
-                      status={activeTab}
-                      reservations={reservations}
-                      activityId={activityId}
-                      scheduleId={Number(selectedSchedule?.value)}
-                      firstCursorId={reservations ? firstCursorId : undefined}
-                      isSmallScreen={isSmallScreen}
-                    />
-                  </div>
-                )}
-              </div>
-            </>
+          {isReservaedScheduleError || isStatusPatchError ? (
+            <RetryError
+              onRetry={() => {
+                refetchReservations();
+                setIsStatusPatchError(false);
+              }}
+              className='py-10'
+            />
           ) : (
-            <div
-              className={`${isSmallScreen ? 'h-[300px]' : 'h-[420px]'} relative flex items-center justify-center rounded-b-[24px] bg-gray-100`}
-            >
-              <NoReservations isLoading={isLoading} />
-            </div>
+            <>
+              <ReservationsTimeSelect
+                formattedDate={formattedDate}
+                options={options}
+                selectedSchedule={selectedSchedule}
+                handleSelect={handleSelect}
+              />
+              {filteredSchedule && filteredSchedule.length > 0 ? (
+                <>
+                  <div className={`${isSmallScreen ? 'h-[380px]' : 'h-[420px]'} rounded-b-[24px] bg-gray-100`}>
+                    <ReservationStatusTabs
+                      activeTab={activeTab}
+                      setActiveTab={setActiveTab}
+                      count={filteredSchedule[0].count}
+                    />
+
+                    {activeTab && selectedSchedule && (
+                      <div className='px-2 py-[27px]'>
+                        <ReservationCardList
+                          key={selectedSchedule?.value}
+                          status={activeTab}
+                          reservations={reservations}
+                          activityId={activityId}
+                          scheduleId={Number(selectedSchedule?.value)}
+                          firstCursorId={reservations ? firstCursorId : undefined}
+                          isSmallScreen={isSmallScreen}
+                          statusPatchError={() => setIsStatusPatchError(true)}
+                        />
+                      </div>
+                    )}
+                  </div>
+                </>
+              ) : (
+                <div
+                  className={`${isSmallScreen ? 'h-[300px]' : 'h-[420px]'} relative flex items-center justify-center rounded-b-[24px] bg-gray-100`}
+                >
+                  <NoReservations isLoading={isLoading} />
+                </div>
+              )}
+            </>
           )}
         </div>
       )}

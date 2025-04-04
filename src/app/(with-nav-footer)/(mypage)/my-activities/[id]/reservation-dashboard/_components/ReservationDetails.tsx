@@ -10,9 +10,17 @@ type Props = {
   headCount: number;
   activityId: number;
   reservationId: number;
+  hasError: () => void;
 };
 
-export default function ReservationDetails({ status, nickname, headCount, activityId, reservationId }: Props) {
+export default function ReservationDetails({
+  status,
+  nickname,
+  headCount,
+  activityId,
+  reservationId,
+  hasError,
+}: Props) {
   const { mutate: updateReservationStatus } = useUpdateReservationStatus();
   const router = useRouter();
 
@@ -26,6 +34,9 @@ export default function ReservationDetails({ status, nickname, headCount, activi
       {
         onSuccess: () => {
           router.refresh();
+        },
+        onError: () => {
+          hasError();
         },
       },
     );

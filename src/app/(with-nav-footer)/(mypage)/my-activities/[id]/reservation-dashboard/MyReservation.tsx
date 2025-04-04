@@ -39,7 +39,7 @@ export default function MyReservation({ activity, monthData }: Props) {
   }));
 
   useEffect(() => {
-    if (!id) return;
+    if (!id && activity.activities.length === 0) return;
 
     setLoading(true);
     const activityId = Number(id);

@@ -31,6 +31,7 @@ type Props = {
   scheduleId: number;
   isSmallScreen: boolean;
   firstCursorId: number | undefined;
+  statusPatchError: () => void;
 };
 
 export default function ReservationCardList({
@@ -40,6 +41,7 @@ export default function ReservationCardList({
   scheduleId,
   isSmallScreen,
   firstCursorId,
+  statusPatchError,
 }: Props) {
   const cursorIdRef = useRef<number | undefined>(firstCursorId);
   const [currentReservations, setCurrentReservations] = useState(initialReservations);
@@ -122,6 +124,7 @@ export default function ReservationCardList({
               headCount={info.headCount}
               activityId={activityId}
               reservationId={info.id}
+              hasError={statusPatchError}
             />
           ))}
           {isFetching && (
