@@ -81,14 +81,22 @@ export default function ActivityForm({
       >
         <div className='flex items-center justify-between'>
           <h2 className='text-2xl font-bold'>{mode === 'create' ? '내 체험 등록' : '내 체험 수정'}</h2>
-          <Button type='submit' disabled={isSubmitting || !isValid} className='px-[20px] py-[11px]'>
+          <Button type='submit' disabled={isSubmitting || !isValid || !bannerImageUrl} className='px-[20px] py-[11px]'>
             {isSubmitting ? '처리 중...' : mode === 'create' ? '등록하기' : '수정하기'}
           </Button>
         </div>
 
-        <Input label='제목' placeholder='제목을 입력하세요' {...register('title')} error={errors.title?.message} />
-
-        <label className='text-black-100 inline-flex items-center gap-1 text-lg font-medium'>카테고리</label>
+        <Input
+          label='제목'
+          placeholder='제목은 필수 입력값입니다.'
+          required
+          {...register('title')}
+          error={errors.title?.message}
+        />
+        <div className='flex gap-1'>
+          <label className='text-black-100 inline-flex items-center gap-1 text-lg font-medium'>카테고리</label>
+          <span className='flex items-center pt-1.5 text-lg font-thin text-red-500'>*</span>
+        </div>
         <Controller
           control={control}
           name='category'
@@ -109,10 +117,13 @@ export default function ActivityForm({
         />
         {errors.category && <p className='text-sm text-red-100'>{errors.category.message}</p>}
 
-        <label className='text-black-100 inline-flex items-center gap-1 text-lg font-medium'>설명</label>
+        <div className='flex gap-1'>
+          <label className='text-black-100 inline-flex items-center gap-1 text-lg font-medium'>설명</label>
+          <span className='flex items-center pt-1.5 text-lg font-thin text-red-500'>*</span>
+        </div>
         <textarea
           className='h-[260px] w-full rounded-[4px] border border-gray-800 px-4 py-3 focus:border-green-100 focus:ring-1 focus:ring-green-100 focus:outline-none'
-          placeholder='설명을 입력해주세요'
+          placeholder='설명은 필수 입력값입니다.'
           {...register('description')}
         />
         {errors.description && <p className='text-sm text-red-100'>{errors.description.message}</p>}
@@ -129,6 +140,7 @@ export default function ActivityForm({
           label='가격'
           placeholder='숫자만 입력'
           type='number'
+          required
           onWheel={(e) => e.currentTarget.blur()}
           {...register('price', { valueAsNumber: true })}
           error={errors.price?.message}
@@ -136,9 +148,12 @@ export default function ActivityForm({
         />
 
         <div>
-          <label className='text-black-100 inline-flex items-center gap-1 text-lg font-medium'>
-            예약 가능한 시간대
-          </label>
+          <div className='flex gap-1'>
+            <label className='text-black-100 inline-flex items-center gap-1 text-lg font-medium'>
+              예약 가능한 시간대
+            </label>
+            <span className='flex items-center pt-1.5 text-lg font-thin text-red-500'>*</span>
+          </div>
           <Controller
             control={control}
             name='schedules'
@@ -149,7 +164,11 @@ export default function ActivityForm({
         </div>
 
         <div>
-          <label className='text-black-100 inline-flex items-center gap-1 text-lg font-medium'>배너 이미지</label>
+          <div className='flex gap-1'>
+            <label className='text-black-100 inline-flex items-center gap-1 text-lg font-medium'>배너 이미지</label>
+            <span className='flex items-center pt-1.5 text-lg font-thin text-red-500'>*</span>
+          </div>
+          {!bannerImageUrl && <p className='mt-1 text-sm text-red-100'>배너 이미지는 필수 입력값입니다.</p>}
           <ImageUploader value={bannerImageUrl} onChange={(url) => setBannerImageUrl(url as string)} single />
         </div>
 

@@ -41,43 +41,45 @@ export default function ScheduleList({ value, onChange, error }: ScheduleListPro
         {DatepickerStyles}
       </style>
       <div className='mt-[16px] space-y-3'>
-        <div className='flex items-center gap-4'>
-          <div className='Datepickerstyles flex flex-col'>
-            <label className='text-md mb-1'>날짜</label>
-            <DatePicker
-              selected={temp.date}
-              onChange={(date) => setTemp({ ...temp, date })}
-              className='h-[48px] w-[379px] rounded border px-4'
-              placeholderText='YY/MM/DD'
-              dateFormat='yy/MM/dd'
-            />
+        <div className='mt-[16px] space-y-3'>
+          <div className='flex flex-col gap-4 sm:flex-row sm:items-center'>
+            <div className='Datepickerstyles flex flex-col sm:w-auto'>
+              <label className='text-md mb-1'>날짜</label>
+              <DatePicker
+                selected={temp.date}
+                onChange={(date) => setTemp({ ...temp, date })}
+                className='h-[48px] w-full rounded border px-4 sm:w-[379px]'
+                placeholderText='YY/MM/DD'
+                dateFormat='yy/MM/dd'
+              />
+            </div>
+            <div className='flex flex-col sm:w-auto'>
+              <label className='text-md mb-1'>시작 시간</label>
+              <input
+                type='time'
+                className='h-[48px] w-full rounded border px-3 sm:w-[140px]'
+                value={temp.startTime}
+                onChange={(e) => setTemp({ ...temp, startTime: e.target.value })}
+              />
+            </div>
+            <span className='mt-7 hidden sm:inline'>~</span>
+            <div className='flex flex-col sm:w-auto'>
+              <label className='text-md mb-1'>종료 시간</label>
+              <input
+                type='time'
+                className='h-[48px] w-full rounded border px-3 sm:w-[140px]'
+                value={temp.endTime}
+                onChange={(e) => setTemp({ ...temp, endTime: e.target.value })}
+              />
+            </div>
+            <button
+              type='button'
+              onClick={addSchedule}
+              className='mt-2 h-[48px] w-full rounded bg-green-100 text-3xl text-white sm:mt-7 sm:w-[48px]'
+            >
+              +
+            </button>
           </div>
-          <div className='flex flex-col'>
-            <label className='text-md mb-1'>시작 시간</label>
-            <input
-              type='time'
-              className='h-[48px] w-[140px] rounded border px-3'
-              value={temp.startTime}
-              onChange={(e) => setTemp({ ...temp, startTime: e.target.value })}
-            />
-          </div>
-          <span className='mt-7'>~</span>
-          <div className='flex flex-col'>
-            <label className='text-md mb-1'>종료 시간</label>
-            <input
-              type='time'
-              className='h-[48px] w-[140px] rounded border px-3'
-              value={temp.endTime}
-              onChange={(e) => setTemp({ ...temp, endTime: e.target.value })}
-            />
-          </div>
-          <button
-            type='button'
-            onClick={addSchedule}
-            className='mt-7 h-[48px] w-[48px] rounded bg-green-100 text-3xl text-white'
-          >
-            +
-          </button>
         </div>
 
         <hr className='text-gray-400' />

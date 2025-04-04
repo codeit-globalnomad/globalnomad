@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Input from '@/components/Input';
+import Button from '@/components/Button';
 
 declare global {
   interface Window {
@@ -67,16 +68,17 @@ export default function AddressFind({ value, onChange, error }: AddressFindProps
           onChange={(e) => onChange(e.target.value)}
           error={error}
           readOnly
+          required
         />
       </div>
-      <button
+      <Button
         type='button'
         onClick={handlePostcode}
         className='text-md h-[48px] cursor-pointer rounded border bg-green-100 px-5 text-white'
         disabled={!isLoaded}
       >
         검색
-      </button>
+      </Button>
     </div>
   );
 }
