@@ -2,9 +2,9 @@
 
 import { useEffect, useRef } from 'react';
 import Image from 'next/image';
-import { toast } from 'react-toastify';
 import marker from '@/assets/icons/marker.svg';
 import { copyToClipboard } from '@/lib/utils/copyToClipboard';
+import Button from '@/components/Button';
 
 type LocationProps = {
   address: string;
@@ -80,16 +80,20 @@ export default function ActivityLocation({ address, latitude, longitude }: Locat
             {address}
           </span>
           &nbsp;
-          <button className='mr-2 flex-none cursor-pointer text-lg text-green-100 underline' onClick={handleCopy}>
+          <button
+            className='mr-2 flex-none cursor-pointer text-lg text-green-100 underline'
+            onClick={handleCopy}
+            aria-label='복사'
+          >
             복사
           </button>
         </div>
-        <button
+        <Button
           className='flex-none cursor-pointer rounded-md bg-green-100 px-4 py-2 text-[15px] text-white'
           onClick={openMap}
         >
           카카오맵에서 보기
-        </button>
+        </Button>
       </div>
     </>
   );
