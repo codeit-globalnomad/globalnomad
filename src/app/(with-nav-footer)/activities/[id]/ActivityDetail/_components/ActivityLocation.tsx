@@ -4,6 +4,7 @@ import { useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { toast } from 'react-toastify';
 import marker from '@/assets/icons/marker.svg';
+import { copyToClipboard } from '@/lib/utils/copyToClipboard';
 
 type LocationProps = {
   address: string;
@@ -56,13 +57,12 @@ export default function ActivityLocation({ address, latitude, longitude }: Locat
     };
   }, [latitude, longitude]);
 
-  const handleCopy = async () => {
-    try {
-      await navigator.clipboard.writeText(address);
-      toast.success('주소를 복사하였습니다.');
-    } catch {
-      toast.error('주소를 복사하지 못했습니다.');
-    }
+  const handleCopy = () => {
+    copyToClipboard({
+      text: address,
+      successMessage: '주소를 복사하였습니다.',
+      errorMessage: '주소를 복사하지 못했습니다.',
+    });
   };
 
   const openMap = () => {
