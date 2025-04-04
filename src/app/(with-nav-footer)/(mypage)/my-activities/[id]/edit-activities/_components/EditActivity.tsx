@@ -18,16 +18,13 @@ export default function EditActivityPage({ activityId }: { activityId: number })
       defaultValues={activity}
       isSubmitting={isPending}
       onSubmit={(formData) => {
-        const prevSchedules = activity.schedules || [];
-        const nextSchedules = formData.schedules || [];
-
-        const schedulesToAdd = nextSchedules.filter(
-          (newItem) =>
-            !prevSchedules.some(
-              (oldItem) =>
-                oldItem.date === newItem.date &&
-                oldItem.startTime === newItem.startTime &&
-                oldItem.endTime === newItem.endTime,
+        const schedulesToAdd = formData.schedules.filter(
+          (newSchedule) =>
+            !activity.schedules.some(
+              (existingSchedule) =>
+                existingSchedule.date === newSchedule.date &&
+                existingSchedule.startTime === newSchedule.startTime &&
+                existingSchedule.endTime === newSchedule.endTime,
             ),
         );
 
