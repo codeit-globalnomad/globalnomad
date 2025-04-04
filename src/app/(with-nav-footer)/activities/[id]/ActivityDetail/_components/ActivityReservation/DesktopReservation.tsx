@@ -81,7 +81,7 @@ export default function DesktopReservation({ isLoggedIn, currentActivityId, pric
             <p className='text-xl font-bold'>참여 인원수</p>
             <PeopleCounter peopleCount={peopleCount} setValue={setValue} register={register} />
             <p className='flex gap-1 text-lg text-[#767676]'>
-              <Image src={alert} width={16} height={16} alt='경고 아이콘' />
+              <Image src={alert} className='h-auto w-[16px]' alt='경고 아이콘' />
               최소 참여 인원 수는 1명 입니다.
             </p>
             <hr className='mt-2 mb-2 w-full border-t-1 border-gray-300' />

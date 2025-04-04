@@ -56,14 +56,18 @@ export default function ActivityHeader({ activityDetail, isSameUser }: ActivityH
           {isSameUser && <MoreOptions activityId={id} onDelete={deleteActivity} />}
         </div>
       </div>
-      <div className={`align-center flex flex-row gap-4 ${isSameUser ? 'md:mt-[-0.3rem]' : ''}`}>
-        <div className='font-regular text-md flex gap-1 md:text-lg'>
-          <Image src={starRating} width={20} height={26} alt='별점 아이콘' />
+      <div className={`flex flex-row gap-4 ${isSameUser ? 'md:mt-[-0.3rem]' : ''}`}>
+        <div className='font-regular text-md flex items-center gap-1 md:text-lg'>
+          <div className='relative h-[26px] w-[20px]'>
+            <Image src={starRating} alt='별점 아이콘' fill style={{ objectFit: 'contain' }} />
+          </div>
           <span>{rating.toFixed(1)}</span>
           <span>({reviewCount})</span>
         </div>
-        <div className='text-md font-regular flex gap-1 md:text-lg'>
-          <Image src={marker} width={18} height={26} alt='지도 마커 아이콘' />
+        <div className='text-md font-regular flex items-center gap-1 md:text-lg'>
+          <div className='relative h-[26px] w-[18px] content-center'>
+            <Image src={marker} alt='지도 마커 아이콘' className='h-auto w-[18px]' />
+          </div>
           <span className='opacity-75'>{address}</span>
         </div>
       </div>
