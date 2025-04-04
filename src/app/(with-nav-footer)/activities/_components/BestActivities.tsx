@@ -1,44 +1,33 @@
 'use client';
+
+import { useState } from 'react';
 import { useActivities } from '@/lib/hooks/useActivities';
+import useMediaQuery from '@/lib/utils/useMediaQuery';
 import BestActivityItem from './BestActivityItem';
+import Image from 'next/image';
 import leftArrow from '@/assets/icons/left-arrow.svg';
 import rightArrow from '@/assets/icons/right-arrow.svg';
-import Image from 'next/image';
-import { useState } from 'react';
-import useMediaQuery from '@/lib/utils/useMediaQuery';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Pagination } from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
 
 export default function BestActivities() {
-  const { data, isError } = useActivities({
+  const { data } = useActivities({
     method: 'offset',
     sort: 'most_reviewed',
-    page: 1,
   });
 
+  const [currentPage, setCurrentPage] = useState(1);
   const isTabletOrMobile = useMediaQuery('(max-width: 1024px)');
   const isMobile = useMediaQuery('(max-width: 767px)');
-  const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 3;
   const totalPages = Math.ceil((data?.activities.length || 0) / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const visibleActivities = data?.activities.slice(startIndex, startIndex + itemsPerPage);
 
-  const handlePrevPage = () => {
-    if (currentPage > 1) setCurrentPage((prev) => prev - 1);
-  };
-
-  const handleNextPage = () => {
-    if (currentPage < totalPages) {
-      setCurrentPage((prev) => prev + 1);
-    } else {
-      setCurrentPage(1);
-    }
-  };
-
-  if (isError) return <div>에러가 발생했습니다.</div>;
+  const handlePrevPage = () => setCurrentPage((prev) => Math.max(prev - 1));
+  const handleNextPage = () => setCurrentPage((prev) => (prev < totalPages ? prev + 1 : 1));
 
   return (
     <div className='mx-auto w-full max-w-[1200px] px-6 max-[1250px]:px-6 min-[1251px]:px-0'>
@@ -46,22 +35,26 @@ export default function BestActivities() {
         <section className='text-black-100 text-2lg font-bold md:text-3xl'>🔥 인기 체험</section>
         {!isTabletOrMobile && (
           <div className='flex gap-[12px]'>
-            <button onClick={handlePrevPage} disabled={currentPage === 1} className='cursor-pointer'>
-              <Image src={leftArrow} alt='이전 페이지네이션' className={currentPage === 1 ? 'opacity-50' : ''} />
+            <button onClick={handlePrevPage} disabled={currentPage === 1}>
+              <Image
+                src={leftArrow}
+                alt='이전 페이지네이션'
+                className={currentPage === 1 ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'}
+              />
             </button>
-            <button onClick={handleNextPage} disabled={currentPage === totalPages} className='cursor-pointer'>
+            <button onClick={handleNextPage} disabled={currentPage === totalPages}>
               <Image
                 src={rightArrow}
                 alt='다음 페이지네이션'
-                className={currentPage === totalPages ? 'opacity-50' : ''}
+                className={currentPage === totalPages ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'}
               />
             </button>
           </div>
         )}
       </div>
 
-      {isTabletOrMobile ? (
-        <div className='mt-[16px] flex gap-[16px] md:mt-[32px] md:gap-[24px]'>
+      <div className='mt-[16px] flex gap-[16px] md:mt-[32px] md:gap-[24px]'>
+        {isTabletOrMobile ? (
           <Swiper
             spaceBetween={isMobile ? 16 : 24}
             slidesPerView={'auto'}
@@ -75,16 +68,14 @@ export default function BestActivities() {
               </SwiperSlide>
             ))}
           </Swiper>
-        </div>
-      ) : (
-        <div className='mt-[16px] flex gap-[16px] md:mt-[32px] md:gap-[24px]'>
-          {visibleActivities?.map((activity) => (
+        ) : (
+          visibleActivities?.map((activity) => (
             <div key={activity.id} className='w-full max-w-[384px]'>
               <BestActivityItem activity={activity} />
             </div>
-          ))}
-        </div>
-      )}
+          ))
+        )}
+      </div>
     </div>
   );
 }
