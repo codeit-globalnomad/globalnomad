@@ -11,6 +11,7 @@ type ActivityDescriptionProps = {
 export default function ActivityDescription({ description }: ActivityDescriptionProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [contentHeight, setContentHeight] = useState(0);
+
   const contentRef = useRef<HTMLParagraphElement>(null);
 
   const handleToggle = () => {
@@ -60,7 +61,7 @@ export default function ActivityDescription({ description }: ActivityDescription
           onClick={handleToggle}
         >
           <span>{isExpanded ? '간략히 보기' : '더보기'}</span>
-          <Image src={arrow} alt='아래 위 버튼 화살표 아이콘' className={`ml-2 ${isExpanded ? 'rotate-180' : ''}`} />
+          <Image src={arrow} className={`ml-2 ${isExpanded ? 'rotate-180' : ''}`} alt='아래 위 버튼 화살표 아이콘' />
         </button>
       </div>
     </>
