@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import { useActivityDetail } from '@/lib/hooks/useActivities';
 import { useMyData } from '@/lib/hooks/useUsers';
-import { useIntersectionObserver } from '@/lib/utils/useIntersectionObserver';
 import ActivityHeader from './_components/ActivityHeader';
 import ActivityGallery from './_components/ActivityGallery';
 import ActivityTab from './_components/ActivityTab';
@@ -29,8 +28,6 @@ export default function ActivityDetailPage({ id }: { id: number }) {
   const [currentTab, setCurrentTab] = useState('description');
   const [isLoading, setIsLoading] = useState(true);
 
-  useIntersectionObserver((id) => setCurrentTab(id));
-
   const scrollToTop = () => {
     window.requestAnimationFrame(() => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -43,8 +40,34 @@ export default function ActivityDetailPage({ id }: { id: number }) {
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 500);
-
     return () => clearTimeout(timer);
+  }, []);
+
+  useEffect(() => {
+    const sectionIds = ['description', 'location', 'reviews'];
+
+    const handleScroll = () => {
+      let closestSection = 'description';
+      let minDistance = Number.POSITIVE_INFINITY;
+
+      sectionIds.forEach((id) => {
+        const el = document.getElementById(id);
+        if (el) {
+          const rectTop = el.getBoundingClientRect().top;
+          const distance = Math.abs(rectTop);
+
+          if (distance < minDistance) {
+            minDistance = distance;
+            closestSection = id;
+          }
+        }
+      });
+
+      setCurrentTab(closestSection);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   if (isLoading || !activityDetail) {
