@@ -1,3 +1,5 @@
+'use client';
+
 import { startTransition, useActionState, useCallback, useEffect, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import logout from './logoutAction';
@@ -24,14 +26,14 @@ export default function LoggedInHeader({
   useEffect(() => {
     if (state?.status) {
       toast.success('로그아웃');
+
       router.replace('/login');
     }
+    console.log(state);
   }, [state, router]);
 
   const handleLogout = useCallback(() => {
-    startTransition(() => {
-      formAction();
-    });
+    formAction();
   }, []);
   const options = useMemo(
     () => [
