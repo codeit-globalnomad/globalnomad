@@ -53,7 +53,7 @@ const SideNavMenu = ({ activityId }: SideNavMenuProps) => {
     { name: '내 체험 관리', path: `/my-activities`, icon: MyActivities },
     {
       name: '예약 현황',
-      path: `/my-activities/${activityId}/reservation-dashboard`,
+      path: `/my-activities/${activityId}/reservation-dashboard?year=${String(new Date().getFullYear())}&month=${String(new Date().getMonth() + 1).padStart(2, '0')}`,
       icon: MyReservationStatus,
     },
   ];

@@ -1,6 +1,7 @@
 import axiosServerHelper from '@/lib/network/axiosServerHelper';
 import { MyActivitiesResponse, ReservationDashboardResponse } from '@/lib/types/myActivities';
-import MyActivityFilter from '../reservation-dashboard/_components/MyActivityFilter';
+import MyReservation from './MyReservation';
+import { redirect } from 'next/navigation';
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -17,7 +18,7 @@ export default async function ReservationDashboard({ params, searchParams }: Pro
 
   const activityId = resolvedParams?.id ? Number(resolvedParams.id) : null;
   if (!activityId || isNaN(activityId)) {
-    throw new Error('🚨 activityId가 유효하지 않습니다. API 요청을 중단합니다.');
+    redirect('/my-activities/reservation-dashboard');
   }
 
   const year = resolvedSearchParams.year || NowYear;
@@ -28,5 +29,5 @@ export default async function ReservationDashboard({ params, searchParams }: Pro
     `/my-activities/${activityId}/reservation-dashboard?year=${year}&month=${month}`,
   );
 
-  return <MyActivityFilter activity={myActivityData} monthData={myActivityMonthData} />;
+  return <MyReservation activity={myActivityData} monthData={myActivityMonthData} />;
 }
