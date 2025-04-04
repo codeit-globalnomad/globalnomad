@@ -1,24 +1,24 @@
 'use client';
+
 import { useState } from 'react';
 
 interface FloatingLabelInputProps {
   id: string;
   label: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   value: string;
-  onKeyDown: (e: React.KeyboardEvent<HTMLInputElement>) => void;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
-export default function FloatingLabelInput({ id, label, onChange, value, onKeyDown }: FloatingLabelInputProps) {
+export default function FloatingLabelInput({ id, label, value, onChange }: FloatingLabelInputProps) {
   const [isFocused, setIsFocused] = useState(false);
 
   return (
     <div className='relative flex flex-col gap-[8px]'>
       <label
         htmlFor={id}
-        className={`absolute left-10 bg-white px-1 transition-all md:left-12 ${
-          isFocused || value !== '' ? 'top-[-14%] text-sm' : 'top-4 text-base text-gray-700'
-        } text-gray-700`}
+        className={`absolute left-10 bg-white px-1 text-gray-700 transition-all md:left-12 ${
+          isFocused || value !== '' ? 'top-[-14%] text-sm' : 'top-4 text-base'
+        }`}
       >
         {label}
       </label>
@@ -30,7 +30,6 @@ export default function FloatingLabelInput({ id, label, onChange, value, onKeyDo
         value={value}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(value !== '')}
-        onKeyPress={onKeyDown}
       />
     </div>
   );
