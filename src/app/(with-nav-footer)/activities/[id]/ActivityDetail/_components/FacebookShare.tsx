@@ -55,13 +55,13 @@ export const FacebookShare = ({ currentUrl, title, address }: FacebookShareProps
         }
       });
     } else {
-      window.location.href = facebookUrl;
+      window.open(facebookUrl, '_blank', 'noopener,noreferrer');
     }
   };
 
   return (
-    <button onClick={shareFacebook} className='cursor-pointer'>
-      <Image src={facebook} alt='페이스북 아이콘' />
+    <button onClick={shareFacebook} className='cursor-pointer' aria-label='페이스북 공유'>
+      <Image src={facebook} width={50} height={50} alt='페이스북 아이콘' />
     </button>
   );
 };
