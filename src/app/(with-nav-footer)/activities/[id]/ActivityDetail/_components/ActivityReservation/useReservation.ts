@@ -29,12 +29,12 @@ export const useReservation = (currentActivityId: number, price: number) => {
   const [size, setSize] = useState<number>(10);
   const [disabledTimeIds, setDisabledTimeIds] = useState<number[]>([]);
   const [reservationCompleted, setReservationCompleted] = useState(false);
-  const swiperRef = useRef<SwiperType | null>(null);
 
+  const swiperRef = useRef<SwiperType | null>(null);
   const peopleCount = watch('people', 1);
   const totalPrice = price * peopleCount;
-
   const queryClient = useQueryClient();
+
   const { data: availableSchedule, refetch: refetchSchedule } = useAvailableSchedule(
     currentActivityId,
     selectedYear,
@@ -87,12 +87,6 @@ export const useReservation = (currentActivityId: number, price: number) => {
       setValue('people', 1);
     }
   }, [selectedDate, availableSchedule, setValue]);
-
-  useEffect(() => {
-    if (swiperRef.current) {
-      swiperRef.current.update();
-    }
-  }, [disabledTimeIds]);
 
   useEffect(() => {
     if (selectedDate || selectedTimeId) {
