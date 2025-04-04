@@ -113,6 +113,10 @@
   font-weight: bold;
 }
 
+.swiper {
+  margin-left: inherit;
+}
+
 .custom-next.swiper-button-disabled, .custom-prev.swiper-button-disabled {
   opacity: 0.5;
 }
