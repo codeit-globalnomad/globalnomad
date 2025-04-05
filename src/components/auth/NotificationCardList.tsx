@@ -66,7 +66,7 @@ export default function NotificationCardList({ notifications, firstCursorId }: P
         }
       `}</style>
       {currentNotifications.length > 0 ? (
-        <div className='flex flex-col gap-2 transition-all duration-300'>
+        <div className='relative flex flex-col gap-2 transition-all duration-300'>
           {currentNotifications.map((n) => (
             <NotificationDetails
               key={n.id}
@@ -84,7 +84,9 @@ export default function NotificationCardList({ notifications, firstCursorId }: P
           {hasMore && <div className='h-6 bg-red-50' ref={observerRef} />}
         </div>
       ) : (
-        <p className='text-sm text-gray-500'>알림이 없습니다</p>
+        <p className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transform text-sm text-gray-800'>
+          알림이 없습니다
+        </p>
       )}
     </div>
   );

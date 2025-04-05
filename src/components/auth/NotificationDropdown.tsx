@@ -64,8 +64,11 @@ export default function NotificationDropdown() {
           </div>
 
           {isLoading ? (
-            <p className='text-sm text-gray-500'>불러오는 중...</p>
+            <div className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 py-4'>
+              <div className='spinner-border h-7 w-7 animate-spin rounded-full border-4 border-solid border-green-100 border-t-transparent'></div>
+            </div>
           ) : (
+            // <p className='text-sm text-gray-500'>불러오는 중...</p>
             <NotificationCardList notifications={notifications} firstCursorId={firstCursorId} />
           )}
 
