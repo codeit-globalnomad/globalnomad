@@ -3,15 +3,13 @@
 import Image from 'next/image';
 import React, { useState, useEffect } from 'react';
 import { cva, VariantProps } from 'class-variance-authority';
-
-// 화살표 이미지
 import rightArrow from '@/assets/icons/pagination-right-arrow.svg';
 
 export interface PaginationProps extends VariantProps<typeof paginationVariants> {
   currentPage: number;
   totalPages: number;
   onChange: (page: number) => void;
-  size?: 'sm' | 'md';
+  size?: 'small' | 'medium';
 }
 
 const paginationVariants = cva(
@@ -19,8 +17,8 @@ const paginationVariants = cva(
   {
     variants: {
       size: {
-        sm: 'w-[40px] h-[40px] rounded-[10px] text-2lg', // 작은 버튼 (40px x 40px)
-        md: 'w-[55px] h-[55px] rounded-[15px] text-2lg', // 기본 버튼 (55px x 55px)
+        small: 'w-[40px] h-[40px] rounded-[10px] text-2lg', // 작은 버튼 (40px x 40px)
+        medium: 'w-[55px] h-[55px] rounded-[15px] text-2lg', // 기본 버튼 (55px x 55px)
       },
       variant: {
         default: 'bg-white border-green-100 text-green-100 hover:bg-gray-200',
@@ -29,7 +27,7 @@ const paginationVariants = cva(
       },
     },
     defaultVariants: {
-      size: 'md',
+      size: 'medium',
       variant: 'default',
     },
   },
@@ -37,8 +35,8 @@ const paginationVariants = cva(
 
 // 화살표 크기 변수 설정
 const arrowSizeClasses = {
-  sm: 'h-[15.27px] w-[15.27px]',
-  md: 'h-[21px] w-[21px]',
+  small: 'h-[15.27px] w-[15.27px]',
+  medium: 'h-[21px] w-[21px]',
 };
 
 const Pagination = ({ currentPage, totalPages, onChange, size }: PaginationProps) => {
@@ -87,7 +85,7 @@ const Pagination = ({ currentPage, totalPages, onChange, size }: PaginationProps
         })}
       >
         <div
-          className={`flex items-center justify-center ${arrowSizeClasses[size || 'md']} ${
+          className={`flex items-center justify-center ${arrowSizeClasses[size || 'medium']} ${
             // 변수 사용
             currentPage === 1 ? 'opacity-50 grayscale' : ''
           }`} // 비활성화 시 그레이스케일 + 투명도 적용
@@ -95,9 +93,13 @@ const Pagination = ({ currentPage, totalPages, onChange, size }: PaginationProps
           <Image
             src={rightArrow} // 오른쪽 화살표를 반전해서 왼쪽 화살표로 사용
             alt='이전 페이지로 이동'
-            width={size === 'sm' ? 5 : 7}
-            height={size === 'sm' ? 3 : 4}
-            className='scale-x-[-1] transform object-contain'
+            width={size === 'small' ? 5 : 7}
+            height={size === 'small' ? 3 : 4}
+            style={{
+              width: `${size === 'small' ? '15px' : '21px'}`,
+              height: `${size === 'small' ? '9px' : '12px'}`,
+            }}
+            className='-scale-x-100 transform object-contain'
           />
         </div>
       </button>
@@ -129,15 +131,19 @@ const Pagination = ({ currentPage, totalPages, onChange, size }: PaginationProps
         })}
       >
         <div
-          className={`flex items-center justify-center ${arrowSizeClasses[size || 'md']} ${
+          className={`flex items-center justify-center ${arrowSizeClasses[size || 'medium']} ${
             currentPage === totalPages ? 'opacity-50 grayscale' : ''
           }`} // 비활성화 시 그레이스케일 + 투명도 적용
         >
           <Image
             src={rightArrow} // 기본 오른쪽 화살표 그대로 사용
             alt='다음 페이지로 이동'
-            width={size === 'sm' ? 5 : 7}
-            height={size === 'sm' ? 3 : 4}
+            width={size === 'small' ? 5 : 7}
+            height={size === 'small' ? 3 : 4}
+            style={{
+              width: `${size === 'small' ? '15px' : '21px'}`,
+              height: `${size === 'small' ? '9px' : '12px'}`,
+            }}
             className='object-contain'
           />
         </div>
