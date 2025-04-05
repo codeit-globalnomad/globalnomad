@@ -67,8 +67,8 @@ const SideNavMenu = ({ activityId }: SideNavMenuProps) => {
             className='hover:bg-green-10 absolute -right-0 -bottom-0 flex h-11 w-11 cursor-pointer items-center justify-center rounded-full bg-green-100 transition'
             aria-label='프로필 수정'
           >
-            <Image src={EditIcon} alt='프로필 수정' width={24} height={24} />
-            <input type='file' accept='image/*' className='hidden' onChange={handleFileChange} />
+            <Image src={EditIcon} alt='프로필 수정' />
+            <input type='file' accept='image/*' className='hidden h-[24px] w-[24px]' onChange={handleFileChange} />
           </label>
         </div>
       </div>
