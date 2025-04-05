@@ -6,6 +6,7 @@ import CloseImage from '@/assets/icons/close.svg';
 type Props = {
   content: string;
   createdAt: string;
+  id: number;
 };
 
 const statusColorMap: Record<string, string> = {
@@ -13,7 +14,7 @@ const statusColorMap: Record<string, string> = {
   거절: 'text-red-100',
 };
 
-export default function NotificationDetails({ content, createdAt }: Props) {
+export default function NotificationDetails({ content, createdAt, id }: Props) {
   const confirmed = content.includes('승인');
   const declined = content.includes('거절');
   const statusDots = [

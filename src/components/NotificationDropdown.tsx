@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef } from 'react';
 import { useMyNotifications } from '@/lib/hooks/useMyNotification';
 import bell from '@/assets/icons/bell.svg';
 import bellHover from '@/assets/icons/bell-hover.svg';
@@ -12,9 +12,9 @@ import { useClickOutside } from '@/lib/utils/useClickOutside';
 export default function NotificationDropdown() {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState(false);
-
   const { data, isLoading, refetch } = useMyNotifications({ size: 3 });
   const notifications = data?.notifications ?? [];
+  const firstCursorId = notifications.at(-1)?.id;
   const totalCount = data?.totalCount ?? 0;
 
   // 외부 클릭 시 닫기
@@ -22,6 +22,7 @@ export default function NotificationDropdown() {
     setIsOpen(false);
   });
 
+  console.log('id', firstCursorId);
   return (
     <div className='relative' ref={dropdownRef}>
       <div onClick={() => setIsOpen((prev) => !prev)} className='group relative my-[25px] cursor-pointer'>
@@ -56,7 +57,7 @@ export default function NotificationDropdown() {
           {isLoading ? (
             <p className='text-sm text-gray-500'>불러오는 중...</p>
           ) : (
-            <NotificationCardList notifications={notifications} />
+            <NotificationCardList notifications={notifications} firstCursorId={firstCursorId} />
           )}
 
           <div className='mt-1 text-right'>
