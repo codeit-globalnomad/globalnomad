@@ -39,20 +39,16 @@ export default function CancelReservationModal({
   };
 
   return (
-    <Modal onClose={onClose}>
-      <div className='flex w-[300px] flex-col items-center gap-4 text-center'>
-        <div className='p-2'>
-          <Image src={checkIcon} alt='체크 아이콘' width={24} height={24} />
-        </div>
-        <p className='font-regular text-black-100 text-lg'>예약을 취소하시겠어요?</p>
-        <div className='mt-4 flex w-full justify-center gap-2'>
-          <Button variant='outline' onClick={onClose} className='!w-fit min-w-[90px] px-4 py-2 text-lg font-bold'>
-            아니오
-          </Button>
-          <Button variant='default' onClick={handleCancel} className='!w-fit min-w-[90px] px-4 py-2 text-lg font-bold'>
-            취소하기
-          </Button>
-        </div>
+    <Modal onClose={onClose} className='flex w-[300px] flex-col items-center gap-5'>
+      <Image src={checkIcon} alt='체크 아이콘' width={28} height={28} />
+      <p className='font-regular text-black-100 text-2lg'>예약을 취소하시겠어요?</p>
+      <div className='flex w-full justify-between'>
+        <Button variant='outline' onClick={onClose} className='w-[48%] px-4 py-2 text-lg font-bold'>
+          아니오
+        </Button>
+        <Button variant='default' onClick={handleCancel} className='w-[48%] px-4 py-2 text-lg font-bold'>
+          취소하기
+        </Button>
       </div>
     </Modal>
   );

@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { ReservationWithActivity } from '@/lib/types/myReservation';
 import CancelReservationModal from './CancelReservationModal';
 import WriteReviewModal from './WriteReviewModal';
@@ -49,7 +50,10 @@ export default function MyReservationCard({ reservation }: MyReservationCardProp
 
   return (
     <>
-      <div className='mb-6 w-full max-w-[792px] min-w-[344px] rounded-2xl shadow-md hover:bg-gray-100'>
+      <Link
+        href={`/activities/${activity.id}`}
+        className='mb-6 block w-full max-w-[792px] min-w-[344px] rounded-2xl shadow-md hover:bg-gray-100'
+      >
         <div className='flex'>
           {/* 이미지 */}
           <div className='relative aspect-[1/1] w-[128px] md:w-[156px] lg:w-[204px]'>
@@ -76,23 +80,31 @@ export default function MyReservationCard({ reservation }: MyReservationCardProp
               <p className='text-black-200 text-md font-medium md:text-xl'>₩ {totalPrice.toLocaleString()}</p>
 
               {status === 'pending' && (
-                <Button
-                  variant='outline'
-                  onClick={() => setIsCancelModalOpen(true)}
-                  className='!w-fit px-4 py-2 text-xs font-bold md:text-sm'
+                <div
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setIsCancelModalOpen(true);
+                  }}
                 >
-                  예약 취소
-                </Button>
+                  <Button variant='outline' className='!w-fit px-4 py-2 text-xs font-bold md:text-sm'>
+                    예약 취소
+                  </Button>
+                </div>
               )}
 
               {status === 'completed' && !reviewSubmitted && (
-                <Button
-                  variant='default'
-                  onClick={() => setIsReviewModalOpen(true)}
-                  className='!w-fit px-4 py-2 text-xs font-bold md:text-sm'
+                <div
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setIsReviewModalOpen(true);
+                  }}
                 >
-                  후기 작성
-                </Button>
+                  <Button variant='default' className='!w-fit px-4 py-2 text-xs font-bold md:text-sm'>
+                    후기 작성
+                  </Button>
+                </div>
               )}
 
               {status === 'completed' && reviewSubmitted && (
@@ -101,7 +113,7 @@ export default function MyReservationCard({ reservation }: MyReservationCardProp
             </div>
           </div>
         </div>
-      </div>
+      </Link>
 
       {/* 모달 */}
       <CancelReservationModal

@@ -1,12 +1,11 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import Image from 'next/image';
 import { useInfiniteMyReservations } from '@/lib/hooks/useMyReservation';
+import Empty from '@/components/Empty';
 import MyReservationCard from './MyReservationCard';
 import FilterDropdown from '@/components/FilterDropdown';
 import arrowDownIcon from '@/assets/icons/arrow-filter-dropdown.svg';
-import emptyIcon from '@/assets/icons/empty.svg';
 import LoadingSpinner from '@/components/LoadingSpinner';
 
 const STATUS_LABEL_MAP = {
@@ -56,7 +55,7 @@ export default function MyReservations() {
       <div className='flex items-center justify-between'>
         <h1 className='text-black-200 mb-0 text-2xl font-bold'>예약 내역</h1>
         <FilterDropdown
-          label='필터'
+          label={selectedOption?.label ?? '필터'}
           options={STATUS_OPTIONS}
           selected={selectedOption || null}
           onSelect={(option) => setStatus(option?.value as Status)}
@@ -70,10 +69,7 @@ export default function MyReservations() {
       {isLoading ? (
         <LoadingSpinner />
       ) : reservations.length === 0 ? (
-        <div className='flex flex-col items-center justify-center py-20 text-center'>
-          <Image src={emptyIcon} alt='예약 없음 아이콘' width={120} height={120} className='mb-6' />
-          <p className='text-lg font-medium text-gray-500'>아직 예약한 체험이 없어요</p>
-        </div>
+        <Empty>아직 예약한 체험이 없어요</Empty>
       ) : (
         <>
           <ul className='w-full max-w-[680px] space-y-4 px-4'>
