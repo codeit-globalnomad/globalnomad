@@ -9,7 +9,7 @@ import logoMd from '@/assets/logo/logo-md.svg';
 import Dropdown from '../Dropdown';
 import ProfileImage from '../ProfileImage';
 import { toast } from 'react-toastify';
-import NotificationDropdown from '../NotificationDropdown';
+import NotificationDropdown from './NotificationDropdown';
 
 export default function LoggedInHeader({
   nickname,

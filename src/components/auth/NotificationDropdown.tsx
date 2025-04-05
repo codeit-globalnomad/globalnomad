@@ -4,7 +4,7 @@ import { useState, useRef } from 'react';
 import { useMyNotifications } from '@/lib/hooks/useMyNotification';
 import bell from '@/assets/icons/bell.svg';
 import bellHover from '@/assets/icons/bell-hover.svg';
-import NotificationCardList from '@/app/(with-nav-footer)/(my-notifications)/_conponents/NotificationCardList';
+import NotificationCardList from './NotificationCardList';
 import Image from 'next/image';
 import CloseImage from '@/assets/icons/close.svg';
 import { useClickOutside } from '@/lib/utils/useClickOutside';
@@ -12,17 +12,15 @@ import { useClickOutside } from '@/lib/utils/useClickOutside';
 export default function NotificationDropdown() {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState(false);
-  const { data, isLoading, refetch } = useMyNotifications({ size: 3 });
+  const { data, isLoading } = useMyNotifications({ size: 3 });
   const notifications = data?.notifications ?? [];
   const firstCursorId = notifications.at(-1)?.id;
   const totalCount = data?.totalCount ?? 0;
 
-  // 외부 클릭 시 닫기
   useClickOutside(dropdownRef, () => {
     setIsOpen(false);
   });
 
-  console.log('id', firstCursorId);
   return (
     <div className='relative' ref={dropdownRef}>
       <div onClick={() => setIsOpen((prev) => !prev)} className='group relative my-[25px] cursor-pointer'>

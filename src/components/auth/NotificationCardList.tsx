@@ -58,11 +58,6 @@ export default function NotificationCardList({ notifications, firstCursorId }: P
     return () => observer.disconnect();
   }, [hasMore, isFetching]);
 
-  useEffect(() => {
-    console.log('observerRef.current:', observerRef.current);
-    console.log('hasMore:', hasMore, 'isFetching:', isFetching);
-  }, [observerRef.current, hasMore, isFetching]);
-
   return (
     <div className='custom-scrollbar max-h-[250px] overflow-y-auto rounded-[5px]'>
       <style jsx>{`
@@ -71,9 +66,15 @@ export default function NotificationCardList({ notifications, firstCursorId }: P
         }
       `}</style>
       {currentNotifications.length > 0 ? (
-        <div className='flex flex-col gap-2'>
+        <div className='flex flex-col gap-2 transition-all duration-300'>
           {currentNotifications.map((n) => (
-            <NotificationDetails key={n.id} id={n.id} content={n.content} createdAt={n.createdAt} />
+            <NotificationDetails
+              key={n.id}
+              id={n.id}
+              content={n.content}
+              createdAt={n.createdAt}
+              onDelete={(id) => setCurrentNotifications((prev) => prev.filter((n) => n.id !== id))}
+            />
           ))}
           {isFetching && (
             <div className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 py-4'>

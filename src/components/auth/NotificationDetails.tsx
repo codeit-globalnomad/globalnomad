@@ -1,12 +1,17 @@
+'use client';
+
 import { formatDistanceToNow } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import Image from 'next/image';
 import CloseImage from '@/assets/icons/close.svg';
+import { useDeleteMyNotification } from '@/lib/hooks/useMyNotification';
+import { useState } from 'react';
 
 type Props = {
   content: string;
   createdAt: string;
   id: number;
+  onDelete: (id: number) => void;
 };
 
 const statusColorMap: Record<string, string> = {
@@ -14,16 +19,30 @@ const statusColorMap: Record<string, string> = {
   거절: 'text-red-100',
 };
 
-export default function NotificationDetails({ content, createdAt, id }: Props) {
+export default function NotificationDetails({ content, createdAt, id, onDelete }: Props) {
+  const [isDeleting, setIsDeleting] = useState(false);
   const confirmed = content.includes('승인');
   const declined = content.includes('거절');
   const statusDots = [
     { key: 'confirmed', show: confirmed, color: 'bg-blue-100' },
     { key: 'declined', show: declined, color: 'bg-red-100' },
   ];
+  const { mutate: deleteMyNotification } = useDeleteMyNotification();
+
+  const handleDelete = () => {
+    setIsDeleting(true);
+    setTimeout(() => {
+      onDelete(id);
+      deleteMyNotification(id);
+    }, 300);
+  };
 
   return (
-    <div className='text-black-100 top-5 left-3 flex flex-col gap-1 rounded-[5px] border-gray-400 bg-white px-3 py-2 text-[14px] leading-[24px] font-normal'>
+    <div
+      className={`overflow-hidden transition-all duration-300 ease-in-out ${
+        isDeleting ? 'm-0 max-h-0 translate-x-24 p-0 opacity-0' : 'max-h-[500px] translate-x-0 p-3 opacity-100'
+      } text-black-100 flex flex-col gap-1 rounded-[5px] border-gray-400 bg-white text-[14px] leading-[24px] font-normal`}
+    >
       <div className='flex flex-col gap-1'>
         <div className='flex justify-between'>
           {statusDots.map(
@@ -31,7 +50,7 @@ export default function NotificationDetails({ content, createdAt, id }: Props) {
           )}
 
           <Image
-            // onClick={handleClickClose}
+            onClick={handleDelete}
             className='cursor-pointer'
             src={CloseImage}
             width={20}
