@@ -1,6 +1,5 @@
 'use client';
 import Image, { StaticImageData } from 'next/image';
-import { SyntheticEvent } from 'react';
 import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/cn';
 import profileDefault from '@/assets/icons/profile-default.svg';
@@ -25,24 +24,20 @@ const profileImageVariants = cva('relative rounded-full', {
 
 interface ProfileImageProps extends VariantProps<typeof profileImageVariants> {
   src?: StaticImageData | string | null;
-  onClick?: () => void;
   className?: string;
+  clickable?: boolean;
 }
 
-export default function ProfileImage({ src, size, onClick }: ProfileImageProps) {
-  const onErrorImage = (e: SyntheticEvent<HTMLImageElement>) => {
-    e.currentTarget.src = profileDefault;
-  };
-
+export default function ProfileImage({ src, size, clickable, className }: ProfileImageProps) {
   return (
-    <div className={cn(profileImageVariants({ size, clickable: !!onClick }))} onClick={onClick}>
+    <div className={cn(profileImageVariants({ size, clickable }), className)}>
       <Image
         className='rounded-full object-cover'
         src={src?.toString().trim() ? src : profileDefault}
         alt='프로필 이미지'
-        onError={onErrorImage}
         fill
         priority
+        sizes='(max-width: 768px) 32px, (max-width: 1024px) 45px, 160px'
       />
     </div>
   );

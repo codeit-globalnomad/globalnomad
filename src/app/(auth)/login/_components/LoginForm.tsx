@@ -17,6 +17,7 @@ import { useState } from 'react';
 import { toast } from 'react-toastify';
 import Modal from '@/components/Modal';
 import { AxiosError } from 'axios';
+import checkIcon from '@/assets/icons/check-circle-filled.svg';
 
 export default function LoginForm() {
   const { mutateAsync: signin } = useLogin();
@@ -25,7 +26,7 @@ export default function LoginForm() {
   const [isShowPassword, setIsShowPassword] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  const modalClassName = `w-[90%] ${errorMessage === '존재하지 않는 유저입니다.' ? 'max-w-[540px] h-[250px]' : 'max-w-[400px] h-[180px]'}`;
+  const modalClassName = `w-[90%] ${errorMessage === '존재하지 않는 유저입니다.' ? 'max-w-[540px]' : 'max-w-[400px]'}`;
   const {
     register,
     handleSubmit,
@@ -45,7 +46,7 @@ export default function LoginForm() {
   const onSubmit = async (data: LoginParams) => {
     try {
       await signin(data);
-      toast.success('로그인');
+      toast.success('로그인에 성공했습니다.');
       router.push('/activities');
     } catch (error) {
       const err = error as AxiosError<{ message: string }>;
@@ -61,7 +62,7 @@ export default function LoginForm() {
   };
 
   return (
-    <div className='flex min-h-screen items-center justify-center'>
+    <div className='my-32 flex items-center justify-center'>
       <div className='w-full max-w-xl px-4'>
         <div className='mb-[56px] flex justify-center'>
           <Link href='/'>
@@ -108,13 +109,13 @@ export default function LoginForm() {
             />
           </div>
           <Button type='submit' className='w-full py-[11px]' disabled={!isValid || isSubmitting}>
-            로그인 하기
+            로그인하기
           </Button>
         </form>
 
         <div className='mt-8 mb-12 text-center'>
-          <p className='text-gray-800'>
-            회원이 아니신가요?
+          <p className='text-lg text-gray-800'>
+            회원이 아니신가요?&nbsp;
             <Link href='/signup' className='font-semibold text-green-100 underline'>
               회원가입하기
             </Link>
@@ -125,9 +126,10 @@ export default function LoginForm() {
       {isModalOpen && (
         <Modal
           onClose={() => setIsModalOpen(false)}
-          className={`flex flex-col items-center rounded-2xl bg-white p-6 md:h-[250px] ${modalClassName}`}
+          className={`flex w-[360px] flex-col items-center gap-5 ${modalClassName}`}
         >
-          <div className='text-bold mb-6 pt-8 text-center text-xl md:mb-11 md:pt-12'>
+          <Image src={checkIcon} alt='체크 아이콘' width={28} height={28} />
+          <div className='font-regular text-black-100 text-2lg text-center whitespace-nowrap'>
             {errorMessage === '존재하지 않는 유저입니다.' ? (
               <>
                 존재하지 않는 유저입니다.
@@ -138,7 +140,7 @@ export default function LoginForm() {
               errorMessage
             )}
           </div>
-          <Button className='px-[22px] py-[8px]' onClick={handleModalConfirm}>
+          <Button className='px-6 py-2 text-lg font-bold' onClick={handleModalConfirm}>
             확인
           </Button>
         </Modal>

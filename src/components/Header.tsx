@@ -1,7 +1,7 @@
 'use client';
 
-import LoadingSkeleton from './auth/LoadingSkeleton';
 import { useMyData } from '@/lib/hooks/useUsers';
+import HeaderSkeleton from './auth/HeaderSkeleton';
 import LoggedInHeader from './auth/LoggedInHeader';
 import LoggedOutHeader from './auth/LoggedOutHeader';
 
@@ -9,7 +9,7 @@ export default function Header() {
   const { data: user, isLoading } = useMyData();
 
   return isLoading ? (
-    <LoadingSkeleton />
+    <HeaderSkeleton />
   ) : user ? (
     <LoggedInHeader nickname={user.nickname} profileImage={user.profileImageUrl} />
   ) : (
