@@ -8,6 +8,7 @@ import NotificationCardList from './NotificationCardList';
 import Image from 'next/image';
 import CloseImage from '@/assets/icons/close.svg';
 import { useClickOutside } from '@/lib/utils/useClickOutside';
+import { useDeleteMyNotification } from '@/lib/hooks/useMyNotification';
 
 export default function NotificationDropdown() {
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -16,10 +17,20 @@ export default function NotificationDropdown() {
   const notifications = data?.notifications ?? [];
   const firstCursorId = notifications.at(-1)?.id;
   const totalCount = data?.totalCount ?? 0;
+  const { mutateAsync: deleteMyNotification } = useDeleteMyNotification();
 
   useClickOutside(dropdownRef, () => {
     setIsOpen(false);
   });
+
+  const handleAllDelete = async () => {
+    if (!notifications.length) return;
+
+    for (const notification of notifications) {
+      await deleteMyNotification(notification.id);
+    }
+    setIsOpen(false);
+  };
 
   return (
     <div className='relative' ref={dropdownRef}>
@@ -58,9 +69,12 @@ export default function NotificationDropdown() {
             <NotificationCardList notifications={notifications} firstCursorId={firstCursorId} />
           )}
 
-          <div className='mt-1 text-right'>
-            <span className='cursor-pointer text-right text-sm text-gray-900'>모두 삭제</span>
-          </div>
+          <span
+            onClick={handleAllDelete}
+            className='absolute right-6 bottom-6 mt-1 cursor-pointer text-sm text-gray-900'
+          >
+            모두 삭제
+          </span>
         </div>
       )}
     </div>
