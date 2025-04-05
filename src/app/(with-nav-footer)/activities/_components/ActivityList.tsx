@@ -111,7 +111,7 @@ export default function ActivityList() {
                   currentPage={currentPage}
                   totalPages={Math.ceil((data?.totalCount || 0) / itemsPerPage)}
                   onChange={handlePageChange}
-                  size={isPC || isTablet ? 'md' : 'sm'}
+                  size={isPC || isTablet ? 'medium' : 'small'}
                 />
               </div>
             </>
