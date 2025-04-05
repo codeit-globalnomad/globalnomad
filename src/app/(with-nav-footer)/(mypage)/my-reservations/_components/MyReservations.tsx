@@ -55,7 +55,7 @@ export default function MyReservations() {
       <div className='flex items-center justify-between'>
         <h1 className='text-black-200 mb-0 text-2xl font-bold'>예약 내역</h1>
         <FilterDropdown
-          label='필터'
+          label={selectedOption?.label ?? '필터'}
           options={STATUS_OPTIONS}
           selected={selectedOption || null}
           onSelect={(option) => setStatus(option?.value as Status)}
