@@ -6,11 +6,10 @@ import logout from './logoutAction';
 import Link from 'next/link';
 import Image from 'next/image';
 import logoMd from '@/assets/logo/logo-md.svg';
-import bell from '@/assets/icons/bell.svg';
-import bellHover from '@/assets/icons/bell-hover.svg';
 import Dropdown from '../Dropdown';
 import ProfileImage from '../ProfileImage';
 import { toast } from 'react-toastify';
+import NotificationDropdown from '../NotificationDropdown';
 
 export default function LoggedInHeader({
   nickname,
@@ -48,10 +47,7 @@ export default function LoggedInHeader({
           <Image src={logoMd} width={172} height={30} alt='로고' className='my-[21px] cursor-pointer' priority />
         </Link>
         <div className='flex gap-[25px] max-[430px]:gap-[10px] md:gap-[25px] lg:gap-[25px]'>
-          <div className='group my-[25px] cursor-pointer'>
-            <Image src={bell} width={20} height={20} alt='알림' className='group-hover:hidden' />
-            <Image src={bellHover} width={20} height={20} alt='알림(호버)' className='hidden group-hover:block' />
-          </div>
+          <NotificationDropdown />
           <div className='my-[24px] h-[22px] border-r-2 border-gray-300' />
           <div className='py-[19px]'>
             <Dropdown
