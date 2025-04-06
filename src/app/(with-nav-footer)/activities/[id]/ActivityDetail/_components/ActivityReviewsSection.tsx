@@ -1,10 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import starRating from '@/assets/icons/star-rating.svg';
 import Empty from '@/components/Empty';
-import { useActivityReviews } from '@/lib/hooks/useActivities';
+import { useActivityReviews, useInfiniteActivityReviews } from '@/lib/hooks/useActivities';
 import { ActivityReviewsResponse } from '@/lib/types/activities';
 import ActivityReviews from './ActivityReviews';
 
@@ -14,26 +14,19 @@ type ActivityReviewsProps = {
 };
 
 export default function ReviewsSection({ currentActivityId, reviewCount }: ActivityReviewsProps) {
-  const [reviewsToShow, setReviewsToShow] = useState(3);
-  const [reviews, setReviews] = useState<ActivityReviewsResponse['reviews']>([]);
-
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteActivityReviews(currentActivityId, 3);
   const { data: activityReviews } = useActivityReviews(currentActivityId, 1, reviewCount);
 
-  if (activityReviews && activityReviews.reviews !== reviews) {
-    setReviews(activityReviews.reviews);
-  }
+  const [reviews, setReviews] = useState<ActivityReviewsResponse['reviews']>([]);
 
-  const totalReviews = activityReviews?.totalCount ?? 0;
+  const allReviews = data?.pages.flatMap((page) => page.reviews) ?? [];
+  const firstReview = reviews.length > 0 ? reviews[reviews.length - 1] : null;
+  const totalCount = data?.pages[0]?.totalCount ?? 0;
+  const averageRating = data?.pages[0]?.averageRating ?? 0;
+
   const reviewsPerPage = 3;
-
-  const loadMoreReviews = () => {
-    setReviewsToShow((prevReviews) => prevReviews + 3);
-  };
-
-  const totalPages = Math.ceil(totalReviews / reviewsPerPage);
-  const currentPage = Math.ceil(reviewsToShow / reviewsPerPage);
-  const hasMoreReviews = reviewsToShow < totalReviews;
-  const totalCount = activityReviews?.reviews ? activityReviews.totalCount : 0;
+  const currentPage = data?.pages.length ?? 0;
+  const totalPages = Math.ceil((data?.pages[0]?.totalCount ?? 0) / reviewsPerPage);
 
   const getRatingText = (averageRating: number) => {
     if (averageRating >= 4.5) return '매우 만족';
@@ -43,8 +36,11 @@ export default function ReviewsSection({ currentActivityId, reviewCount }: Activ
     return '매우 불만족';
   };
 
-  const averageRating = activityReviews?.averageRating ?? 0;
-  const firstReview = reviews.length > 0 ? reviews[reviews.length - 1] : null;
+  useEffect(() => {
+    if (activityReviews?.reviews) {
+      setReviews(activityReviews.reviews);
+    }
+  }, [activityReviews]);
 
   return (
     <div id='reviews'>
@@ -57,32 +53,32 @@ export default function ReviewsSection({ currentActivityId, reviewCount }: Activ
               <Image src={starRating} fill style={{ objectFit: 'contain' }} alt='별점 아이콘' />
             </div>
             <span className='text-2lg md:text-[18px]'>
-              <span className='font-bold'>{reviews.length === 0 ? '' : averageRating.toFixed(1)}</span>
+              <span className='font-bold'>{allReviews.length === 0 ? '' : averageRating.toFixed(1)}</span>
               &nbsp;
-              {reviews.length === 0 ? '후기 없음' : getRatingText(averageRating)}
+              {allReviews.length === 0 ? '후기 없음' : getRatingText(averageRating)}
             </span>
           </div>
         </div>
-        {reviews.length === 0 ? (
+        {allReviews.length === 0 ? (
           <Empty>아직 후기가 없습니다.</Empty>
         ) : (
-          // <p></p>
           <ActivityReviews
             activityReviews={{
-              totalCount: totalReviews,
-              averageRating: activityReviews?.averageRating ?? 0,
-              reviews: reviews.slice(0, reviewsToShow),
+              totalCount,
+              averageRating,
+              reviews: allReviews,
             }}
             firstReview={firstReview}
           />
         )}
-        {hasMoreReviews && (
+        {hasNextPage && (
           <button
-            onClick={loadMoreReviews}
-            className='mt-4 flex cursor-pointer items-center justify-center gap-2 rounded-[4px] border-1 border-black bg-white px-1 py-[8px]'
+            onClick={() => fetchNextPage()}
+            disabled={isFetchingNextPage}
+            className='mt-4 flex cursor-pointer items-center justify-center gap-2 rounded-[4px] border-1 border-black px-1 py-[8px]'
             aria-label='더보기'
           >
-            더보기
+            {isFetchingNextPage ? '로딩 중...' : '더보기'}
             <span className='text-sm'>
               ({currentPage}/{totalPages} 페이지)
             </span>
