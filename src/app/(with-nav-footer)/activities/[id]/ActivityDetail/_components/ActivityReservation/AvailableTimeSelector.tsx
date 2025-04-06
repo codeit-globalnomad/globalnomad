@@ -69,7 +69,7 @@ export default function AvailableTimeSelector({
             spaceBetween={10}
             slidesPerView='auto'
             loop={false}
-            className='m-0 h-auto'
+            className='time-swiper m-0 h-auto'
             centeredSlides={false}
             key={selectedDate?.toISOString() || 'default'}
           >
