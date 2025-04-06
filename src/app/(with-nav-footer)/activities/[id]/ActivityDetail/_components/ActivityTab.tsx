@@ -22,6 +22,7 @@ export default function ActivityTab({ tabs, currentTab, onTabClick }: ActivityTa
           className={`md:text-2lg w-1/3 cursor-pointer text-lg ${
             currentTab === tab.targetId ? 'border-b-2 border-gray-900 font-bold' : 'text-gray-700'
           }`}
+          aria-label='탭 메뉴'
         >
           {tab.label}
         </button>

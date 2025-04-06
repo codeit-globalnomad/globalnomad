@@ -1,8 +1,8 @@
 'use client';
 
 import Image from 'next/image';
-import { Controller } from 'react-hook-form';
 import { format } from 'date-fns';
+import { Controller } from 'react-hook-form';
 import alert from '@/assets/icons/alert.svg';
 import AvailableTimeSelector from './AvailableTimeSelector';
 import PeopleCounter from './PeopleCounter';

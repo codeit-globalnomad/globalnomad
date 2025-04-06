@@ -3,8 +3,8 @@
 import { useEffect, useRef } from 'react';
 import Image from 'next/image';
 import marker from '@/assets/icons/marker.svg';
-import { copyToClipboard } from '@/lib/utils/copyToClipboard';
 import Button from '@/components/Button';
+import { copyToClipboard } from '@/lib/utils/copyToClipboard';
 
 type LocationProps = {
   address: string;
@@ -91,6 +91,7 @@ export default function ActivityLocation({ address, latitude, longitude }: Locat
         <Button
           className='flex-none cursor-pointer rounded-md bg-green-100 px-4 py-2.5 text-[15px] text-white'
           onClick={openMap}
+          aria-label='카카오맵 열기'
         >
           카카오맵에서 보기
         </Button>

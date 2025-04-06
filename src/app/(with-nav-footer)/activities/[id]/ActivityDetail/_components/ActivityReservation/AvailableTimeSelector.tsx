@@ -45,14 +45,14 @@ export default function AvailableTimeSelector({
     <li className='flex flex-col gap-2'>
       <div className='flex items-center justify-between'>
         <p className='text-[22px] font-bold md:text-xl'>예약 가능한 시간</p>
-        <div className='z-10 mr-[-10px] flex cursor-pointer'>
-          <div className={`custom-prev ${availableTimes.length === 0 ? 'pointer-events-none opacity-50' : ''}`}>
+        <ol className='z-10 mr-[-10px] flex cursor-pointer'>
+          <li className={`custom-prev ${availableTimes.length === 0 ? 'pointer-events-none opacity-50' : ''}`}>
             <Image src={leftArrow} width={26} height={26} alt='이전 화살표 아이콘' />
-          </div>
-          <div className={`custom-next ${availableTimes.length === 0 ? 'pointer-events-none opacity-50' : ''}`}>
+          </li>
+          <li className={`custom-next ${availableTimes.length === 0 ? 'pointer-events-none opacity-50' : ''}`}>
             <Image src={leftArrow} width={26} height={26} alt='다음 화살표 아이콘' className='scale-x-[-1] transform' />
-          </div>
-        </div>
+          </li>
+        </ol>
       </div>
       <div className='flex space-x-2'>
         {availableTimes.length > 0 ? (

@@ -56,7 +56,7 @@ export default function ShareModal({
           <Image src={close} width={36} height={36} alt='닫기 아이콘' />
         </button>
       </div>
-      <ul className='flex justify-between'>
+      <ol className='flex justify-between'>
         <li className='text-center'>
           <button onClick={copyUrlToClipboard} className='cursor-pointer' aria-label='URL 복사하기'>
             <Image src={url} width={50} height={50} alt='URL 복사하기 아이콘' />
@@ -83,7 +83,7 @@ export default function ShareModal({
           <FacebookShare currentUrl={`${window.location.origin}${pathname}`} title={title} address={address} />
           <p className='text-md font-regular'>페이스북</p>
         </li>
-      </ul>
+      </ol>
     </Modal>
   );
 }

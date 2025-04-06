@@ -1,4 +1,3 @@
-import profileDefault from '@/assets/icons/profile-default.svg';
 import ProfileImage from '@/components/ProfileImage';
 import { ActivityReviewsResponse } from '@/lib/types/activities';
 
@@ -29,7 +28,7 @@ export default function ReviewCard({ reviews, firstReview }: ReviewsProps) {
         return (
           <div key={review.id} className='rounded-[12px] bg-white p-8'>
             <div className='flex justify-between'>
-              <ul className='flex items-center gap-3'>
+              <ol className='flex items-center gap-3'>
                 <li className='h-[45px] w-[45px] overflow-hidden rounded-full'>
                   <ProfileImage src={review.user.profileImageUrl} />
                 </li>
@@ -37,7 +36,7 @@ export default function ReviewCard({ reviews, firstReview }: ReviewsProps) {
                   <p className='font-bold'>{review.user.nickname}</p>
                   <p className='text-sm text-gray-600'>{getTimeAgo(review.createdAt)}</p>
                 </li>
-              </ul>
+              </ol>
               {isFirstReview && (
                 <span className='h-fit rounded-[3px] border-[1px] border-green-100 bg-white px-2 py-1 text-xs font-medium text-green-100'>
                   첫 후기
