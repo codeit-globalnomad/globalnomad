@@ -15,10 +15,13 @@ export const useMyReservations = (params: GetMyReservationsParams) => {
 };
 
 // 내 예약 수정(취소) 훅
+const cancelReservation = (reservationId: number) => cancelMyReservation(reservationId, 'canceled');
+
 export const useCancelMyReservation = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (reservationId: number) => cancelMyReservation(reservationId, 'canceled'),
+    mutationKey: ['cancelMyReservation'],
+    mutationFn: cancelReservation,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['myReservations'] });
     },
