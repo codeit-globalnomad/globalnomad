@@ -124,7 +124,7 @@ export default function ActivityDetailPage({ id }: { id: number }) {
           </section>
         )}
       </div>
-      <ScrollToTopButton onClick={scrollToTop} />
+      <ScrollToTopButton onClick={scrollToTop} isSameUser={isSameUser} />
     </div>
   );
 }
