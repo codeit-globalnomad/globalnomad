@@ -89,7 +89,7 @@ export default function ActivityLocation({ address, latitude, longitude }: Locat
           </button>
         </div>
         <Button
-          className='flex-none cursor-pointer rounded-md bg-green-100 px-4 py-2 text-[15px] text-white'
+          className='flex-none cursor-pointer rounded-md bg-green-100 px-4 py-2.5 text-[15px] text-white'
           onClick={openMap}
         >
           카카오맵에서 보기
