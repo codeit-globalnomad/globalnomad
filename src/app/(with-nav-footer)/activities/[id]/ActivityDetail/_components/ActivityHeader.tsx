@@ -32,7 +32,9 @@ export default function ActivityHeader({ activityDetail, isSameUser }: ActivityH
     <div className='md:gap-0.8 flex flex-col gap-[0.3rem] md:gap-1.5'>
       <span className='text-md font-regular opacity-75'>{category}</span>
       <div className='mt-[-1px] flex justify-between'>
-        <h1 className='relative w-[80%] text-[28px] leading-tight font-bold md:text-3xl md:leading-snug'>{title}</h1>
+        <h1 className='relative w-[80%] text-[28px] leading-tight font-bold break-words break-keep md:text-3xl md:leading-snug'>
+          {title}
+        </h1>
         <div className={`relative top-[0.26rem] flex items-baseline md:top-0 ${isSameUser ? 'right-[-0.94rem]' : ''}`}>
           <Image
             src={share}

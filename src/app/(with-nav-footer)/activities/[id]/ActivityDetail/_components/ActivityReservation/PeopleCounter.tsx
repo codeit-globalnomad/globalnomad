@@ -25,7 +25,12 @@ export default function PeopleCounter({ peopleCount, setValue, register }: Peopl
       >
         <Image src={decrement} width={18} height={18} alt='감소 버튼 아이콘' />
       </button>
-      <input type='text' {...register('people', { required: true })} readOnly className='w-[40px] p-2 text-center' />
+      <input
+        type='text'
+        {...register('people', { required: true })}
+        readOnly
+        className='w-[40px] p-2 text-center md:text-lg'
+      />
       <button
         type='button'
         className='w-[40px] cursor-pointer p-2 text-center'

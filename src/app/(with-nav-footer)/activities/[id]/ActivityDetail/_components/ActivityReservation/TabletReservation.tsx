@@ -124,7 +124,7 @@ export default function TabletReservation({ isLoggedIn, currentActivityId, price
                         type='button'
                         variant='default'
                         onClick={handleCloseModal}
-                        className='w-full p-[10px]'
+                        className='w-full py-3 text-lg'
                         aria-label='선택 완료'
                       >
                         선택 완료
@@ -139,7 +139,7 @@ export default function TabletReservation({ isLoggedIn, currentActivityId, price
           <li className='custom-md-size-middle flex flex-col gap-2'>
             <p className='text-xl font-bold'>참여 인원수</p>
             <PeopleCounter peopleCount={peopleCount} setValue={setValue} register={register} />
-            <p className='second flex w-full items-center gap-1 text-lg text-[#767676]'>
+            <p className='second flex w-full items-center gap-1 text-[15px] text-[#767676]'>
               <Image src={alert} width={16} height={16} alt='경고 아이콘' />
               <span className='overflow-hidden text-ellipsis whitespace-nowrap'>최소 참여 인원 수는 1명 입니다.</span>
             </p>

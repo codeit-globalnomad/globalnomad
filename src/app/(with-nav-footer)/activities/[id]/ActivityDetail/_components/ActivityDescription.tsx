@@ -34,7 +34,7 @@ export default function ActivityDescription({ description }: ActivityDescription
           left: 0;
           width: 100%;
           height: 100px;
-          background: linear-gradient(rgba(250, 250, 250, 0) 0%, rgb(250, 250, 250) 70%, rgb(250, 250, 250) 100%);
+          background: linear-gradient(rgba(250, 250, 250, 0) 0%, rgb(250, 250, 250) 60%, rgb(250, 250, 250) 100%);
           z-index: -1;
           transition:
             height 0.3s ease-out,

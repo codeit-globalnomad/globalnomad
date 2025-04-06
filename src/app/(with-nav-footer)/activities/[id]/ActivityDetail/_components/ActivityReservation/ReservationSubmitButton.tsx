@@ -21,7 +21,7 @@ export default function ReservationSubmitButton({
   return (
     <Button
       type='submit'
-      className={`flex !h-full w-full flex-col p-0 font-bold text-white md:!h-auto md:py-4 ${height} ${rounded} ${bgColor}`}
+      className={`flex !h-full w-full flex-col p-0 ${!isLoggedIn ? 'text-2lg' : 'text-[17px]'} font-bold text-white md:!h-auto md:py-3.5 lg:py-4 ${height} ${rounded} ${bgColor}`}
       disabled={disabled || reservationCompleted}
       aria-label='예약 신청'
     >

@@ -135,4 +135,7 @@
   .custom-md-size-middle .second {
     font-size: 14px;
   }
+  .custom-md-size-middle input {
+    font-size: 15px;
+  }
 }

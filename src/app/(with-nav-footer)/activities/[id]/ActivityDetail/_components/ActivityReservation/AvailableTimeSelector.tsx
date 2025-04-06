@@ -97,7 +97,7 @@ export default function AvailableTimeSelector({
           </Swiper>
         ) : null}
       </div>
-      <p className='flex w-full items-center gap-1 overflow-hidden text-lg text-ellipsis whitespace-nowrap text-[#767676]'>
+      <p className='flex w-full items-center gap-1 overflow-hidden text-[15px] text-ellipsis whitespace-nowrap text-[#767676]'>
         <Image src={alert} width={16} height={16} alt='경고 아이콘' />
         <span className='overflow-hidden text-ellipsis whitespace-nowrap'>
           {availableTimes.length === 0

@@ -84,7 +84,7 @@ export default function ActivityBanner({ category, currentActivityId }: Activity
           </li>
         </ol>
       </div>
-      <div className='relative mt-3 h-[10rem] w-full overflow-hidden rounded-[12px] bg-gray-50 md:h-[180px] lg:h-[140px]'>
+      <div className='relative mt-3 h-[11rem] w-full overflow-hidden rounded-[12px] bg-gray-50 md:h-[12rem] lg:h-[9rem]'>
         {selectedBanners.length === 0 ? (
           <div className='flex h-full w-full items-center justify-center text-lg font-medium text-gray-500'>
             추천 체험 배너가 없습니다.
@@ -134,7 +134,7 @@ export default function ActivityBanner({ category, currentActivityId }: Activity
                               {banner.rating} ({banner.reviewCount})
                             </span>
                           </div>
-                          <h4 className='w-full overflow-hidden text-2xl font-bold text-ellipsis whitespace-nowrap text-white md:text-2xl lg:text-2xl'>
+                          <h4 className='w-full text-2xl font-bold break-words break-keep text-white'>
                             {banner.title}
                           </h4>
                         </li>
