@@ -13,6 +13,7 @@ import ReviewsSection from './_components/ActivityReviewsSection';
 import { MobileReservation, TabletReservation, DesktopReservation } from './_components/ActivityReservation';
 import ActivityBanner from './_components/ActivityBanner';
 import ScrollToTopButton from './_components/ScrollToTopButton';
+import RetryError from '@/components/RetryError';
 
 const wrapper = 'mt-3 flex w-full flex-col gap-4 md:gap-6 max-w-[1200px]';
 const tabItems = [
@@ -22,7 +23,7 @@ const tabItems = [
 ];
 
 export default function ActivityDetailPage({ id }: { id: number }) {
-  const { data: activityDetail } = useActivityDetail(id);
+  const { data: activityDetail, isError, refetch } = useActivityDetail(id);
   const { data: userData } = useMyData();
 
   const [currentTab, setCurrentTab] = useState('description');
@@ -73,6 +74,8 @@ export default function ActivityDetailPage({ id }: { id: number }) {
   if (isLoading || !activityDetail) {
     return <LoadingSpinner />;
   }
+
+  if (isError) return <RetryError onRetry={refetch} className='py-40' />;
 
   const isSameUser = userData?.id === activityDetail.userId;
   const category = activityDetail.category;
