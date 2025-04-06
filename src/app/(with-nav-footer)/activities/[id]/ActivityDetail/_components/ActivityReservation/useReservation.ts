@@ -40,7 +40,7 @@ export const useReservation = (currentActivityId: number, price: number) => {
     selectedYear,
     selectedMonth,
   );
-  const { data: myReservations } = useMyReservations({
+  const { data: myReservations, refetch: refetchMyReservations } = useMyReservations({
     size: size,
   });
   const { mutate: createReservation } = useCreateReservation(currentActivityId);
@@ -56,6 +56,7 @@ export const useReservation = (currentActivityId: number, price: number) => {
 
   useEffect(() => {
     if (selectedDate) {
+      refetchMyReservations();
       refetchSchedule();
 
       const selectedDateStr = format(selectedDate, 'yyyy-MM-dd');
@@ -141,6 +142,7 @@ export const useReservation = (currentActivityId: number, price: number) => {
           setSelectedTimeId(null);
           setValue('people', 1);
           setDisabledTimeIds((prev) => [...prev, Number(selectedTimeId)]);
+          refetchMyReservations();
           refetchSchedule();
           queryClient.invalidateQueries({
             queryKey: ['availableSchedule', currentActivityId, selectedYear, selectedMonth],
