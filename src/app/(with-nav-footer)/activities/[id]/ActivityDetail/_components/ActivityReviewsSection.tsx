@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import Image from 'next/image';
 import starRating from '@/assets/icons/star-rating.svg';
+import Empty from '@/components/Empty';
 import { useActivityReviews } from '@/lib/hooks/useActivities';
 import { ActivityReviewsResponse } from '@/lib/types/activities';
 import ActivityReviews from './ActivityReviews';
@@ -63,8 +64,9 @@ export default function ReviewsSection({ currentActivityId, reviewCount }: Activ
           </div>
         </div>
         {reviews.length === 0 ? (
-          <p>아직 후기가 없습니다.</p>
+          <Empty>아직 후기가 없습니다.</Empty>
         ) : (
+          // <p></p>
           <ActivityReviews
             activityReviews={{
               totalCount: totalReviews,
