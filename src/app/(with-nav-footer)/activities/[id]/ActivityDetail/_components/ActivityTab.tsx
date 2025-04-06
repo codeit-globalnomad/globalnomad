@@ -19,7 +19,7 @@ export default function ActivityTab({ tabs, currentTab, onTabClick }: ActivityTa
         <button
           key={tab.targetId}
           onClick={() => handleTabClick(tab.targetId)}
-          className={`md:text-2lg w-1/3 cursor-pointer text-lg ${
+          className={`md:text-2lg w-1/3 cursor-pointer text-[17px] ${
             currentTab === tab.targetId ? 'border-b-2 border-gray-900 font-bold' : 'text-gray-700'
           }`}
           aria-label='탭 메뉴'

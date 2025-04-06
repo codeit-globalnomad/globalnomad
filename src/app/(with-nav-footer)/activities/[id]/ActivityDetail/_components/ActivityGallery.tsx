@@ -58,7 +58,7 @@ export default function ActivityGallery({ activityDetail }: ActivityGalleryProps
   const hasMultipleImages = images.length > 1;
 
   return (
-    <div className='relative h-[430px] w-full overflow-hidden md:h-[540px] md:rounded-lg lg:h-[550px]'>
+    <div className='relative h-[26rem] w-full overflow-hidden md:h-[32rem] md:rounded-[12px] lg:h-[36rem]'>
       <Swiper
         onSwiper={(swiper) => (swiperRef.current = swiper)}
         modules={[Navigation, Autoplay, Keyboard, EffectFade]}
@@ -107,7 +107,7 @@ export default function ActivityGallery({ activityDetail }: ActivityGalleryProps
           <Image src={prevArrow} alt='이전 화살표 아이콘' />
         </button>
         <span className='text-md'>
-          <span className='font-bold'>{currentIndex}</span> / {images.length}
+          <span className='font-semibold'>{currentIndex}</span> / {images.length}
         </span>
         <button
           className={`custom-next-gallery cursor-pointer ${currentIndex === images.length ? 'pointer-events-none opacity-30' : ''}`}

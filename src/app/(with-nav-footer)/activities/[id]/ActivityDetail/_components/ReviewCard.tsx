@@ -26,7 +26,7 @@ export default function ReviewCard({ reviews, firstReview }: ReviewsProps) {
         const isFirstReview = firstReview && review.id === firstReview.id;
         const isLast = index === 0;
         return (
-          <div key={review.id} className='rounded-[12px] bg-white p-8'>
+          <div key={review.id} className='rounded-[12px] border border-gray-300 bg-white px-5 py-6 md:p-8'>
             <div className='flex justify-between'>
               <ol className='flex items-center gap-3'>
                 <li className='h-[45px] w-[45px] overflow-hidden rounded-full'>

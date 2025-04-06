@@ -19,7 +19,7 @@ export default function PeopleCounter({ peopleCount, setValue, register }: Peopl
     <div className='flex w-[120px] items-center rounded-md border border-gray-300'>
       <button
         type='button'
-        className='w-[40px] p-2 text-center md:cursor-pointer'
+        className='w-[40px] cursor-pointer p-2 text-center'
         onClick={() => setValue('people', Math.max(1, peopleCount - 1))}
         aria-label='감소'
       >
@@ -28,7 +28,7 @@ export default function PeopleCounter({ peopleCount, setValue, register }: Peopl
       <input type='text' {...register('people', { required: true })} readOnly className='w-[40px] p-2 text-center' />
       <button
         type='button'
-        className='w-[40px] p-2 text-center md:cursor-pointer'
+        className='w-[40px] cursor-pointer p-2 text-center'
         onClick={() => setValue('people', peopleCount + 1)}
         aria-label='증가'
       >

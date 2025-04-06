@@ -21,11 +21,16 @@ export default function ReservationSubmitButton({
   return (
     <Button
       type='submit'
-      className={`w-full py-2 font-bold text-white ${height} ${rounded} ${bgColor}`}
+      className={`flex !h-full w-full flex-col p-0 font-bold text-white md:!h-auto md:py-4 ${height} ${rounded} ${bgColor}`}
       disabled={disabled || reservationCompleted}
-      aria-label='예약'
+      aria-label='예약 신청'
     >
       {reservationCompleted ? '예약 완료' : '예약하기'}
+      {!isLoggedIn && (
+        <p className='font-overflow-hidden text-center text-xs font-normal text-ellipsis whitespace-nowrap text-white'>
+          로그인 후 예약 가능
+        </p>
+      )}{' '}
     </Button>
   );
 }

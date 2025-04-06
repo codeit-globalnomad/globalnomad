@@ -113,6 +113,10 @@
   font-weight: bold;
 }
 
+.react-calendar__navigation__label__labelText {
+  font-weight: 600;
+}
+
 .swiper.time-swiper {
   margin-left: inherit;
 }

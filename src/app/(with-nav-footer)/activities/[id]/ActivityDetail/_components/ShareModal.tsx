@@ -7,7 +7,7 @@ import close from '@/assets/icons/close-fill.svg';
 import url from '@/assets/icons/share-url.svg';
 import x from '@/assets/icons/share-x.svg';
 import Modal from '@/components/Modal';
-import { copyToClipboard } from '@/lib/utils/copyToClipboard';
+import { copyToClipboard } from '@/app/(with-nav-footer)/activities/[id]/ActivityDetail/_components/copyToClipboard';
 import { FacebookShare } from './FacebookShare';
 import KakaoShare from './KakaoShare';
 

@@ -4,7 +4,7 @@ import { useEffect, useRef } from 'react';
 import Image from 'next/image';
 import marker from '@/assets/icons/marker.svg';
 import Button from '@/components/Button';
-import { copyToClipboard } from '@/lib/utils/copyToClipboard';
+import { copyToClipboard } from '@/app/(with-nav-footer)/activities/[id]/ActivityDetail/_components/copyToClipboard';
 
 type LocationProps = {
   address: string;
@@ -72,7 +72,7 @@ export default function ActivityLocation({ address, latitude, longitude }: Locat
 
   return (
     <>
-      <div className='h-[300px] rounded-[12px] md:h-[310px] lg:h-[450px]' ref={mapContainerRef}></div>
+      <div className='h-[19rem] rounded-[12px] md:h-[20rem] lg:h-[26rem]' ref={mapContainerRef}></div>
       <div className='flex items-baseline justify-between'>
         <div className='md:text-2lg flex items-center gap-1'>
           <Image src={marker} alt='지도 마커 아이콘' />
@@ -89,11 +89,12 @@ export default function ActivityLocation({ address, latitude, longitude }: Locat
           </button>
         </div>
         <Button
-          className='flex-none cursor-pointer rounded-md bg-green-100 px-4 py-2.5 text-[15px] text-white'
+          className='flex-none cursor-pointer rounded-md bg-green-100 px-2.5 py-2.5 text-[15px] text-white md:px-4'
           onClick={openMap}
           aria-label='카카오맵 열기'
         >
-          카카오맵에서 보기
+          <span className='block md:hidden'>카카오맵</span>
+          <span className='hidden md:block'>카카오맵에서 보기</span>
         </Button>
       </div>
     </>

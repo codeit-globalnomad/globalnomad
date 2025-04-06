@@ -84,7 +84,7 @@ export default function ActivityBanner({ category, currentActivityId }: Activity
           </li>
         </ol>
       </div>
-      <div className='relative mt-3 h-[180px] w-full overflow-hidden rounded-[12px] bg-gray-50 lg:h-[140px]'>
+      <div className='relative mt-3 h-[10rem] w-full overflow-hidden rounded-[12px] bg-gray-50 md:h-[180px] lg:h-[140px]'>
         {selectedBanners.length === 0 ? (
           <div className='flex h-full w-full items-center justify-center text-lg font-medium text-gray-500'>
             추천 체험 배너가 없습니다.
@@ -110,40 +110,43 @@ export default function ActivityBanner({ category, currentActivityId }: Activity
             onSwiper={(swiper) => (swiperRef.current = swiper)}
           >
             {selectedBanners.map((banner) => (
-              <SwiperSlide key={banner.id}>
-                <Link href={`/activities/${banner.id}`} className='relative w-full' aria-label='추천 체험 배너로 이동'>
-                  <div className='relative h-full w-full'>
+              <SwiperSlide key={banner.id} className='h-full'>
+                <Link
+                  href={`/activities/${banner.id}`}
+                  className='relative h-[300px] w-full'
+                  aria-label='추천 체험 배너로 이동'
+                >
+                  <div className='relative z-0 h-full w-full'>
                     <Image
                       src={banner.imageUrl}
                       fill
-                      sizes='(max-width: 768px) 100vw, 768px'
-                      className='object-cover object-center'
+                      className='z-0 object-cover object-center'
                       priority={false}
                       alt={banner.alt}
                     />
-                  </div>
-                  <div className='absolute top-0 right-0 bottom-0 left-0 bg-gradient-to-t from-black to-transparent opacity-60'></div>
-                  <div className='absolute right-0 bottom-0 left-0 flex h-full w-full justify-between bg-gradient-to-t from-black to-transparent px-10'>
-                    <ol className='flex h-full w-full flex-col items-baseline justify-center gap-2 text-white lg:mt-[10px] lg:flex-row lg:items-center lg:justify-between lg:gap-0'>
-                      <li className='w-full lg:mt-[-20px] lg:w-[80%]'>
-                        <div className='flex items-center gap-1'>
-                          <Image src={starRating} width={14} height={14} alt='별점 아이콘' />
-                          <span className='text-md'>
-                            {banner.rating} ({banner.reviewCount})
+                    <div className='absolute z-10 h-full w-full bg-gradient-to-t from-black/70 to-transparent'></div>
+                    <div className='absolute z-11 flex h-full w-full justify-between px-5.5 md:px-10'>
+                      <ol className='flex h-full w-full flex-col items-baseline justify-center gap-2 text-white lg:mt-[10px] lg:flex-row lg:items-center lg:justify-between lg:gap-0'>
+                        <li className='w-full lg:mt-[-20px] lg:w-[80%]'>
+                          <div className='flex items-center gap-1'>
+                            <Image src={starRating} width={14} height={14} alt='별점 아이콘' />
+                            <span className='text-md'>
+                              {banner.rating} ({banner.reviewCount})
+                            </span>
+                          </div>
+                          <h4 className='w-full overflow-hidden text-2xl font-bold text-ellipsis whitespace-nowrap text-white md:text-2xl lg:text-2xl'>
+                            {banner.title}
+                          </h4>
+                        </li>
+                        <li className='text-md text-white'>
+                          <span className='text-2lg font-bold lg:text-xl'>
+                            ₩ {new Intl.NumberFormat().format(banner.price)}
                           </span>
-                        </div>
-                        <h4 className='w-full overflow-hidden text-2xl font-bold text-ellipsis whitespace-nowrap text-white md:text-2xl lg:text-2xl'>
-                          {banner.title}
-                        </h4>
-                      </li>
-                      <li className='text-md text-white'>
-                        <span className='text-2lg font-bold lg:text-xl'>
-                          ₩ {new Intl.NumberFormat().format(banner.price)}
-                        </span>
-                        &nbsp;
-                        <span className='opacity-50'>/ 인</span>
-                      </li>
-                    </ol>
+                          &nbsp;
+                          <span className='opacity-50'>/ 인</span>
+                        </li>
+                      </ol>
+                    </div>
                   </div>
                 </Link>
               </SwiperSlide>
