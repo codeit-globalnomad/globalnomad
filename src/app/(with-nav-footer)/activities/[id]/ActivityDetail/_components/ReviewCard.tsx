@@ -31,7 +31,7 @@ export default function ReviewCard({ reviews, firstReview }: ReviewsProps) {
             <div className='flex justify-between'>
               <ul className='flex items-center gap-3'>
                 <li className='h-[45px] w-[45px] overflow-hidden rounded-full'>
-                  <ProfileImage src={review.user.profileImageUrl || profileDefault} />
+                  <ProfileImage src={review.user.profileImageUrl} />
                 </li>
                 <li>
                   <p className='font-bold'>{review.user.nickname}</p>
