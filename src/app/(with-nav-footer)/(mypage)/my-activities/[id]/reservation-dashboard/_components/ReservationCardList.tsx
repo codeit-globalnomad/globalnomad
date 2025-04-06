@@ -3,7 +3,7 @@
 import ReservationDetails from './ReservationDetails';
 import Image from 'next/image';
 import NoData from '@/assets/icons/No-data.svg';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { getReservations } from '@/lib/apis/myActivities';
 
 type Reservation = {
@@ -49,7 +49,7 @@ export default function ReservationCardList({
   const [hasMore, setHasMore] = useState(true);
   const [isFetching, setIsFetching] = useState(false);
 
-  const fetchReservations = async () => {
+  const fetchReservations = useCallback(async () => {
     if (isFetching || !hasMore) return;
 
     setIsFetching(true);
@@ -75,7 +75,7 @@ export default function ReservationCardList({
     } finally {
       setIsFetching(false);
     }
-  };
+  }, [activityId, status, scheduleId, hasMore, isFetching]);
 
   useEffect(() => {
     cursorIdRef.current = firstCursorId;
@@ -95,7 +95,7 @@ export default function ReservationCardList({
 
     observer.observe(observerRef.current);
     return () => observer.disconnect();
-  }, [hasMore, isFetching]);
+  }, [hasMore, isFetching, fetchReservations]);
 
   useEffect(() => {
     if (cursorIdRef.current !== undefined) return;
@@ -103,7 +103,7 @@ export default function ReservationCardList({
     cursorIdRef.current = undefined;
     setHasMore(true);
     fetchReservations();
-  }, [status, activityId, scheduleId]);
+  }, [status, activityId, scheduleId, fetchReservations]);
 
   return (
     <div

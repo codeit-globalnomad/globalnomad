@@ -1,5 +1,5 @@
 import Calendar from 'react-calendar';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import './myCalendar.css';
 import Image from 'next/image';
 import CalendarPrev from '@/assets/icons/calendar-prev.svg';
@@ -32,7 +32,7 @@ export default function MyCalendar({ monthTotalData, onDateChange, onActiveStart
   const year = Number(searchParams.get('year')) || new Date().getFullYear();
   const month = Number(searchParams.get('month')) || new Date().getMonth() + 1;
 
-  const initialDate = new Date(year, month - 1, 1);
+  const initialDate = useMemo(() => new Date(year, month - 1, 1), [year, month]);
   const [calendarValue, setCalendarValue] = useState<Value>(initialDate);
 
   const reservationStatusMap: Record<
@@ -103,7 +103,7 @@ export default function MyCalendar({ monthTotalData, onDateChange, onActiveStart
 
   useEffect(() => {
     setCalendarValue(initialDate);
-  }, [year, month]);
+  }, [year, month, initialDate]);
 
   return (
     <Calendar

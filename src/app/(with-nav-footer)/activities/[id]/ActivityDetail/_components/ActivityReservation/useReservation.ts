@@ -87,7 +87,7 @@ export const useReservation = (currentActivityId: number, price: number) => {
 
       setValue('people', 1);
     }
-  }, [selectedDate, availableSchedule, setValue, refetchSchedule]);
+  }, [selectedDate, availableSchedule, setValue, refetchSchedule, refetchMyReservations]);
 
   useEffect(() => {
     if (selectedDate || selectedTimeId) {
