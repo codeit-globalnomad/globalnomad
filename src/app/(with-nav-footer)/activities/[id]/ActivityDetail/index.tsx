@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import LoadingSpinner from '@/components/LoadingSpinner';
+import RetryError from '@/components/RetryError';
 import { useActivityDetail } from '@/lib/hooks/useActivities';
 import { useMyData } from '@/lib/hooks/useUsers';
 import ActivityHeader from './_components/ActivityHeader';
@@ -13,7 +14,6 @@ import ReviewsSection from './_components/ActivityReviewsSection';
 import { MobileReservation, TabletReservation, DesktopReservation } from './_components/ActivityReservation';
 import ActivityBanner from './_components/ActivityBanner';
 import ScrollToTopButton from './_components/ScrollToTopButton';
-import RetryError from '@/components/RetryError';
 
 const wrapper = 'mt-3 flex w-full flex-col gap-4 md:gap-6 max-w-[1200px]';
 const tabItems = [
