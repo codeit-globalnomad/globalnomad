@@ -49,7 +49,7 @@ export default function MyReservation({ activity, monthData }: Props) {
     setSelectOption(selectedActivity || null);
 
     setLoading(false);
-  }, [id, activity.activities, activitiesFilterOption]);
+  }, [id, activity.activities]);
 
   const handleSelectActivity = (option: ActivitiesFilterOption | null) => {
     setSelectOption(option);
@@ -71,7 +71,7 @@ export default function MyReservation({ activity, monthData }: Props) {
         `/my-activities/${selectedActivityId}/reservation-dashboard?year=${newYear}&month=${newMonth.toString().padStart(2, '0')}`,
       );
     },
-    [selectedActivityId, router],
+    [selectedActivityId],
   );
 
   if (loading) {
