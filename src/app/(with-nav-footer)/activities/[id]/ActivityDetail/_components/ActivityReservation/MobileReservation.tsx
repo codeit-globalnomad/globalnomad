@@ -127,7 +127,7 @@ export default function MobileReservation({ isLoggedIn, currentActivityId, price
                       <PeopleCounter peopleCount={peopleCount} setValue={setValue} register={register} />
                       <p className='flex w-full items-center gap-1 text-lg text-[#767676]'>
                         <Image src={alert} width={16} height={16} alt='경고 아이콘' />
-                        <span className='overflow-hidden text-ellipsis whitespace-nowrap'>
+                        <span className='overflow-hidden text-[15px] text-ellipsis whitespace-nowrap'>
                           최소 참여 인원 수는 1명 입니다.
                         </span>
                       </p>

@@ -27,7 +27,6 @@ const KakaoShare = ({ title, description, bannerImageUrl, pathname }: KakaoShare
         if (existingScript) {
           return resolve();
         }
-        console.log('[Kakao SDK] 로드 시작');
         const script = document.createElement('script');
         script.id = 'kakao-sdk';
         script.src = 'https://developers.kakao.com/sdk/js/kakao.js';
