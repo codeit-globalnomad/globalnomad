@@ -21,7 +21,7 @@ export default function MoreOptions({ activityId, onDelete }: MoreOptionsProps) 
   const router = useRouter();
 
   const dropdownOptions = [
-    { label: '수정하기', onClick: () => router.push(`/my-activities/${activityId}`) },
+    { label: '수정하기', onClick: () => router.push(`/my-activities/${activityId}/edit-activities`) },
     {
       label: '삭제하기',
       onClick: () => {
