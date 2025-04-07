@@ -68,25 +68,23 @@ export default function ActivityForm({
   ];
 
   return (
-    <div className='mx-auto flex w-full flex-col px-4'>
-      <FormProvider {...methods}>
-        <form
-          className='space-y-6'
-          onSubmit={handleSubmit((data) =>
-            onSubmit({
-              ...data,
-              bannerImageUrl,
-              subImageUrls,
-            }),
-          )}
-        >
-          <div className='flex items-center justify-between'>
-            <h2 className='text-2xl font-bold'>{mode === 'create' ? '내 체험 등록' : '내 체험 수정'}</h2>
-            <Button type='submit' disabled={isSubmitting || !isValid} className='px-[20px] py-[11px]'>
-              {isSubmitting ? '처리 중...' : mode === 'create' ? '등록하기' : '수정하기'}
-            </Button>
-          </div>
-
+    <FormProvider {...methods}>
+      <form
+        onSubmit={handleSubmit((data) =>
+          onSubmit({
+            ...data,
+            bannerImageUrl,
+            subImageUrls,
+          }),
+        )}
+      >
+        <div className='mb-4 flex items-center justify-between'>
+          <h2 className='text-2xl font-bold'>{mode === 'create' ? '내 체험 등록' : '내 체험 수정'}</h2>
+          <Button type='submit' disabled={isSubmitting || !isValid} className='px-[20px] py-[11px]'>
+            {isSubmitting ? '처리 중...' : mode === 'create' ? '등록하기' : '수정하기'}
+          </Button>
+        </div>
+        <div className='space-y-6'>
           <Input
             label='제목'
             className='bg-white'
@@ -171,8 +169,8 @@ export default function ActivityForm({
               limit={4}
             />
           </div>
-        </form>
-      </FormProvider>
-    </div>
+        </div>
+      </form>
+    </FormProvider>
   );
 }
