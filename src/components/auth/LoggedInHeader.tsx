@@ -1,6 +1,6 @@
 'use client';
 
-import { startTransition, useActionState, useCallback, useEffect, useMemo } from 'react';
+import { useActionState, useCallback, useEffect, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import logout from './logoutAction';
 import Link from 'next/link';

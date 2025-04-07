@@ -1,13 +1,11 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import { toast } from 'react-toastify';
 import ActivityForm from '../../_components/ActivityForm';
 import { useCreateActivity } from '@/lib/hooks/useActivities';
 import { CreateActivityParams } from '@/lib/types/activities';
 
 export default function CreateActivityPage() {
-  const router = useRouter();
   const { mutate: createActivity, isPending } = useCreateActivity();
 
   const handleSubmit = (data: CreateActivityParams) => {

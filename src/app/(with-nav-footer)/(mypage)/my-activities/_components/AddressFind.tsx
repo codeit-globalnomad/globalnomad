@@ -69,6 +69,7 @@ export default function AddressFind({ value, onChange, error }: AddressFindProps
           error={error}
           readOnly
           required
+          className='bg-white'
         />
       </div>
       <Button

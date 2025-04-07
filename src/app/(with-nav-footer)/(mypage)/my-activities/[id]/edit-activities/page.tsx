@@ -1,8 +1,12 @@
 import EditActivityPage from './_components/EditActivity';
 
-export default async function Page({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = await params;
-  const activityId = Number(id);
+type PageProps = {
+  params: {
+    id: number;
+  };
+};
 
+export default function Page({ params }: PageProps) {
+  const activityId = Number(params.id); // string → number 변환
   return <EditActivityPage activityId={activityId} />;
 }

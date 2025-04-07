@@ -1,13 +1,11 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import ActivityForm from '../../../_components/ActivityForm';
 import { useUpdateActivity } from '@/lib/hooks/useMyActivities';
 import { useActivityDetail } from '@/lib/hooks/useActivities';
 import { toast } from 'react-toastify';
 
 export default function EditActivityPage({ activityId }: { activityId: number }) {
-  const router = useRouter();
   const { data: activity } = useActivityDetail(activityId);
   const { mutate: updateActivity, isPending } = useUpdateActivity(activityId);
 
@@ -20,13 +18,16 @@ export default function EditActivityPage({ activityId }: { activityId: number })
       defaultValues={activity}
       isSubmitting={isPending}
       onSubmit={(formData) => {
-        const schedulesToAdd = formData.schedules.filter(
-          (newSchedule) =>
-            !activity.schedules.some(
-              (existingSchedule) =>
-                existingSchedule.date === newSchedule.date &&
-                existingSchedule.startTime === newSchedule.startTime &&
-                existingSchedule.endTime === newSchedule.endTime,
+        const prevSchedules = activity.schedules || [];
+        const nextSchedules = formData.schedules || [];
+
+        const schedulesToAdd = nextSchedules.filter(
+          (newItem) =>
+            !prevSchedules.some(
+              (oldItem) =>
+                oldItem.date === newItem.date &&
+                oldItem.startTime === newItem.startTime &&
+                oldItem.endTime === newItem.endTime,
             ),
         );
 

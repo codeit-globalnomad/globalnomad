@@ -60,7 +60,7 @@ export default function FilterDropdown({
       <button
         type='button'
         onClick={() => setIsOpen(!isOpen)}
-        className={`flex cursor-pointer items-center whitespace-nowrap ${
+        className={`flex cursor-pointer items-center bg-white whitespace-nowrap ${
           selectedOption ? 'opacity-100' : 'text-gray-700'
         } ${iconVisibleOnMobile ? 'justify-center' : 'justify-between'} ${buttonClassName}`}
       >
