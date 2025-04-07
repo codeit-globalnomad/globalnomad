@@ -50,7 +50,7 @@ export default function AvailableTimeSelector({
             <Image src={leftArrow} width={26} height={26} alt='이전 화살표 아이콘' />
           </li>
           <li className={`custom-next ${availableTimes.length === 0 ? 'pointer-events-none opacity-50' : ''}`}>
-            <Image src={leftArrow} width={26} height={26} alt='다음 화살표 아이콘' className='scale-x-[-1] transform' />
+            <Image src={leftArrow} width={26} height={26} className='scale-x-[-1] transform' alt='다음 화살표 아이콘' />
           </li>
         </ol>
       </div>

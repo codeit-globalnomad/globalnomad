@@ -89,6 +89,7 @@
   color: #ffffff!important;
   border-radius: 8px;
 }
+
 .react-calendar__month-view__days__day--neighboringMonth:disabled, .react-calendar__decade-view__years__year--neighboringDecade:disabled, .react-calendar__century-view__decades__decade--neighboringCentury:disabled {
   background:none;
 }

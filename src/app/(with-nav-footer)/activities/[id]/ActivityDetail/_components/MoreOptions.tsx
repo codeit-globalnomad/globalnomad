@@ -39,8 +39,8 @@ export default function MoreOptions({ activityId, onDelete }: MoreOptionsProps) 
             src={kebab}
             width={40}
             height={40}
-            alt='더보기 아이콘'
             className='relative h-[32px] w-[32px] md:top-[0.1rem] md:h-[39px] md:w-[40px]'
+            alt='더보기 아이콘'
           />
         }
         dropdownClassName='right-0 z-80'

@@ -80,7 +80,7 @@ export default function ActivityBanner({ category, currentActivityId }: Activity
                 : ''
             }`}
           >
-            <Image src={leftArrow} width={32} height={32} alt='다음 화살표 아이콘' className='scale-x-[-1] transform' />
+            <Image src={leftArrow} width={32} height={32} className='scale-x-[-1] transform' alt='다음 화살표 아이콘' />
           </li>
         </ol>
       </div>

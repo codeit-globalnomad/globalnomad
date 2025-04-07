@@ -30,7 +30,7 @@ export default function ScrollToTopButton({ onClick, isSameUser }: ScrollToTopBu
         }`}
         aria-label='상단 이동'
       >
-        <Image src={arrowTop} alt='상단이동 아이콘' className='h-[16px] w-[16px]' />
+        <Image src={arrowTop} className='h-[16px] w-[16px]' alt='상단이동 아이콘' />
       </button>
     )
   );
