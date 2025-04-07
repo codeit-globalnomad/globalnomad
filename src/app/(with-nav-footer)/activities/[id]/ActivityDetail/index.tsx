@@ -28,6 +28,20 @@ export default function ActivityDetailPage({ id }: { id: number }) {
 
   const [currentTab, setCurrentTab] = useState('description');
   const [isLoading, setIsLoading] = useState(true);
+  const [isProgrammaticScroll, setIsProgrammaticScroll] = useState(false);
+
+  const scrollToSection = (id: string) => {
+    const el = document.getElementById(id);
+    if (el) {
+      setIsProgrammaticScroll(true);
+      el.scrollIntoView({ behavior: 'smooth' });
+
+      setTimeout(() => {
+        setIsProgrammaticScroll(false);
+        setCurrentTab(id);
+      }, 300);
+    }
+  };
 
   const scrollToTop = () => {
     window.requestAnimationFrame(() => {
@@ -46,30 +60,38 @@ export default function ActivityDetailPage({ id }: { id: number }) {
 
   useEffect(() => {
     const sectionIds = ['description', 'location', 'reviews'];
+    let ticking = false;
 
     const handleScroll = () => {
-      let closestSection = 'description';
-      let minDistance = Number.POSITIVE_INFINITY;
+      if (isProgrammaticScroll) return;
 
-      sectionIds.forEach((id) => {
-        const el = document.getElementById(id);
-        if (el) {
-          const rectTop = el.getBoundingClientRect().top;
-          const distance = Math.abs(rectTop);
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          let closestSection = 'description';
+          let minDistance = Number.POSITIVE_INFINITY;
 
-          if (distance < minDistance) {
-            minDistance = distance;
-            closestSection = id;
+          sectionIds.forEach((id) => {
+            const el = document.getElementById(id);
+            if (el) {
+              const distance = Math.abs(el.getBoundingClientRect().top);
+              if (distance < minDistance) {
+                minDistance = distance;
+                closestSection = id;
+              }
+            }
+          });
+
+          if (closestSection !== currentTab) {
+            setCurrentTab(closestSection);
           }
-        }
-      });
-
-      setCurrentTab(closestSection);
+          ticking = false;
+        });
+        ticking = true;
+      }
     };
-
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  }, [currentTab]);
 
   if (isLoading || !activityDetail) {
     return <LoadingSpinner />;
@@ -99,13 +121,7 @@ export default function ActivityDetailPage({ id }: { id: number }) {
       <div className={`md:${wrapper} px-5 md:flex-row md:gap-[2%] lg:mb-16`}>
         <section className={`mt-6 mb-6 w-full ${!isSameUser ? 'md:w-[70%]' : 'md:w-full'}`}>
           <div className='sticky top-0 z-20 bg-gray-100'>
-            <ActivityTab
-              tabs={tabItems}
-              currentTab={currentTab}
-              onTabClick={(id) => {
-                setCurrentTab(id);
-              }}
-            />
+            <ActivityTab tabs={tabItems} currentTab={currentTab} onTabClick={(id) => scrollToSection(id)} />
           </div>
           <div className='w-full'>
             <DescriptionSection description={description} />

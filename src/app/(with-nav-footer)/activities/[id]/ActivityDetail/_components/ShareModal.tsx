@@ -39,7 +39,10 @@ export default function ShareModal({
     });
   };
 
-  const xShareUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(`${title}\n📍 ${address}\n`)}&url=${window.location.origin}${pathname}`;
+  const xShareUrl =
+    typeof window !== 'undefined'
+      ? `https://twitter.com/intent/tweet?text=${encodeURIComponent(`${title}\n📍 ${address}\n`)}&url=${window.location.origin}${pathname}`
+      : '';
 
   const kakaoShare = useMemo(
     () => <KakaoShare title={title} description={description} bannerImageUrl={bannerImageUrl} pathname={pathname} />,
