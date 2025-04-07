@@ -1,147 +1,127 @@
-'use client';
-
-import ReservationDetails from './ReservationDetails';
+import Calendar from 'react-calendar';
+import React, { useEffect, useState } from 'react';
+import './myCalendar.css';
 import Image from 'next/image';
-import NoData from '@/assets/icons/No-data.svg';
-import { useEffect, useRef, useState } from 'react';
-import { getReservations } from '@/lib/apis/myActivities';
+import CalendarPrev from '@/assets/icons/calendar-prev.svg';
+import CalendarNext from '@/assets/icons/calendar-next.svg';
+import { useSearchParams } from 'next/navigation';
 
-type Reservation = {
-  id: number;
-  nickname: string;
-  userId: number;
-  teamId: string;
-  activityId: number;
-  scheduleId: number;
-  status: string;
-  reviewSubmitted: boolean;
-  totalPrice: number;
-  headCount: number;
+type ValuePiece = Date | null;
+type Value = ValuePiece | [ValuePiece, ValuePiece];
+
+interface ReservationStatus {
+  completed: number;
+  confirmed: number;
+  pending: number;
+}
+
+interface MonthReservation {
   date: string;
-  startTime: string;
-  endTime: string;
-  createdAt: string;
-  updatedAt: string;
-};
+  reservations: ReservationStatus;
+}
 
-type Props = {
-  status: 'pending' | 'confirmed' | 'declined';
-  activityId: number;
-  reservations: Reservation[];
-  scheduleId: number;
-  isSmallScreen: boolean;
-  firstCursorId: number | undefined;
-  statusPatchError: () => void;
-};
+export interface Props {
+  monthTotalData?: MonthReservation[];
+  onDateChange: (date: string) => void;
+  onActiveStartDateChange?: ({ activeStartDate }: { activeStartDate: Date | null }) => void;
+}
 
-export default function ReservationCardList({
-  status,
-  activityId,
-  reservations: initialReservations,
-  scheduleId,
-  isSmallScreen,
-  firstCursorId,
-  statusPatchError,
-}: Props) {
-  const cursorIdRef = useRef<number | undefined>(firstCursorId);
-  const [currentReservations, setCurrentReservations] = useState(initialReservations);
-  const observerRef = useRef<HTMLDivElement | null>(null);
-  const [hasMore, setHasMore] = useState(true);
-  const [isFetching, setIsFetching] = useState(false);
+export default function MyCalendar({ monthTotalData, onDateChange, onActiveStartDateChange }: Props) {
+  const searchParams = useSearchParams();
 
-  const fetchReservations = async () => {
-    if (isFetching || !hasMore) return;
+  const year = Number(searchParams.get('year')) || new Date().getFullYear();
+  const month = Number(searchParams.get('month')) || new Date().getMonth() + 1;
 
-    setIsFetching(true);
-    try {
-      const data = await getReservations(activityId, {
-        cursorId: cursorIdRef.current,
-        status,
-        scheduleId,
-        size: 3,
-      });
+  const initialDate = new Date(year, month - 1, 1);
+  const [calendarValue, setCalendarValue] = useState<Value>(initialDate);
 
-      if (!data?.reservations?.length) {
-        setHasMore(false);
-        return;
-      }
+  const reservationStatusMap: Record<
+    keyof ReservationStatus,
+    { label: (count: number) => string; bgColor: string; textColor: string }
+  > = {
+    completed: {
+      label: (count) => `완료 ${count}`,
+      bgColor: 'bg-gray-300',
+      textColor: 'text-gray-900',
+    },
+    confirmed: {
+      label: (count) => `승인 ${count}`,
+      bgColor: 'bg-orange-100',
+      textColor: 'text-orange-10',
+    },
+    pending: {
+      label: (count) => `예약 ${count}`,
+      bgColor: 'bg-blue-100',
+      textColor: 'text-white',
+    },
+  };
 
-      setCurrentReservations((prev) => {
-        const existingIds = new Set(prev.map((r) => r.id));
-        return [...prev, ...data.reservations.filter((r) => !existingIds.has(r.id))];
-      });
+  const reservationMap = new Map(monthTotalData?.map((data) => [data.date, data]) ?? []);
 
-      cursorIdRef.current = data.reservations.at(-1)?.id;
-    } finally {
-      setIsFetching(false);
+  const handleChange = (newValue: Value) => {
+    if (!newValue) return;
+
+    const selectedDate = Array.isArray(newValue) ? newValue[0] : newValue;
+    if (selectedDate) {
+      setCalendarValue(selectedDate);
+      onDateChange(selectedDate.toLocaleDateString('sv-SE'));
     }
+  };
+  const renderTile = ({ date, view }: { date: Date; view: string }) => {
+    if (view === 'month') {
+      const formattedDate = date.toLocaleDateString('sv-SE');
+      const dayData = reservationMap.get(formattedDate);
+
+      return (
+        <div>
+          {dayData && (
+            <div
+              className={`absolute top-1 left-1 h-2 w-2 rounded-full ${dayData.reservations.completed ? 'bg-gray-900' : 'bg-blue-100'}`}
+            ></div>
+          )}
+          <div className='text-md flex flex-col p-[2px]'>
+            {dayData &&
+              Object.keys(reservationStatusMap).map((key) => {
+                const statusKey = key as keyof ReservationStatus;
+                const count = dayData.reservations[statusKey];
+                if (count > 0) {
+                  const { label, bgColor, textColor } = reservationStatusMap[statusKey];
+                  return (
+                    <div key={key} className={`h-6 rounded pl-1 ${bgColor} ${textColor}`}>
+                      {label(count)}
+                    </div>
+                  );
+                }
+                return null;
+              })}
+          </div>
+        </div>
+      );
+    }
+    return null;
   };
 
   useEffect(() => {
-    cursorIdRef.current = firstCursorId;
-    setCurrentReservations(initialReservations);
-    setHasMore(true);
-  }, [initialReservations, firstCursorId]);
-
-  useEffect(() => {
-    if (!observerRef.current || !hasMore || isFetching) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) fetchReservations();
-      },
-      { rootMargin: '100px', threshold: 0.1 },
-    );
-
-    observer.observe(observerRef.current);
-    return () => observer.disconnect();
-  }, [hasMore, isFetching]);
-
-  useEffect(() => {
-    if (cursorIdRef.current !== undefined) return;
-    setCurrentReservations([]);
-    cursorIdRef.current = undefined;
-    setHasMore(true);
-    fetchReservations();
-  }, [status, activityId, scheduleId]);
+    setCalendarValue(initialDate);
+  }, [year, month]);
 
   return (
-    <div
-      className={`${isSmallScreen ? (currentReservations.length > 0 ? 'h-[300px] min-h-[250px]' : 'h-auto') : currentReservations.length > 0 ? 'h-[340px]' : 'h-auto'} custom-scrollbar relative overflow-y-auto`}
-    >
-      <style jsx>{`
-        .custom-scrollbar::-webkit-scrollbar {
-          display: none;
-        }
-      `}</style>
-      {currentReservations.length > 0 ? (
-        <div className='flex flex-col gap-[14px]'>
-          {currentReservations.map((info) => (
-            <ReservationDetails
-              key={info.id}
-              status={status}
-              nickname={info.nickname}
-              headCount={info.headCount}
-              activityId={activityId}
-              reservationId={info.id}
-              hasError={statusPatchError}
-            />
-          ))}
-          {isFetching && (
-            <div className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 py-4'>
-              <div className='spinner-border h-7 w-7 animate-spin rounded-full border-4 border-solid border-green-100 border-t-transparent'></div>
-            </div>
-          )}
-          {hasMore && <div ref={observerRef} />}
-        </div>
-      ) : (
-        <div className={`${isSmallScreen ? 'h-[300px]' : 'h-[340px]'} flex items-center justify-center`}>
-          <div className='flex flex-col items-center gap-3'>
-            <Image src={NoData} width={80} height={80} alt='신청된 예약이 없습니다.' />
-            <div className='text-center text-gray-500'>신청된 예약이 없습니다.</div>
-          </div>
-        </div>
-      )}
-    </div>
+    <Calendar
+      onChange={handleChange}
+      tileContent={renderTile}
+      value={calendarValue}
+      onActiveStartDateChange={onActiveStartDateChange}
+      formatShortWeekday={(locale, date) => {
+        const weekDays = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+        return weekDays[date.getDay()];
+      }}
+      formatDay={(locale, date) => date.getDate().toString()}
+      calendarType='gregory'
+      prevLabel={<Image className='cursor-pointer' src={CalendarPrev} width={24} height={24} alt='prev' />}
+      nextLabel={<Image className='cursor-pointer' src={CalendarNext} width={24} height={24} alt='next' />}
+      prev2Label={null}
+      next2Label={null}
+      className='my-calendar'
+    />
   );
 }
