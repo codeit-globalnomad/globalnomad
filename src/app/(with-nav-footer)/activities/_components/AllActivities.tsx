@@ -78,7 +78,7 @@ export default function AllActivities() {
           currentPage={currentPage}
           totalPages={Math.ceil((data?.totalCount || 0) / itemsPerPage)}
           onChange={setCurrentPage}
-          size={isPC || isTablet ? 'md' : 'sm'}
+          size={isPC || isTablet ? 'medium' : 'small'}
         />
       </div>
     </div>

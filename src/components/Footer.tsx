@@ -1,5 +1,4 @@
 import Image from 'next/image';
-import Link from 'next/link';
 import facebook from '@/assets/sns/facebook.svg';
 import twitter from '@/assets/sns/twitter.svg';
 import youtube from '@/assets/sns/youtube.svg';
@@ -11,12 +10,8 @@ export default function Footer() {
       <div className='grid w-full max-w-[1200px] grid-cols-3 grid-rows-1 px-5 py-[32px] max-[520px]:grid-cols-2 md:w-full md:grid-cols-3 md:px-5 lg:mx-auto lg:grid-cols-3'>
         <p className='cursor-default justify-self-start text-gray-800'>©codeit - 2023</p>
         <div className='flex gap-[30px] justify-self-center max-[520px]:justify-self-end md:justify-self-center lg:justify-self-center'>
-          <Link href={'/privacypolicy'} className='whitespace-nowrap text-gray-800'>
-            Privacy Policy
-          </Link>
-          <Link href={'/faq'} className='text-gray-800'>
-            FAQ
-          </Link>
+          <p className='whitespace-nowrap text-gray-800'>Privacy Policy</p>
+          <p className='text-gray-800'>FAQ</p>
         </div>
         <div className='flex items-center justify-center gap-[12px] justify-self-end max-[520px]:col-span-2 max-[520px]:my-[10px]'>
           <a href='https://www.facebook.com' target='_blank' rel='noopener noreferrer'>

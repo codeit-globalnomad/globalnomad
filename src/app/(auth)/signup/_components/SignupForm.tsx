@@ -47,7 +47,7 @@ export default function SignupForm() {
       await signup(data);
       const { email, password } = data;
       await signin({ email, password });
-      toast.success('회원가입 성공 ');
+      toast.success('회원가입에 성공했습니다. ');
       reset();
       router.push('/login');
     } catch (error) {
@@ -65,7 +65,7 @@ export default function SignupForm() {
     }
   };
   return (
-    <div className='flex min-h-screen items-center justify-center'>
+    <div className='my-32 flex items-center justify-center'>
       <div className='w-full max-w-xl px-4'>
         <div className='mb-[56px] flex justify-center'>
           <Link href='/'>
@@ -146,13 +146,13 @@ export default function SignupForm() {
           </div>
 
           <Button type='submit' className='w-full py-[11px]' disabled={!isValid || isSubmitting}>
-            <div>회원가입 하기</div>
+            <div>회원가입하기</div>
           </Button>
         </form>
 
         <div className='mt-8 mb-12 text-center'>
           <p className='text-gray-800'>
-            회원이신가요?
+            회원이신가요?&nbsp;
             <Link href='/login' className='font-semibold text-green-100 underline'>
               로그인하기
             </Link>

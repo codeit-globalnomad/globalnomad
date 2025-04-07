@@ -19,7 +19,7 @@ export default function RootLayout({
     <html lang='ko'>
       <body className={`${Pretendard.className} bg-gray-100`}>
         <QueryClientProvider>{children}</QueryClientProvider>
-        <ToastContainer position='top-right' />
+        <ToastContainer position='top-right' style={{ marginTop: '70px' }} />
       </body>
     </html>
   );

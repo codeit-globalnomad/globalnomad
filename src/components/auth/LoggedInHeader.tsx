@@ -1,12 +1,11 @@
 'use client';
 
-import { useActionState, useCallback, useEffect, useMemo } from 'react';
+import { useActionState, useEffect, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import logout from './logoutAction';
 import Link from 'next/link';
 import Image from 'next/image';
 import logoMd from '@/assets/logo/logo-md.svg';
-import profileDefault from '@/assets/icons/profile-default.svg';
 import bell from '@/assets/icons/bell.svg';
 import bellHover from '@/assets/icons/bell-hover.svg';
 import Dropdown from '../Dropdown';
@@ -25,28 +24,24 @@ export default function LoggedInHeader({
 
   useEffect(() => {
     if (state?.status) {
-      toast.success('로그아웃');
-
+      toast.success('로그아웃 처리 되었습니다');
       router.replace('/login');
     }
     console.log(state);
   }, [state, router]);
 
-  const handleLogout = useCallback(() => {
-    formAction();
-  }, []);
   const options = useMemo(
     () => [
       { label: '마이 페이지', onClick: () => router.push('/my-page') },
-      { label: '로그아웃', onClick: handleLogout },
+      { label: '로그아웃', formAction },
     ],
-    [router, handleLogout],
+    [router, formAction],
   );
   return (
-    <div className='flex h-[70px] w-full justify-center border-b border-gray-300'>
+    <div className='flex h-[70px] w-full justify-center border-b border-gray-300 bg-white'>
       <div className='flex w-full justify-between px-5 md:w-full md:px-5 lg:mx-auto lg:w-[1200px]'>
         <Link href='/'>
-          <Image src={logoMd} width={166} height={28} alt='로고' className='my-[21px] cursor-pointer' priority />
+          <Image src={logoMd} width={172} height={30} alt='로고' className='my-[21px] cursor-pointer' priority />
         </Link>
         <div className='flex gap-[25px] max-[430px]:gap-[10px] md:gap-[25px] lg:gap-[25px]'>
           <div className='group my-[25px] cursor-pointer'>
@@ -59,12 +54,12 @@ export default function LoggedInHeader({
               options={options}
               trigger={
                 <div className='flex cursor-pointer justify-center gap-[10px] align-middle'>
-                  <ProfileImage src={profileImage?.trim() ? profileImage : profileDefault} size='small' />
-                  <p className='leading-[35px]'>{nickname}</p>
+                  <ProfileImage src={profileImage} size='small' clickable />
+                  <p className='text-black-100 text-lg leading-[35px]'>{nickname}</p>
                 </div>
               }
               onSelect={(selected) => selected.onClick?.()}
-              dropdownClassName=' left-[-64px] z-100'
+              dropdownClassName='top-[42px] right-0 z-100'
             />
           </div>
         </div>

@@ -42,7 +42,7 @@ export const Default: Story = {
   args: {
     currentPage: 3,
     totalPages: 10,
-    size: 'md',
+    size: 'medium',
   },
 };
 
@@ -52,7 +52,7 @@ export const SmallSize: Story = {
   args: {
     currentPage: 3,
     totalPages: 10,
-    size: 'sm',
+    size: 'small',
   },
 };
 
@@ -62,7 +62,7 @@ export const ManyPages: Story = {
   args: {
     currentPage: 7,
     totalPages: 20,
-    size: 'md',
+    size: 'medium',
   },
 };
 
@@ -72,7 +72,7 @@ export const FirstPage: Story = {
   args: {
     currentPage: 1,
     totalPages: 10,
-    size: 'md',
+    size: 'medium',
   },
 };
 
@@ -82,6 +82,6 @@ export const LastPage: Story = {
   args: {
     currentPage: 10,
     totalPages: 10,
-    size: 'md',
+    size: 'medium',
   },
 };
