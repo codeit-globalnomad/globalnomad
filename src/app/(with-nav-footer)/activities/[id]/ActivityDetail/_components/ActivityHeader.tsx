@@ -40,7 +40,7 @@ export default function ActivityHeader({ activityDetail, isSameUser }: ActivityH
             src={share}
             width={28}
             height={28}
-            className='relative top-[-0.125rem] h-[28px] w-[28px] cursor-pointer md:top-0 md:h-[34px] md:w-[34px]'
+            className='relative top-[-0.125rem] h-[28px] w-[28px] cursor-pointer md:top-[-0.02rem] md:h-[34px] md:w-[34px]'
             onClick={onHandleModalStatus}
             alt='공유하기 아이콘'
           />
