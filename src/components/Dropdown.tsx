@@ -9,7 +9,7 @@ interface DropdownOption {
 
 interface DropdownProps {
   options: DropdownOption[];
-  onSelect: (option: DropdownOption) => void;
+  onSelect?: (option: DropdownOption) => void;
   trigger: React.ReactNode;
   dropdownClassName?: string;
 }
@@ -22,7 +22,7 @@ export default function Dropdown({ options, onSelect, trigger, dropdownClassName
 
   const handleSelect = (option: DropdownOption) => {
     option.onClick?.();
-    onSelect(option);
+    onSelect?.(option);
     setIsOpen(false);
   };
 

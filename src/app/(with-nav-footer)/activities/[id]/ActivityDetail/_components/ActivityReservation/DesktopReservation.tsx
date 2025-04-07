@@ -1,12 +1,12 @@
 'use client';
 
 import Image from 'next/image';
-import { Controller } from 'react-hook-form';
 import { format } from 'date-fns';
+import { Controller } from 'react-hook-form';
 import alert from '@/assets/icons/alert.svg';
 import AvailableTimeSelector from './AvailableTimeSelector';
 import PeopleCounter from './PeopleCounter';
-import ActivityReservationCalendar from './ReservationCalendar';
+import ReservationCalendar from './ReservationCalendar';
 import ReservationSubmitButton from './ReservationSubmitButton';
 import { useReservation } from './useReservation';
 import 'react-calendar/dist/Calendar.css';
@@ -56,7 +56,7 @@ export default function DesktopReservation({ isLoggedIn, currentActivityId, pric
               control={control}
               rules={{ required: '날짜를 선택해주세요.' }}
               render={({ field }) => (
-                <ActivityReservationCalendar
+                <ReservationCalendar
                   selectedDate={selectedDate}
                   availableDates={availableDates}
                   onSelectDate={(date) => {
@@ -80,8 +80,8 @@ export default function DesktopReservation({ isLoggedIn, currentActivityId, pric
           <li className='flex flex-col items-baseline gap-2'>
             <p className='text-xl font-bold'>참여 인원수</p>
             <PeopleCounter peopleCount={peopleCount} setValue={setValue} register={register} />
-            <p className='flex gap-1 text-lg text-[#767676]'>
-              <Image src={alert} width={16} height={16} alt='경고 아이콘' />
+            <p className='flex gap-1 text-[15px] text-[#767676]'>
+              <Image src={alert} className='h-auto w-[16px]' alt='경고 아이콘' />
               최소 참여 인원 수는 1명 입니다.
             </p>
             <hr className='mt-2 mb-2 w-full border-t-1 border-gray-300' />

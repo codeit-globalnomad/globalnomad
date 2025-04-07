@@ -16,13 +16,16 @@ export async function generateMetadata({ params }: { params: Promise<{ id: numbe
       notFound();
     }
 
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL;
+
     return {
       title: `${activityDetail.title} | GlobalNomad`,
       description: activityDetail.description,
       openGraph: {
-        title: activityDetail.title,
+        type: 'website',
+        title: `${activityDetail.title} | GlobalNomad`,
         description: activityDetail.description,
-        url: `http://localhost:3000/activity/${id}`,
+        url: `${baseUrl}/activity/${id}`,
         images: [
           {
             url: activityDetail.bannerImageUrl,

@@ -2,8 +2,9 @@
 
 import { useEffect, useRef } from 'react';
 import Image from 'next/image';
-import { toast } from 'react-toastify';
 import marker from '@/assets/icons/marker.svg';
+import Button from '@/components/Button';
+import { copyToClipboard } from '@/app/(with-nav-footer)/activities/[id]/ActivityDetail/_components/copyToClipboard';
 
 type LocationProps = {
   address: string;
@@ -56,13 +57,12 @@ export default function ActivityLocation({ address, latitude, longitude }: Locat
     };
   }, [latitude, longitude]);
 
-  const handleCopy = async () => {
-    try {
-      await navigator.clipboard.writeText(address);
-      toast.success('주소를 복사하였습니다.');
-    } catch {
-      toast.error('주소를 복사하지 못했습니다.');
-    }
+  const handleCopy = () => {
+    copyToClipboard({
+      text: address,
+      successMessage: '주소를 복사하였습니다.',
+      errorMessage: '주소를 복사하지 못했습니다.',
+    });
   };
 
   const openMap = () => {
@@ -72,7 +72,7 @@ export default function ActivityLocation({ address, latitude, longitude }: Locat
 
   return (
     <>
-      <div className='h-[300px] rounded-[12px] md:h-[310px] lg:h-[450px]' ref={mapContainerRef}></div>
+      <div className='h-[19rem] rounded-[12px] md:h-[20rem] lg:h-[26rem]' ref={mapContainerRef}></div>
       <div className='flex items-baseline justify-between'>
         <div className='md:text-2lg flex items-center gap-1'>
           <Image src={marker} alt='지도 마커 아이콘' />
@@ -80,16 +80,22 @@ export default function ActivityLocation({ address, latitude, longitude }: Locat
             {address}
           </span>
           &nbsp;
-          <button className='mr-2 flex-none cursor-pointer text-lg text-green-100 underline' onClick={handleCopy}>
+          <button
+            className='mr-2 flex-none cursor-pointer text-lg text-green-100 underline'
+            onClick={handleCopy}
+            aria-label='복사'
+          >
             복사
           </button>
         </div>
-        <button
-          className='flex-none cursor-pointer rounded-md bg-green-100 px-4 py-2 text-[15px] text-white'
+        <Button
+          className='flex-none cursor-pointer rounded-md bg-green-100 px-2.5 py-2.5 text-[15px] text-white md:px-4'
           onClick={openMap}
+          aria-label='카카오맵 열기'
         >
-          카카오맵에서 보기
-        </button>
+          <span className='block md:hidden'>카카오맵</span>
+          <span className='hidden md:block'>카카오맵에서 보기</span>
+        </Button>
       </div>
     </>
   );
