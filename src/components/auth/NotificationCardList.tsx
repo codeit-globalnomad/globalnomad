@@ -6,9 +6,10 @@ import { getMyNotifications } from '@/lib/apis/myNotifications';
 type Props = {
   notifications: MyNotifications['notifications'];
   firstCursorId: number | undefined;
+  isSmallScreen: boolean;
 };
 
-export default function NotificationCardList({ notifications, firstCursorId }: Props) {
+export default function NotificationCardList({ notifications, firstCursorId, isSmallScreen }: Props) {
   const cursorIdRef = useRef<number | undefined>(firstCursorId);
   const [currentNotifications, setCurrentNotifications] = useState(notifications);
   const observerRef = useRef<HTMLDivElement | null>(null);
@@ -59,7 +60,9 @@ export default function NotificationCardList({ notifications, firstCursorId }: P
   }, [hasMore, isFetching]);
 
   return (
-    <div className='custom-scrollbar max-h-[250px] overflow-y-auto rounded-[5px]'>
+    <div
+      className={`${isSmallScreen ? 'max-h-[calc(100vh-120px)]' : 'max-h-[250px]'} custom-scrollbar overflow-y-auto rounded-[5px]`}
+    >
       <style jsx>{`
         .custom-scrollbar::-webkit-scrollbar {
           display: none;
@@ -81,7 +84,7 @@ export default function NotificationCardList({ notifications, firstCursorId }: P
               <div className='spinner-border h-7 w-7 animate-spin rounded-full border-4 border-solid border-green-100 border-t-transparent'></div>
             </div>
           )}
-          {hasMore && <div className='h-6 bg-red-50' ref={observerRef} />}
+          {hasMore && <div className='h-6' ref={observerRef} />}
         </div>
       ) : (
         <p className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transform text-sm text-gray-800'>

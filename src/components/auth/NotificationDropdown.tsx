@@ -9,6 +9,7 @@ import Image from 'next/image';
 import CloseImage from '@/assets/icons/close.svg';
 import { useClickOutside } from '@/lib/utils/useClickOutside';
 import { useDeleteMyNotification } from '@/lib/hooks/useMyNotification';
+import useViewportWidth from '@/lib/utils/useVIewPortWidth';
 
 export default function NotificationDropdown() {
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -18,6 +19,8 @@ export default function NotificationDropdown() {
   const firstCursorId = notifications.at(-1)?.id;
   const totalCount = data?.totalCount ?? 0;
   const { mutateAsync: deleteMyNotification } = useDeleteMyNotification();
+  const width = useViewportWidth();
+  const isSmallScreen = width <= 430;
 
   useClickOutside(dropdownRef, () => {
     setIsOpen(false);
@@ -47,10 +50,11 @@ export default function NotificationDropdown() {
       </div>
 
       {isOpen && (
-        <div className='bg-green-10 absolute top-14 -right-7 z-100 h-[380px] w-[368px] rounded-[10px] p-4 px-5 py-6 shadow-lg'>
+        <div
+          className={`${isSmallScreen ? 'fixed top-0 left-0 h-full w-full' : 'absolute top-14 -right-35 rounded-[10px]'} bg-green-10 z-100 h-[380px] w-[368px] p-4 px-5 py-6 shadow-lg md:-right-7`}
+        >
           <div className='mb-4 flex items-start justify-between'>
             <h3 className='text-[20px] leading-[32px] font-bold'>알림 {totalCount}개</h3>
-            {/* <div className='flex flex-col items-end gap-2'> */}
             <Image
               onClick={() => setIsOpen(false)}
               className='cursor-pointer'
@@ -60,7 +64,6 @@ export default function NotificationDropdown() {
               alt='날짜별 예약 현황창 닫기'
               aria-label='예약 현황창 닫기'
             />
-            {/* </div> */}
           </div>
 
           {isLoading ? (
@@ -68,13 +71,16 @@ export default function NotificationDropdown() {
               <div className='spinner-border h-7 w-7 animate-spin rounded-full border-4 border-solid border-green-100 border-t-transparent'></div>
             </div>
           ) : (
-            // <p className='text-sm text-gray-500'>불러오는 중...</p>
-            <NotificationCardList notifications={notifications} firstCursorId={firstCursorId} />
+            <NotificationCardList
+              notifications={notifications}
+              firstCursorId={firstCursorId}
+              isSmallScreen={isSmallScreen}
+            />
           )}
 
           <span
             onClick={handleAllDelete}
-            className='absolute right-6 bottom-6 mt-1 cursor-pointer text-sm text-gray-900'
+            className={`${isSmallScreen ? 'bottom-2' : 'bottom-6'} absolute right-6 mt-1 cursor-pointer text-sm text-gray-900`}
           >
             모두 삭제
           </span>
