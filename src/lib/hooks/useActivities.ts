@@ -25,7 +25,7 @@
  * ================================================================
  */
 
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient, useInfiniteQuery } from '@tanstack/react-query';
 import {
   getActivities,
   getActivityDetail,
@@ -89,6 +89,25 @@ export const useActivityReviews = (activityId?: number, page = 1, size = 3) => {
   return useQuery<ActivityReviewsResponse>({
     queryKey: ['activityReviews', activityId, page, size],
     queryFn: () => getActivityReviews(activityId!, page, size),
+  });
+};
+
+// 체험 리뷰 조회 훅 - useInfiniteQuery 사용
+export const useInfiniteActivityReviews = (activityId: number, pageSize = 3) => {
+  return useInfiniteQuery<ActivityReviewsResponse>({
+    queryKey: ['activityReviews', activityId],
+    queryFn: async ({ pageParam }) => {
+      const page = typeof pageParam === 'number' ? pageParam : 1;
+      return await getActivityReviews(activityId, page, pageSize);
+    },
+    initialPageParam: 1,
+    getNextPageParam: (lastPage, allPages) => {
+      const totalCount = lastPage.totalCount;
+      const loadedReviews = allPages.flatMap((page) => page.reviews).length;
+      const hasMore = loadedReviews < totalCount;
+
+      return hasMore ? allPages.length + 1 : undefined;
+    },
   });
 };
 

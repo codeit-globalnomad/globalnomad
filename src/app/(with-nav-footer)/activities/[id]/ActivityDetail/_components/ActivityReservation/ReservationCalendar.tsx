@@ -1,7 +1,7 @@
-import Calendar from 'react-calendar';
 import { format } from 'date-fns';
+import Calendar from 'react-calendar';
 
-interface ActivityReservationCalendarProps {
+interface ReservationCalendarProps {
   selectedDate: Date | undefined;
   availableDates: Date[];
   onSelectDate: (date: Date) => void;
@@ -9,13 +9,13 @@ interface ActivityReservationCalendarProps {
   isDateDisabled: (date: Date) => boolean;
 }
 
-const ActivityReservationCalendar: React.FC<ActivityReservationCalendarProps> = ({
+export default function ReservationCalendar({
   selectedDate,
   availableDates,
   onSelectDate,
   className,
   isDateDisabled,
-}) => {
+}: ReservationCalendarProps) {
   const today = new Date();
   const formatCalendarDay = (locale: string | undefined, date: Date): string => {
     const day = date.getDate();
@@ -56,6 +56,4 @@ const ActivityReservationCalendar: React.FC<ActivityReservationCalendarProps> = 
       }}
     />
   );
-};
-
-export default ActivityReservationCalendar;
+}

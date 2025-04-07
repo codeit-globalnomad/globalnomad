@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { format, isBefore, startOfDay } from 'date-fns';
+import { format, isBefore, startOfDay, isSameDay, isAfter } from 'date-fns';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { Swiper as SwiperType } from 'swiper/types';
@@ -13,12 +13,15 @@ type ReservationFormValues = {
 };
 
 export const useReservation = (currentActivityId: number, price: number) => {
+  const today = new Date();
+
   const { register, handleSubmit, control, watch, setValue } = useForm<ReservationFormValues>({
     defaultValues: {
+      date: format(today, 'yyyy-MM-dd'),
       people: 1,
     },
   });
-  const today = new Date();
+
   const selectedYear = String(today.getFullYear());
   const selectedMonth = String(today.getMonth() + 1).padStart(2, '0');
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date() || today);
@@ -26,14 +29,18 @@ export const useReservation = (currentActivityId: number, price: number) => {
   const [size, setSize] = useState<number>(10);
   const [disabledTimeIds, setDisabledTimeIds] = useState<number[]>([]);
   const [reservationCompleted, setReservationCompleted] = useState(false);
-  const swiperRef = useRef<SwiperType | null>(null);
 
+  const swiperRef = useRef<SwiperType | null>(null);
   const peopleCount = watch('people', 1);
   const totalPrice = price * peopleCount;
-
   const queryClient = useQueryClient();
-  const { data: availableSchedule } = useAvailableSchedule(currentActivityId, selectedYear, selectedMonth);
-  const { data: myReservations } = useMyReservations({
+
+  const { data: availableSchedule, refetch: refetchSchedule } = useAvailableSchedule(
+    currentActivityId,
+    selectedYear,
+    selectedMonth,
+  );
+  const { data: myReservations, refetch: refetchMyReservations } = useMyReservations({
     size: size,
   });
   const { mutate: createReservation } = useCreateReservation(currentActivityId);
@@ -45,24 +52,42 @@ export const useReservation = (currentActivityId: number, price: number) => {
 
   const [availableTimes, setAvailableTimes] = useState<{ id: number; startTime: string; endTime: string }[]>([]);
 
-  useEffect(() => {
-    if (selectedDate) {
-      const selectedDateStr = format(selectedDate, 'yyyy-MM-dd');
-      const schedule = availableSchedule?.find(({ date }) => date === selectedDateStr);
-      setAvailableTimes(schedule?.times || []);
-      if (swiperRef.current) {
-        swiperRef.current.slideTo(0);
-        swiperRef.current.update();
-      }
-      setValue('people', 1);
-    }
-  }, [selectedDate, availableSchedule, setValue]);
+  const lastSelectedTimeIdRef = useRef<number | null>(null);
 
   useEffect(() => {
-    if (swiperRef.current) {
-      swiperRef.current.update();
+    if (selectedDate) {
+      refetchMyReservations();
+      refetchSchedule();
+
+      const selectedDateStr = format(selectedDate, 'yyyy-MM-dd');
+      setValue('date', selectedDateStr);
+
+      const schedule = availableSchedule?.find(({ date }) => date === selectedDateStr);
+      const now = new Date();
+      let filteredTimes = schedule?.times || [];
+
+      if (isSameDay(selectedDate, now)) {
+        filteredTimes = filteredTimes.filter((time) => {
+          const [hour, minute] = time.startTime.split(':').map(Number);
+          const startDateTime = new Date(selectedDate);
+          startDateTime.setHours(hour, minute, 0, 0);
+          return isAfter(startDateTime, now);
+        });
+      }
+      setAvailableTimes(filteredTimes);
+
+      if (swiperRef.current) {
+        const index =
+          lastSelectedTimeIdRef.current !== null
+            ? filteredTimes.findIndex((time) => time.id === lastSelectedTimeIdRef.current)
+            : 0;
+        swiperRef.current.slideTo(index >= 0 ? index : 0);
+        swiperRef.current.update();
+      }
+
+      setValue('people', 1);
     }
-  }, [disabledTimeIds]);
+  }, [selectedDate, availableSchedule, setValue, refetchSchedule, refetchMyReservations]);
 
   useEffect(() => {
     if (selectedDate || selectedTimeId) {
@@ -74,16 +99,20 @@ export const useReservation = (currentActivityId: number, price: number) => {
     if (myReservations?.totalCount) {
       setSize(myReservations.totalCount);
     }
-  }, [myReservations]);
 
-  useEffect(() => {
     if (myReservations?.reservations) {
       const updated = myReservations.reservations
-        .filter(({ status }) => ['confirmed', 'completed', 'pending'].includes(status))
+        .filter(({ status }) => ['pending'].includes(status))
         .map(({ scheduleId }) => scheduleId);
       setDisabledTimeIds(updated);
     }
   }, [myReservations]);
+
+  useEffect(() => {
+    if (reservationCompleted) {
+      lastSelectedTimeIdRef.current = null;
+    }
+  }, [reservationCompleted]);
 
   const handleTimeSelection = (timeId: number) => {
     setSelectedTimeId((prevTimeId) => (prevTimeId === timeId ? null : timeId));
@@ -107,12 +136,14 @@ export const useReservation = (currentActivityId: number, price: number) => {
       },
       {
         onSuccess: () => {
+          lastSelectedTimeIdRef.current = selectedTimeId;
           toast.success('예약이 완료되었습니다.');
           setReservationCompleted(true);
           setSelectedTimeId(null);
           setValue('people', 1);
           setDisabledTimeIds((prev) => [...prev, Number(selectedTimeId)]);
-
+          refetchMyReservations();
+          refetchSchedule();
           queryClient.invalidateQueries({
             queryKey: ['availableSchedule', currentActivityId, selectedYear, selectedMonth],
           });

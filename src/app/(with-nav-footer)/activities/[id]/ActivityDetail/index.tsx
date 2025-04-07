@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from 'react';
 import LoadingSpinner from '@/components/LoadingSpinner';
+import RetryError from '@/components/RetryError';
 import { useActivityDetail } from '@/lib/hooks/useActivities';
 import { useMyData } from '@/lib/hooks/useUsers';
-import { useIntersectionObserver } from '@/lib/utils/useIntersectionObserver';
 import ActivityHeader from './_components/ActivityHeader';
 import ActivityGallery from './_components/ActivityGallery';
 import ActivityTab from './_components/ActivityTab';
@@ -23,13 +23,25 @@ const tabItems = [
 ];
 
 export default function ActivityDetailPage({ id }: { id: number }) {
-  const { data: activityDetail } = useActivityDetail(id);
+  const { data: activityDetail, isError, refetch } = useActivityDetail(id);
   const { data: userData } = useMyData();
 
   const [currentTab, setCurrentTab] = useState('description');
   const [isLoading, setIsLoading] = useState(true);
+  const [isProgrammaticScroll, setIsProgrammaticScroll] = useState(false);
 
-  useIntersectionObserver((id) => setCurrentTab(id));
+  const scrollToSection = (id: string) => {
+    const el = document.getElementById(id);
+    if (el) {
+      setIsProgrammaticScroll(true);
+      el.scrollIntoView({ behavior: 'smooth' });
+
+      setTimeout(() => {
+        setIsProgrammaticScroll(false);
+        setCurrentTab(id);
+      }, 300);
+    }
+  };
 
   const scrollToTop = () => {
     window.requestAnimationFrame(() => {
@@ -43,13 +55,49 @@ export default function ActivityDetailPage({ id }: { id: number }) {
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 500);
-
     return () => clearTimeout(timer);
   }, []);
+
+  useEffect(() => {
+    const sectionIds = ['description', 'location', 'reviews'];
+    let ticking = false;
+
+    const handleScroll = () => {
+      if (isProgrammaticScroll) return;
+
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          let closestSection = 'description';
+          let minDistance = Number.POSITIVE_INFINITY;
+
+          sectionIds.forEach((id) => {
+            const el = document.getElementById(id);
+            if (el) {
+              const distance = Math.abs(el.getBoundingClientRect().top);
+              if (distance < minDistance) {
+                minDistance = distance;
+                closestSection = id;
+              }
+            }
+          });
+
+          if (closestSection !== currentTab) {
+            setCurrentTab(closestSection);
+          }
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [currentTab]);
 
   if (isLoading || !activityDetail) {
     return <LoadingSpinner />;
   }
+
+  if (isError) return <RetryError onRetry={refetch} className='py-40' />;
 
   const isSameUser = userData?.id === activityDetail.userId;
   const category = activityDetail.category;
@@ -72,14 +120,8 @@ export default function ActivityDetailPage({ id }: { id: number }) {
       </div>
       <div className={`md:${wrapper} px-5 md:flex-row md:gap-[2%] lg:mb-16`}>
         <section className={`mt-6 mb-6 w-full ${!isSameUser ? 'md:w-[70%]' : 'md:w-full'}`}>
-          <div className='sticky top-0 z-20 bg-white'>
-            <ActivityTab
-              tabs={tabItems}
-              currentTab={currentTab}
-              onTabClick={(id) => {
-                setCurrentTab(id);
-              }}
-            />
+          <div className='sticky top-0 z-20 bg-gray-100'>
+            <ActivityTab tabs={tabItems} currentTab={currentTab} onTabClick={(id) => scrollToSection(id)} />
           </div>
           <div className='w-full'>
             <DescriptionSection description={description} />
@@ -94,14 +136,11 @@ export default function ActivityDetailPage({ id }: { id: number }) {
             <div className='sticky top-3 md:mt-6 md:mb-3'>
               <TabletReservation isLoggedIn={isLoggedIn} currentActivityId={currentActivityId} price={price} />
               <DesktopReservation isLoggedIn={isLoggedIn} currentActivityId={currentActivityId} price={price} />
-              {!isLoggedIn && (
-                <p className='mt-2 mb-4 hidden text-center text-sm text-red-500 md:block'>로그인 후 예약 가능합니다.</p>
-              )}
             </div>
           </section>
         )}
       </div>
-      <ScrollToTopButton onClick={scrollToTop} />
+      <ScrollToTopButton onClick={scrollToTop} isSameUser={isSameUser} />
     </div>
   );
 }

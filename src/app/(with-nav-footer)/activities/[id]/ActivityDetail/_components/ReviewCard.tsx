@@ -1,6 +1,5 @@
-import { ActivityReviewsResponse } from '@/lib/types/activities';
 import ProfileImage from '@/components/ProfileImage';
-import profileDefault from '@/assets/icons/profile-default.svg';
+import { ActivityReviewsResponse } from '@/lib/types/activities';
 
 type Review = ActivityReviewsResponse['reviews'][number];
 
@@ -27,17 +26,17 @@ export default function ReviewCard({ reviews, firstReview }: ReviewsProps) {
         const isFirstReview = firstReview && review.id === firstReview.id;
         const isLast = index === 0;
         return (
-          <div key={review.id} className='rounded-[12px] bg-gray-100 p-8'>
+          <div key={review.id} className='rounded-[12px] border border-gray-300 bg-white px-5 py-6 md:p-8'>
             <div className='flex justify-between'>
-              <ul className='flex items-center gap-3'>
+              <ol className='flex items-center gap-3'>
                 <li className='h-[45px] w-[45px] overflow-hidden rounded-full'>
-                  <ProfileImage src={review.user.profileImageUrl || profileDefault} />
+                  <ProfileImage src={review.user.profileImageUrl} />
                 </li>
                 <li>
                   <p className='font-bold'>{review.user.nickname}</p>
                   <p className='text-sm text-gray-600'>{getTimeAgo(review.createdAt)}</p>
                 </li>
-              </ul>
+              </ol>
               {isFirstReview && (
                 <span className='h-fit rounded-[3px] border-[1px] border-green-100 bg-white px-2 py-1 text-xs font-medium text-green-100'>
                   첫 후기
