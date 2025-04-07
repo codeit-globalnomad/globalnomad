@@ -4,9 +4,9 @@ import axiosServerHelper from '@/lib/network/axiosServerHelper';
 import { Activity, activityDetailSchema } from '@/lib/types/activities';
 import ActivityDetailPage from './ActivityDetail';
 
-export async function generateMetadata({ params }: { params: { id: number } }) {
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
   const resolvedParams = await params;
-  const { id } = resolvedParams;
+  const id = Number(resolvedParams);
 
   try {
     const response = await axiosServerHelper<Activity>(`/activities/${id}`);
