@@ -13,47 +13,52 @@ export default function EditActivityPage({ activityId }: { activityId: number })
   type CategoryType = '문화 · 예술' | '식음료' | '스포츠' | '투어' | '관광' | '웰빙';
 
   return (
-    <ActivityForm
-      mode='edit'
-      defaultValues={activity}
-      isSubmitting={isPending}
-      onSubmit={(formData) => {
-        const schedulesToAdd = formData.schedules.filter(
-          (newSchedule) =>
-            !activity.schedules.some(
-              (existingSchedule) =>
-                existingSchedule.date === newSchedule.date &&
-                existingSchedule.startTime === newSchedule.startTime &&
-                existingSchedule.endTime === newSchedule.endTime,
-            ),
-        );
+    <>
+      <ActivityForm
+        mode='edit'
+        defaultValues={activity}
+        isSubmitting={isPending}
+        onSubmit={(formData) => {
+          const prevSchedules = activity.schedules || [];
+          const nextSchedules = formData.schedules || [];
 
-        const transformedData = {
-          activityId,
-          data: {
-            title: formData.title,
-            category: formData.category as CategoryType,
-            description: formData.description,
-            price: formData.price,
-            address: formData.address,
-            bannerImageUrl: formData.bannerImageUrl,
-            subImageUrlsToAdd: formData.subImageUrls || [],
-            subImageIdsToRemove: [],
-            schedulesToAdd,
-            scheduleIdsToRemove: [],
-          },
-        };
+          const schedulesToAdd = nextSchedules.filter(
+            (newItem) =>
+              !prevSchedules.some(
+                (oldItem) =>
+                  oldItem.date === newItem.date &&
+                  oldItem.startTime === newItem.startTime &&
+                  oldItem.endTime === newItem.endTime,
+              ),
+          );
 
-        updateActivity(transformedData.data, {
-          onSuccess: () => {
-            toast.success('수정이 완료되었습니다!');
-            window.location.href = '/my-activities';
-          },
-          onError: () => {
-            toast.error('수정에 실패했습니다.');
-          },
-        });
-      }}
-    />
+          const transformedData = {
+            activityId,
+            data: {
+              title: formData.title,
+              category: formData.category as CategoryType,
+              description: formData.description,
+              price: formData.price,
+              address: formData.address,
+              bannerImageUrl: formData.bannerImageUrl,
+              subImageUrlsToAdd: formData.subImageUrls || [],
+              subImageIdsToRemove: [],
+              schedulesToAdd,
+              scheduleIdsToRemove: [],
+            },
+          };
+
+          updateActivity(transformedData.data, {
+            onSuccess: () => {
+              toast.success('수정이 완료되었습니다!');
+              window.location.href = '/my-activities';
+            },
+            onError: () => {
+              toast.error('수정에 실패했습니다.');
+            },
+          });
+        }}
+      />
+    </>
   );
 }

@@ -68,8 +68,8 @@ export default function ActivityForm({
   ];
 
   return (
-    <FormProvider {...methods}>
-      <div className='mx-auto w-full px-4 md:w-[800px]'>
+    <div className='mx-auto flex w-full flex-col px-4'>
+      <FormProvider {...methods}>
         <form
           className='space-y-6'
           onSubmit={handleSubmit((data) =>
@@ -172,7 +172,7 @@ export default function ActivityForm({
             />
           </div>
         </form>
-      </div>
-    </FormProvider>
+      </FormProvider>
+    </div>
   );
 }

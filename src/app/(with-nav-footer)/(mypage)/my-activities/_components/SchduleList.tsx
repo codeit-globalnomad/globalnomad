@@ -33,10 +33,6 @@ export default function ScheduleList({ value, onChange, error }: ScheduleListPro
         .replace(/\.$/, '');
       onChange([...value, { date: formattedDate, startTime: temp.startTime, endTime: temp.endTime }]);
       setTemp({ date: null, startTime: '', endTime: '' });
-      console.log('temp.date:', temp.date);
-      console.log('ISOString:', temp.date?.toISOString());
-      console.log('toLocaleDateString:', temp.date?.toLocaleDateString());
-      console.log('Raw:', temp.date?.getFullYear(), temp.date?.getMonth() + 1, temp.date?.getDate());
     }
   };
 

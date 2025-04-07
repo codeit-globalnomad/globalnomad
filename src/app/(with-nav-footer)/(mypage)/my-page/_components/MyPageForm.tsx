@@ -80,11 +80,8 @@ export default function MyPageForm() {
 
   const isFormValidToSubmit =
     !!user &&
-    // 닉네임만 바꾼 경우
     ((nicknameChanged && !newPassword && !confirmNewPassword) ||
-      // 비밀번호만 제대로 바꾼 경우
       isPasswordPairValid ||
-      // 닉네임도 바꾸고 비밀번호도 바꾼 경우
       (nicknameChanged && isPasswordPairValid)) &&
     !errors.nickname &&
     !errors.newPassword &&
@@ -108,19 +105,20 @@ export default function MyPageForm() {
       <div className='space-y-4'>
         <input type='hidden' {...register('profileImageUrl')} />
 
-        <Input label='닉네임' placeholder='닉네임 입력' {...register('nickname')} />
+        <Input label='닉네임' placeholder='닉네임 입력' {...register('nickname')} className='bg-white' />
         <Input
           label='이메일'
           type='email'
           disabled
           placeholder='이메일 입력'
           {...register('email')}
-          className='bg-gray-200'
+          className='bg-white'
         />
 
         <div className='relative'>
           <Input
             label='새 비밀번호'
+            className='bg-white'
             error={errors.newPassword?.message as string}
             type={isShowPassword ? 'password' : 'text'}
             placeholder='8자 이상 입력해주세요'
@@ -141,6 +139,7 @@ export default function MyPageForm() {
         <div className='relative'>
           <Input
             label='새 비밀번호 확인'
+            className='bg-white'
             error={errors.confirmNewPassword?.message as string}
             type={isShowPasswordConfirm ? 'password' : 'text'}
             placeholder='비밀번호를 한번 더 입력해주세요'
