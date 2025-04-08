@@ -52,6 +52,7 @@ export default function ActivityDetailPage({ id }: { id: number }) {
 
   useEffect(() => {
     scrollToTop();
+    refetch();
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 500);
