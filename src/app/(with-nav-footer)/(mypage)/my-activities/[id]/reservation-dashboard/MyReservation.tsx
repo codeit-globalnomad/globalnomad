@@ -80,7 +80,7 @@ export default function MyReservation({ activity, monthData }: Props) {
     setPopupKey((prev) => prev + 1);
   };
 
-  if (loading) {
+  if (!activity || !monthData || loading) {
     return <LoadingSpinner />;
   }
 
