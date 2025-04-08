@@ -30,7 +30,7 @@ export default function ReservationSubmitButton({
         <p className='font-overflow-hidden text-center text-xs font-normal text-ellipsis whitespace-nowrap text-white'>
           로그인 후 예약 가능
         </p>
-      )}{' '}
+      )}
     </Button>
   );
 }

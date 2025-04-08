@@ -70,7 +70,6 @@ export default function ActivityBanner({ category, currentActivityId }: Activity
               currentIndex === 0 || selectedBanners.length === 0 ? 'pointer-events-none opacity-50' : ''
             }`}
           >
-            {' '}
             <Image src={leftArrow} width={32} height={32} alt='이전 화살표 아이콘' />
           </li>
           <li
@@ -131,7 +130,7 @@ export default function ActivityBanner({ category, currentActivityId }: Activity
                           <div className='flex items-center gap-1'>
                             <Image src={starRating} width={14} height={14} alt='별점 아이콘' />
                             <span className='text-md'>
-                              {banner.rating} ({banner.reviewCount})
+                              {banner.rating.toFixed(1)} ({banner.reviewCount})
                             </span>
                           </div>
                           <h4 className='w-full text-2xl font-bold break-words break-keep text-white'>

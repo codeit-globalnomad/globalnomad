@@ -91,6 +91,7 @@ export default function ActivityDetailPage({ id }: { id: number }) {
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentTab]);
 
   if (isLoading || !activityDetail) {
