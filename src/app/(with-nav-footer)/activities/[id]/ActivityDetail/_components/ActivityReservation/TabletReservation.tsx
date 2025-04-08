@@ -48,11 +48,7 @@ export default function TabletReservation({ isLoggedIn, currentActivityId, price
   } = useReservation(currentActivityId, price);
 
   const formatDate = (date?: Date) => {
-    const targetDate = date || today;
-    const year = targetDate.getFullYear();
-    const month = String(targetDate.getMonth() + 1).padStart(2, '0');
-    const day = String(targetDate.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
+    return format(date || today, 'yyyy-MM-dd');
   };
 
   const selectedTimeSlot = availableTimes.find((slot) => slot.id === selectedTimeId);
@@ -103,7 +99,7 @@ export default function TabletReservation({ isLoggedIn, currentActivityId, price
                             onSelectDate={(date) => {
                               setSelectedDate(date);
                               setSelectedTimeId(null);
-                              field.onChange(format(date, 'yyyy-MM-dd'));
+                              field.onChange(formatDate(date));
                             }}
                             className='tabletReservation'
                             isDateDisabled={isDateDisabled}

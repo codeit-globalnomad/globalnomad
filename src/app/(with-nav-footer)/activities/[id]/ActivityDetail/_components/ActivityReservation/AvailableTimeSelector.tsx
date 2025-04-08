@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react';
 import Image from 'next/image';
+import { format } from 'date-fns';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Keyboard } from 'swiper/modules';
 import { Swiper as SwiperType } from 'swiper/types';
@@ -71,7 +72,7 @@ export default function AvailableTimeSelector({
             loop={false}
             className='time-swiper m-0 h-auto'
             centeredSlides={false}
-            key={selectedDate?.toISOString() || 'default'}
+            key={selectedDate ? format(selectedDate, 'yyyy-MM-dd') : 'default'}
           >
             {availableTimes.map((timeSlot) => (
               <SwiperSlide

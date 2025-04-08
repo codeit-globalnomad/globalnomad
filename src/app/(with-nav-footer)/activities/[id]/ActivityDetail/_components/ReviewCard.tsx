@@ -1,3 +1,5 @@
+import { formatDistanceToNow } from 'date-fns';
+import { ko } from 'date-fns/locale';
 import ProfileImage from '@/components/ProfileImage';
 import { ActivityReviewsResponse } from '@/lib/types/activities';
 
@@ -10,13 +12,10 @@ type ReviewsProps = {
 
 const getTimeAgo = (dateString: string) => {
   const createdAt = new Date(dateString);
-  const now = new Date();
-  const diffInSeconds = Math.floor((now.getTime() - createdAt.getTime()) / 1000);
+  const seconds = (new Date().getTime() - createdAt.getTime()) / 1000;
 
-  if (diffInSeconds < 60) return '방금 전';
-  if (diffInSeconds < 3600) return `${Math.floor(diffInSeconds / 60)}분 전`;
-  if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)}시간 전`;
-  return `${Math.floor(diffInSeconds / 86400)}일 전`;
+  if (seconds < 60) return '방금 전';
+  return formatDistanceToNow(createdAt, { addSuffix: true, locale: ko });
 };
 
 export default function ReviewCard({ reviews, firstReview }: ReviewsProps) {

@@ -47,13 +47,7 @@ export default function MobileReservation({ isLoggedIn, currentActivityId, price
     setSelectedTimeId,
   } = useReservation(currentActivityId, price);
 
-  const formatDate = (date?: Date) => {
-    const targetDate = date || today;
-    const year = targetDate.getFullYear();
-    const month = String(targetDate.getMonth() + 1).padStart(2, '0');
-    const day = String(targetDate.getDate()).padStart(2, '0');
-    return `${year}-${month}-${day}`;
-  };
+  const formatDate = (date?: Date) => format(date || today, 'yyyy-MM-dd');
 
   const selectedTimeSlot = availableTimes.find((slot) => slot.id === selectedTimeId);
 
@@ -79,7 +73,7 @@ export default function MobileReservation({ isLoggedIn, currentActivityId, price
                 aria-label='선택하기'
               >
                 {selectedDate && selectedTimeSlot
-                  ? `${formatDate(selectedDate)} / ${selectedTimeSlot.startTime}-${selectedTimeSlot.endTime}`
+                  ? `${format(selectedDate, 'yyyy-MM-dd')} / ${selectedTimeSlot.startTime}-${selectedTimeSlot.endTime}`
                   : '선택하기'}
               </button>
               {isModalOpen && (
@@ -106,7 +100,7 @@ export default function MobileReservation({ isLoggedIn, currentActivityId, price
                             onSelectDate={(date) => {
                               setSelectedDate(date);
                               setSelectedTimeId(null);
-                              field.onChange(format(date, 'yyyy-MM-dd'));
+                              field.onChange(formatDate(date));
                             }}
                             className='mobileReservation'
                             isDateDisabled={isDateDisabled}

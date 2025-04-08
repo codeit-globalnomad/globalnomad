@@ -1,4 +1,4 @@
-import { format } from 'date-fns';
+import { format, isSameDay, startOfDay } from 'date-fns';
 import Calendar from 'react-calendar';
 
 interface ReservationCalendarProps {
@@ -16,11 +16,8 @@ export default function ReservationCalendar({
   className,
   isDateDisabled,
 }: ReservationCalendarProps) {
-  const today = new Date();
-  const formatCalendarDay = (locale: string | undefined, date: Date): string => {
-    const day = date.getDate();
-    return day < 10 ? `0${day}` : `${day}`;
-  };
+  const today = startOfDay(new Date());
+  const formatCalendarDay = (_: string | undefined, date: Date): string => format(date, 'dd');
 
   return (
     <Calendar
@@ -40,15 +37,13 @@ export default function ReservationCalendar({
       tileClassName={({ date }) => {
         let className = '';
 
-        if (
-          availableDates.some((availableDate) => format(availableDate, 'yyyy-MM-dd') === format(date, 'yyyy-MM-dd'))
-        ) {
+        if (availableDates.some((d) => isSameDay(d, date))) {
           className = 'react-calendar__tile--available';
         }
-        if (selectedDate && format(selectedDate, 'yyyy-MM-dd') === format(date, 'yyyy-MM-dd')) {
+        if (selectedDate && isSameDay(selectedDate, date)) {
           className += ' react-calendar__tile--selected';
         }
-        if (format(today, 'yyyy-MM-dd') === format(date, 'yyyy-MM-dd')) {
+        if (isSameDay(today, date)) {
           className += selectedDate ? ' react-calendar__tile--today-underline' : ' react-calendar__tile--now';
         }
 
