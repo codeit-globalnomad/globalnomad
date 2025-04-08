@@ -7,6 +7,7 @@ import MyReservationCard from './MyReservationCard';
 import FilterDropdown from '@/components/FilterDropdown';
 import arrowDownIcon from '@/assets/icons/arrow-filter-dropdown.svg';
 import LoadingSpinner from '@/components/LoadingSpinner';
+import RetryError from '@/components/RetryError';
 
 const STATUS_LABEL_MAP = {
   pending: '예약 신청',
@@ -28,20 +29,16 @@ const STATUS_OPTIONS = [
 
 export default function MyReservations() {
   const [status, setStatus] = useState<Status>(undefined);
-
-  const { data, fetchNextPage, hasNextPage, isLoading, isFetchingNextPage } = useInfiniteMyReservations(status);
-
+  const { data, fetchNextPage, hasNextPage, isLoading, isFetchingNextPage, isError, refetch } =
+    useInfiniteMyReservations(status);
   const reservations = data?.pages.flatMap((page) => page.reservations) ?? [];
-
   const loaderRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     if (!loaderRef.current || !hasNextPage) return;
-
     const observer = new IntersectionObserver((entries) => {
       if (entries[0].isIntersecting) fetchNextPage();
     });
-
     observer.observe(loaderRef.current);
 
     return () => observer.disconnect();
@@ -50,10 +47,13 @@ export default function MyReservations() {
   const selectedOption =
     status === undefined ? { label: '필터', value: undefined } : STATUS_OPTIONS.find((opt) => opt.value === status);
 
+  if (isLoading) return <LoadingSpinner />;
+  if (isError) return <RetryError onRetry={refetch} className='py-10' />;
+
   return (
-    <section className='w-full space-y-6'>
+    <section>
       <div className='flex items-center justify-between'>
-        <h1 className='text-black-200 mb-0 text-2xl font-bold'>예약 내역</h1>
+        <h1 className='text-black-200 text-2xl font-bold'>예약 내역</h1>
         <FilterDropdown
           label={selectedOption?.label ?? '필터'}
           options={STATUS_OPTIONS}
@@ -62,24 +62,18 @@ export default function MyReservations() {
           icon={arrowDownIcon}
           buttonClassName='min-w-[120px] justify-between  px-4 py-2 rounded-xl border border-green-100 font-medium whitespace-nowrap text-green-100'
           dropdownClassName='min-w-[120px] border border-gray-300 bg-white drop-shadow-sm rounded-xl'
-          optionClassName='text-md font-medium px-4 py-2  text-gray-900 hover:bg-gray-100'
+          optionClassName='text-md px-4 py-2'
         />
       </div>
 
-      {isLoading ? (
-        <LoadingSpinner />
-      ) : reservations.length === 0 ? (
-        <Empty>아직 예약한 체험이 없어요</Empty>
+      {reservations.length === 0 ? (
+        <Empty>아직 예약한 체험이 없어요.</Empty>
       ) : (
         <>
-          <ul className='w-full max-w-[680px] space-y-4 px-4'>
-            {reservations.map((reservation) => (
-              <li key={reservation.id}>
-                <MyReservationCard reservation={reservation} />
-              </li>
-            ))}
-          </ul>
-          <div ref={loaderRef} className='h-10' />
+          {reservations.map((reservation) => (
+            <MyReservationCard key={reservation.id} reservation={reservation} />
+          ))}
+          <div ref={loaderRef} className='h-[1px]' />
           {isFetchingNextPage && <p className='text-center text-gray-400'>불러오는 중...</p>}
         </>
       )}

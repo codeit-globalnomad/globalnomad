@@ -67,10 +67,8 @@ export default function FilterDropdown({
         {selectedOption ? selectedOption.label : label}
         <Image
           src={icon}
-          width={20}
-          height={20}
           alt='필터 드롭다운 아이콘'
-          className={`${iconVisibleOnMobile ? 'hidden md:block' : 'block'}`}
+          className={`h-[20px] w-[20px] ${iconVisibleOnMobile ? 'hidden md:block' : 'block'}`}
         />
       </button>
 

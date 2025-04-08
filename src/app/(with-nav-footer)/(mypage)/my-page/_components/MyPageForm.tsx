@@ -10,11 +10,12 @@ import { userDataFormSchema, UserDataFormValues, UserDataUpdateParams } from '@/
 import ClosedEye from '@/assets/icons/eye-hidden.svg';
 import OpendEye from '@/assets/icons/eye-visible.svg';
 import Image from 'next/image';
+import LoadingSpinner from '@/components/LoadingSpinner';
+import RetryError from '@/components/RetryError';
 
 export default function MyPageForm() {
-  const { data: user } = useMyData();
+  const { data: user, isLoading, isError, refetch } = useMyData();
   const { mutate: updateUserData, isPending } = useUserdataUpdate();
-
   const [isShowPassword, setIsShowPassword] = useState(true);
   const [isShowPasswordConfirm, setIsShowPasswordConfirm] = useState(true);
 
@@ -76,7 +77,7 @@ export default function MyPageForm() {
   const isPasswordPairValid =
     (newPassword || '').length >= 8 && (confirmNewPassword || '').length >= 8 && newPassword === confirmNewPassword;
 
-  const nicknameChanged = nickname.trim() !== user?.nickname.trim();
+  const nicknameChanged = (nickname ?? '').trim() !== (user?.nickname.trim() ?? '');
 
   const isFormValidToSubmit =
     !!user &&
@@ -93,11 +94,18 @@ export default function MyPageForm() {
     }
   }, [newPassword, trigger]);
 
+  if (isLoading) return <LoadingSpinner />;
+  if (isError) return <RetryError onRetry={refetch} className='py-10' />;
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className='space-around mb-4 flex items-center justify-between'>
-        <h2 className='text-2xl font-bold'>내 정보</h2>
-        <Button type='submit' disabled={isPending || !isFormValidToSubmit || !isValid} className='px-[20px] py-[11px]'>
+        <h2 className='text-black-100 text-2xl font-bold'>내 정보</h2>
+        <Button
+          type='submit'
+          disabled={isPending || !isFormValidToSubmit || !isValid}
+          className='px-[16px] py-[10px] text-lg font-bold'
+        >
           {isPending ? '수정 중...' : '수정하기'}
         </Button>
       </div>

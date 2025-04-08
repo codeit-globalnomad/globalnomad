@@ -36,7 +36,6 @@ export default function ProfileImage({ src, size, clickable, className }: Profil
         src={src?.toString().trim() ? src : profileDefault}
         alt='프로필 이미지'
         fill
-        priority
         sizes='(max-width: 768px) 32px, (max-width: 1024px) 45px, 160px'
       />
     </div>

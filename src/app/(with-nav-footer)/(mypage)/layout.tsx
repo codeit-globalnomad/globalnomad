@@ -51,9 +51,9 @@ export default function MyPageLayout({ children }: { children: React.ReactNode }
           <MobileOnlyMenu />
         ) : showMobileContentWithBack ? (
           <div className='w-full max-w-[680px]'>
-            <div className='mb-4'>
+            <div className='mt-[-20px]'>
               <Link href='/mypage-nav' className='text-sm text-gray-600 hover:underline'>
-                ← 마이페이지 홈으로 이동
+                ← 마이 페이지 홈으로 이동
               </Link>
             </div>
             {children}

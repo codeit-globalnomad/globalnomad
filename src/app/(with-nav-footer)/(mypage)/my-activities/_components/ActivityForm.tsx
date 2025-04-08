@@ -1,4 +1,3 @@
-// ActivityForm.tsx
 'use client';
 
 import { FormProvider, useForm, Controller } from 'react-hook-form';
@@ -78,9 +77,9 @@ export default function ActivityForm({
           }),
         )}
       >
-        <div className='mb-4 flex items-center justify-between'>
+        <div className='flex w-full max-w-[792px] items-center justify-between'>
           <h2 className='text-2xl font-bold'>{mode === 'create' ? '내 체험 등록' : '내 체험 수정'}</h2>
-          <Button type='submit' disabled={isSubmitting || !isValid} className='px-[20px] py-[11px]'>
+          <Button type='submit' disabled={isSubmitting || !isValid} className='px-[16px] py-[10px] text-lg font-bold'>
             {isSubmitting ? '처리 중...' : mode === 'create' ? '등록하기' : '수정하기'}
           </Button>
         </div>
@@ -92,8 +91,7 @@ export default function ActivityForm({
             {...register('title')}
             error={errors.title?.message}
           />
-
-          <label className='text-black-100 inline-flex items-center gap-1 text-lg font-medium'>카테고리</label>
+          <label className='text-black-100 mb-[8px] inline-flex items-center gap-1 text-lg font-medium'>카테고리</label>
           <Controller
             control={control}
             name='category'
@@ -103,9 +101,9 @@ export default function ActivityForm({
                 options={categoryOptions}
                 onSelect={(option) => field.onChange(option?.label || '')}
                 icon={arrowFilterDropdown2}
-                buttonClassName='border  w-full max-w-[792px]  text-black-100 border-gray-800 rounded-lg md:justify-between px-[15px] py-[15px]'
-                dropdownClassName='rounded-xl  w-full max-w-[792px]  border border-gray-300 bg-white drop-shadow-sm'
-                optionClassName='text-md md:text-lg h-[41px]  w-full max-w-[792px] leading-[41px] md:h-[58px] md:leading-[58px]'
+                buttonClassName='border max-w-[792px] min-w-[343px] w-full text-black-100 border-gray-800 rounded-md md:justify-between px-[15px] py-[12px]'
+                dropdownClassName='rounded-xl max-w-[792px] min-w-[343px] w-full border border-gray-300 bg-white drop-shadow-sm'
+                optionClassName='text-md md:text-lg h-[41px] max-w-[792px] min-w-[343px] w-full leading-[41px] md:h-[58px] md:leading-[58px]'
                 includeAllOption={false}
                 iconVisibleOnMobile={false}
                 value={field.value}
@@ -113,15 +111,13 @@ export default function ActivityForm({
             )}
           />
           {errors.category && <p className='text-sm text-red-100'>{errors.category.message}</p>}
-
-          <label className='text-black-100 inline-flex items-center gap-1 text-lg font-medium'>설명</label>
+          <label className='text-black-100 mb-[8px] inline-flex items-center gap-1 text-lg font-medium'>설명</label>
           <textarea
             className='h-[260px] w-full rounded-[4px] border border-gray-800 bg-white px-4 py-3 focus:border-green-100 focus:ring-1 focus:ring-green-100 focus:outline-none'
             placeholder='설명을 입력해주세요'
             {...register('description')}
           />
           {errors.description && <p className='text-sm text-red-100'>{errors.description.message}</p>}
-
           <Controller
             control={control}
             name='address'
@@ -129,7 +125,6 @@ export default function ActivityForm({
               <AddressFind value={field.value} onChange={field.onChange} error={errors.address?.message} />
             )}
           />
-
           <Input
             label='가격'
             placeholder='숫자만 입력'
@@ -139,7 +134,6 @@ export default function ActivityForm({
             error={errors.price?.message}
             className='appearance-none bg-white [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none'
           />
-
           <div>
             <label className='text-black-100 inline-flex items-center gap-1 text-lg font-medium'>
               예약 가능한 시간대
@@ -152,12 +146,10 @@ export default function ActivityForm({
               )}
             />
           </div>
-
           <div>
             <label className='text-black-100 inline-flex items-center gap-1 text-lg font-medium'>배너 이미지</label>
             <ImageUploader value={bannerImageUrl} onChange={(url) => setBannerImageUrl(url as string)} single />
           </div>
-
           <div className='mb-[32px]'>
             <label className='text-black-100 inline-flex items-center gap-1 text-lg font-medium'>
               소개 이미지 (최대 4장)

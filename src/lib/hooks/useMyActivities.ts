@@ -1,4 +1,4 @@
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient, useInfiniteQuery } from '@tanstack/react-query';
 import {
   getMyActivities,
   getReservationDashboard,
@@ -8,7 +8,7 @@ import {
   deleteActivity,
   updateActivity,
 } from '../apis/myActivities';
-import { GetReservationsParams, UpdateActivityRequest } from '../types/myActivities';
+import { GetReservationsParams, MyActivitiesResponse, UpdateActivityRequest } from '../types/myActivities';
 
 // 내 체험 리스트 조회 훅
 export const useMyActivities = (cursorId?: number, size: number = 20) => {
@@ -74,5 +74,19 @@ export const useUpdateActivity = (activityId: number) => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['myActivities'] });
     },
+  });
+};
+
+// 내 체험 무한스크롤 조회 훅
+export const useInfiniteMyActivities = () => {
+  const PAGE_SIZE = 4;
+
+  return useInfiniteQuery<MyActivitiesResponse, Error>({
+    queryKey: ['myActivities'],
+    queryFn: ({ pageParam }) => getMyActivities(typeof pageParam === 'number' ? pageParam : undefined, PAGE_SIZE),
+    getNextPageParam: (lastPage) => lastPage.cursorId ?? undefined,
+    initialPageParam: undefined,
+    staleTime: 0,
+    gcTime: 0,
   });
 };

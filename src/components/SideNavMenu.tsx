@@ -59,10 +59,10 @@ const SideNavMenu = ({ activityId }: SideNavMenuProps) => {
   ];
 
   return (
-    <aside className='mx-auto h-[432px] w-[384px] flex-none rounded-lg border border-gray-300 bg-white p-4 shadow-md sm:w-[251px] md:w-[344px]'>
+    <aside className='mx-auto h-[432px] w-full max-w-[344px] min-w-[251px] flex-none rounded-lg border border-gray-300 bg-white px-4 py-6 shadow-md max-[900px]:max-w-[251px]'>
       <div className='flex justify-center'>
         <div className='relative w-fit'>
-          <ProfileImage size='large' src={previewImage || profileImageUrl || undefined} />
+          <ProfileImage size='large' src={previewImage || profileImageUrl} />
           <label
             className='hover:bg-green-10 absolute -right-0 -bottom-0 flex h-11 w-11 cursor-pointer items-center justify-center rounded-full bg-green-100 transition'
             aria-label='프로필 수정'
@@ -87,7 +87,7 @@ const SideNavMenu = ({ activityId }: SideNavMenuProps) => {
                 <Link
                   href={item.path}
                   className={`group flex w-full items-center gap-3 rounded-lg p-3 text-lg font-bold transition ${
-                    isActive ? 'text-black-200 bg-gray-200' : 'hover:bg-green-10 hover:text-black-200 text-gray-700'
+                    isActive ? 'text-black-200 bg-green-10' : 'hover:text-black-200 text-gray-700 hover:bg-gray-200'
                   }`}
                 >
                   <Image
@@ -95,7 +95,7 @@ const SideNavMenu = ({ activityId }: SideNavMenuProps) => {
                     alt={item.name}
                     width={24}
                     height={24}
-                    className='opacity-40 grayscale transition group-hover:opacity-100 group-hover:grayscale-0'
+                    className={`opacity-40 grayscale transition group-hover:opacity-100 group-hover:grayscale-0 ${isActive ? 'opacity-100' : ''}`}
                   />
                   <span>{item.name}</span>
                 </Link>

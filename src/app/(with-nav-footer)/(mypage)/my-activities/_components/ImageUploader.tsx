@@ -2,6 +2,7 @@ import { toast } from 'react-toastify';
 import { useRef } from 'react';
 import { useUploadActivityImage } from '@/lib/hooks/useActivities';
 import Image from 'next/image';
+import Button from '@/components/Button';
 
 interface ImageUploaderProps {
   value: string | string[];
@@ -90,13 +91,13 @@ export default function ImageUploader({
       {images.map((img, idx) => (
         <div key={idx} className='relative h-32 w-32'>
           <Image src={img} className='h-full w-full rounded object-cover' fill alt='preview' />
-          <button
+          <Button
             type='button'
             onClick={() => handleRemove(idx)}
-            className='absolute top-0 right-0 flex h-8 w-8 translate-x-1/3 -translate-y-1/3 cursor-pointer items-center justify-center rounded-full bg-green-100 text-2xl text-white'
+            className='absolute top-0 right-0 translate-x-1/3 -translate-y-1/3 items-center justify-center rounded-full px-2 text-2xl font-semibold text-white'
           >
             ×
-          </button>
+          </Button>
         </div>
       ))}
     </div>

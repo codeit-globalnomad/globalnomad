@@ -1,5 +1,9 @@
-import CreateActivityPage from './_components/AddActivities';
+import AddActivities from './_components/AddActivities';
 
 export default function Page() {
-  return <CreateActivityPage />;
+  return (
+    <div className='mb-[40%]'>
+      <AddActivities />
+    </div>
+  );
 }

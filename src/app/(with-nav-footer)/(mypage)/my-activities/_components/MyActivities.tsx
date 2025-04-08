@@ -1,28 +1,59 @@
 'use client';
-import { useMyActivities } from '@/lib/hooks/useMyActivities';
+
+import { useInfiniteMyActivities } from '@/lib/hooks/useMyActivities';
+import { useRouter } from 'next/navigation';
+import { useRef, useEffect } from 'react';
 import MyActivityCard from './MyActivityCard';
+import Empty from '@/components/Empty';
+import Button from '@/components/Button';
 import LoadingSpinner from '@/components/LoadingSpinner';
-import Image from 'next/image';
-import empty from '@/assets/icons/empty.svg';
+import RetryError from '@/components/RetryError';
 
 export default function MyActivities() {
-  const { data, isLoading, isError } = useMyActivities(undefined, 4);
+  const router = useRouter();
+  const { data, isLoading, isError, refetch, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    useInfiniteMyActivities();
+  const loaderRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (!loaderRef.current || !hasNextPage) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          fetchNextPage();
+        }
+      },
+      { threshold: 1 },
+    );
+
+    observer.observe(loaderRef.current);
+    return () => observer.disconnect();
+  }, [fetchNextPage, hasNextPage]);
 
   if (isLoading) return <LoadingSpinner />;
-  if (isError) return <div>에러가 발생했습니다.</div>;
+  if (isError) return <RetryError onRetry={refetch} className='py-10' />;
+
+  const allActivities = data?.pages.flatMap((page) => page.activities) ?? [];
 
   return (
     <div>
-      {data?.activities.length === 0 ? (
-        <div className='mx-auto mt-[100px] flex w-full max-w-[1200px] flex-col items-center justify-center'>
-          <div className='relative h-[140px] w-[140px] md:h-[200px] md:w-[200px]'>
-            <Image src={empty} fill alt='검색 결과 0개' className='absolute' />
-          </div>
-          <p className='text-2lg mt-[24px] font-medium text-gray-800'>아직 등록한 체험이 없어요.</p>
-        </div>
+      <div className='flex items-center justify-between'>
+        <h2 className='text-black-100 text-2xl font-bold'>내 체험 관리</h2>
+        <Button
+          className='px-[16px] py-[10px] text-lg font-bold'
+          onClick={() => router.push('/my-activities/add-activities')}
+        >
+          체험 등록하기
+        </Button>
+      </div>
+      {allActivities.length === 0 ? (
+        <Empty>아직 등록한 체험이 없어요.</Empty>
       ) : (
-        data?.activities.map((activity) => <MyActivityCard key={activity.id} activity={activity} />)
+        allActivities.map((activity) => <MyActivityCard key={activity.id} activity={activity} />)
       )}
+      <div ref={loaderRef} className='h-[1px]' />
+      {isFetchingNextPage && <p className='text-center text-gray-400'>불러오는 중...</p>}
     </div>
   );
 }
