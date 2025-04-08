@@ -1,7 +1,7 @@
 'use client';
 
 import Calendar from 'react-calendar';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import './myCalendar.css';
 import Image from 'next/image';
 import CalendarPrev from '@/assets/icons/calendar-prev.svg';
@@ -96,10 +96,6 @@ export default function MyCalendar({ monthTotalData, onDateChange, onActiveStart
     }
     return null;
   };
-
-  useEffect(() => {
-    if (initialDate) setCalendarValue(initialDate);
-  }, [initialDate]);
 
   return (
     <Calendar

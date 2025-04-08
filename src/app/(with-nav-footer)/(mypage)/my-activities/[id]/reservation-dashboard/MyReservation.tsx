@@ -1,7 +1,7 @@
 'use client';
 
 import FilterDropdown from '@/components/FilterDropdown';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import MyCalendar from './_components/MyCalendar';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import arrowFilterDropdown2 from '@/assets/icons/arrow-filter-dropdown2.svg';
@@ -34,10 +34,12 @@ export default function MyReservation({ activity, monthData }: Props) {
   const [popupKey, setPopupKey] = useState(0);
   const [loading, setLoading] = useState(true);
 
-  const activitiesFilterOption = activity.activities.map((act) => ({
-    label: act.title,
-    value: act.id,
-  }));
+  const activitiesFilterOption = useMemo(() => {
+    return activity.activities.map((act) => ({
+      label: act.title,
+      value: act.id,
+    }));
+  }, [activity.activities]);
 
   useEffect(() => {
     if (!id && activity.activities.length === 0) return;
@@ -50,7 +52,7 @@ export default function MyReservation({ activity, monthData }: Props) {
     setSelectOption(selectedActivity || null);
 
     setLoading(false);
-  }, [id, activity.activities]);
+  }, [id, activity.activities, activitiesFilterOption]);
 
   const handleSelectActivity = (option: ActivitiesFilterOption | null) => {
     setSelectOption(option);
@@ -109,7 +111,9 @@ export default function MyReservation({ activity, monthData }: Props) {
           onActiveStartDateChange={handleMonthChange}
           monthTotalData={monthData}
           onDateChange={handleDateClick}
-          initialDate={selectedDate ? new Date(selectedDate) : new Date()}
+          initialDate={
+            currentYear && currentMonth ? new Date(Number(currentYear), Number(currentMonth) - 1) : new Date()
+          }
         />
       </div>
       {selectedDate && selectedActivityId && (
