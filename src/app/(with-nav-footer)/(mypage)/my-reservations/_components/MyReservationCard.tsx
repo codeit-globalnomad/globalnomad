@@ -55,7 +55,6 @@ export default function MyReservationCard({ reservation }: MyReservationCardProp
         className='mb-6 block w-full max-w-[792px] min-w-[344px] rounded-2xl shadow-md hover:bg-gray-100'
       >
         <div className='flex'>
-          {/* 이미지 */}
           <div className='relative aspect-[1/1] w-[128px] md:w-[156px] lg:w-[204px]'>
             <Image
               src={activity.bannerImageUrl}
@@ -66,7 +65,6 @@ export default function MyReservationCard({ reservation }: MyReservationCardProp
             />
           </div>
 
-          {/* 텍스트 영역 */}
           <div className='flex w-full flex-col px-[24px] py-[10px] md:py-[14px]'>
             <div className='flex flex-col gap-1 leading-normal'>
               <p className={`text-lg font-bold ${statusColorClass}`}>{statusLabel}</p>
@@ -115,7 +113,6 @@ export default function MyReservationCard({ reservation }: MyReservationCardProp
         </div>
       </Link>
 
-      {/* 모달 */}
       <CancelReservationModal
         isOpen={isCancelModalOpen}
         onClose={() => setIsCancelModalOpen(false)}

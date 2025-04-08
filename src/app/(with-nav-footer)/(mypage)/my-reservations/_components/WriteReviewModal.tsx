@@ -56,7 +56,6 @@ export default function WriteReviewModal({ isOpen, onClose, reservation }: Write
   return (
     <Modal onClose={onClose}>
       <div className='relative w-full max-w-[480px]'>
-        {/* 제목 + 닫기 버튼 */}
         <div className='mb-4 flex items-center justify-between'>
           <h2 className='text-2xl font-bold'>후기 작성</h2>
           <button onClick={onClose}>
@@ -64,7 +63,6 @@ export default function WriteReviewModal({ isOpen, onClose, reservation }: Write
           </button>
         </div>
 
-        {/* 체험 정보 */}
         <div className='flex items-start gap-4'>
           <Image
             src={activity.bannerImageUrl}
@@ -78,9 +76,7 @@ export default function WriteReviewModal({ isOpen, onClose, reservation }: Write
             <p className='text-2lg text-black-200'>
               {date} · {startTime} - {endTime} · {headCount}명
             </p>
-            {/* 구분선 */}
             <div className='my-1 border-b border-gray-300' />
-            {/* 별점 */}
             <div className='mb-6 flex gap-1'>
               {[1, 2, 3, 4, 5].map((star) => (
                 <button
@@ -102,7 +98,6 @@ export default function WriteReviewModal({ isOpen, onClose, reservation }: Write
           </div>
         </div>
 
-        {/* 후기 입력 */}
         <textarea
           value={content}
           onChange={(e) => setContent(e.target.value)}
@@ -111,7 +106,6 @@ export default function WriteReviewModal({ isOpen, onClose, reservation }: Write
           rows={5}
         />
 
-        {/* 버튼 */}
         <Button
           variant='default'
           onClick={handleSubmit}

@@ -17,8 +17,8 @@ const paginationVariants = cva(
   {
     variants: {
       size: {
-        small: 'w-[40px] h-[40px] rounded-[10px] text-2lg', // 작은 버튼 (40px x 40px)
-        medium: 'w-[55px] h-[55px] rounded-[15px] text-2lg', // 기본 버튼 (55px x 55px)
+        small: 'w-[40px] h-[40px] rounded-[10px] text-2lg',
+        medium: 'w-[55px] h-[55px] rounded-[15px] text-2lg',
       },
       variant: {
         default: 'bg-white border-green-100 text-green-100 hover:bg-gray-200',
@@ -33,7 +33,6 @@ const paginationVariants = cva(
   },
 );
 
-// 화살표 크기 변수 설정
 const arrowSizeClasses = {
   small: 'h-[15.27px] w-[15.27px]',
   medium: 'h-[21px] w-[21px]',
@@ -43,14 +42,13 @@ const Pagination = ({ currentPage, totalPages, onChange, size }: PaginationProps
   const pageGroupSize = 5;
   const [startPage, setStartPage] = useState(1);
 
-  // `currentPage`가 변경될 때 `startPage` 업데이트 (비활성화 유지 문제 해결)
   useEffect(() => {
     const currentGroup = Math.ceil(currentPage / pageGroupSize);
     setStartPage((currentGroup - 1) * pageGroupSize + 1);
   }, [currentPage]);
 
   const handlePageChange = (page: number) => {
-    if (page < 1 || page > totalPages) return; //음수 및 초과 페이지 이동 방지
+    if (page < 1 || page > totalPages) return;
     onChange(page);
   };
 
@@ -73,25 +71,22 @@ const Pagination = ({ currentPage, totalPages, onChange, size }: PaginationProps
 
   return (
     <div className='flex items-center gap-2'>
-      {/*  Prev Button  */}
       <button
         onClick={currentPage === 1 ? undefined : handlePrevGroup}
         disabled={currentPage === 1}
         aria-label='이전 페이지'
         className={paginationVariants({
-          // 기존 variants 사용
           size,
           variant: currentPage === 1 ? 'disabled' : 'default',
         })}
       >
         <div
           className={`flex items-center justify-center ${arrowSizeClasses[size || 'medium']} ${
-            // 변수 사용
             currentPage === 1 ? 'opacity-50 grayscale' : ''
-          }`} // 비활성화 시 그레이스케일 + 투명도 적용
+          }`}
         >
           <Image
-            src={rightArrow} // 오른쪽 화살표를 반전해서 왼쪽 화살표로 사용
+            src={rightArrow}
             alt='이전 페이지로 이동'
             width={size === 'small' ? 5 : 7}
             height={size === 'small' ? 3 : 4}
@@ -104,7 +99,6 @@ const Pagination = ({ currentPage, totalPages, onChange, size }: PaginationProps
         </div>
       </button>
 
-      {/* Page Numbers */}
       {pageNumbers.map((page) => (
         <button
           key={page}
@@ -113,19 +107,17 @@ const Pagination = ({ currentPage, totalPages, onChange, size }: PaginationProps
             size,
             variant: currentPage === page ? 'active' : 'default',
           })}
-          aria-label={`${page} 페이지`} //각 페이지 번호 버튼에 aria-label 추가
+          aria-label={`${page} 페이지`}
         >
           {page}
         </button>
       ))}
 
-      {/* Next Button */}
       <button
         onClick={currentPage === totalPages ? undefined : handleNextGroup}
         disabled={currentPage === totalPages}
         aria-label='다음 페이지'
         className={paginationVariants({
-          // 기존 variants 사용
           size,
           variant: currentPage === totalPages ? 'disabled' : 'default',
         })}
@@ -133,10 +125,10 @@ const Pagination = ({ currentPage, totalPages, onChange, size }: PaginationProps
         <div
           className={`flex items-center justify-center ${arrowSizeClasses[size || 'medium']} ${
             currentPage === totalPages ? 'opacity-50 grayscale' : ''
-          }`} // 비활성화 시 그레이스케일 + 투명도 적용
+          }`}
         >
           <Image
-            src={rightArrow} // 기본 오른쪽 화살표 그대로 사용
+            src={rightArrow}
             alt='다음 페이지로 이동'
             width={size === 'small' ? 5 : 7}
             height={size === 'small' ? 3 : 4}
