@@ -51,12 +51,14 @@ export const createActivitySchema = z.object({
   title: z
     .string()
     .min(1, { message: '제목을 입력해주세요.' })
-    .regex(/^[a-zA-Z0-9가-힣\s]+$/, { message: '제목은 문자열로 입력해주세요.' }),
+    .regex(/^[a-zA-Z0-9가-힣\s.,?!&%-]+$/, {
+      message: '문자로 입력해주세요. 기호는 . , ? ! & - % 만 가능합니다.',
+    }),
   category: z.string().min(1, { message: '카테고리명을 선택해주세요.' }),
   description: z
     .string()
     .min(1, { message: '설명을 입력해주세요.' })
-    .regex(/^[a-zA-Z0-9가-힣\s.,!?]*$/, { message: '설명은 문자열로 입력해주세요.' }),
+    .regex(/^[a-zA-Z0-9가-힣\s.,?!&%-]*$/, { message: '문자로 입력해주세요. 기호는 . , ? ! & - % 만 가능합니다.' }),
   address: z.string().min(1, { message: '주소를 입력해주세요.' }),
   price: z.preprocess(
     (val) => (val === '' ? undefined : val),

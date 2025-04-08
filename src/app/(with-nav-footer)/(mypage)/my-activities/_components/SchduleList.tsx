@@ -23,7 +23,14 @@ export default function ScheduleList({ value, onChange, error }: ScheduleListPro
 
   const addSchedule = () => {
     if (temp.date && temp.startTime && temp.endTime) {
-      const formattedDate = temp.date.toISOString().split('T')[0];
+      const formattedDate = temp.date
+        .toLocaleDateString('ko-KR', {
+          year: 'numeric',
+          month: '2-digit',
+          day: '2-digit',
+        })
+        .replace(/\. /g, '-')
+        .replace(/\.$/, '');
       onChange([...value, { date: formattedDate, startTime: temp.startTime, endTime: temp.endTime }]);
       setTemp({ date: null, startTime: '', endTime: '' });
     }
@@ -47,7 +54,7 @@ export default function ScheduleList({ value, onChange, error }: ScheduleListPro
             <DatePicker
               selected={temp.date}
               onChange={(date) => setTemp({ ...temp, date })}
-              className='h-[48px] w-[379px] rounded border px-4'
+              className='h-[48px] w-[379px] rounded border bg-white px-4'
               placeholderText='YY/MM/DD'
               dateFormat='yy/MM/dd'
             />
@@ -56,7 +63,7 @@ export default function ScheduleList({ value, onChange, error }: ScheduleListPro
             <label className='text-md mb-1'>시작 시간</label>
             <input
               type='time'
-              className='h-[48px] w-[140px] rounded border px-3'
+              className='h-[48px] w-[140px] rounded border bg-white px-3'
               value={temp.startTime}
               onChange={(e) => setTemp({ ...temp, startTime: e.target.value })}
             />
@@ -66,7 +73,7 @@ export default function ScheduleList({ value, onChange, error }: ScheduleListPro
             <label className='text-md mb-1'>종료 시간</label>
             <input
               type='time'
-              className='h-[48px] w-[140px] rounded border px-3'
+              className='h-[48px] w-[140px] rounded border bg-white px-3'
               value={temp.endTime}
               onChange={(e) => setTemp({ ...temp, endTime: e.target.value })}
             />
@@ -84,14 +91,14 @@ export default function ScheduleList({ value, onChange, error }: ScheduleListPro
 
         {value.map((item, idx) => (
           <div key={idx} className='flex items-center gap-4'>
-            <div className='flex h-[48px] w-[379px] items-center rounded border px-3'>{item.date}</div>
-            <div className='flex h-[48px] w-[140px] items-center rounded border px-3'>{item.startTime}</div>
+            <div className='flex h-[48px] w-[379px] items-center rounded border bg-white px-3'>{item.date}</div>
+            <div className='flex h-[48px] w-[140px] items-center rounded border bg-white px-3'>{item.startTime}</div>
             <span>~</span>
-            <div className='flex h-[48px] w-[140px] items-center rounded border px-3'>{item.endTime}</div>
+            <div className='flex h-[48px] w-[140px] items-center rounded border bg-white px-3'>{item.endTime}</div>
             <button
               type='button'
               onClick={() => removeSchedule(idx)}
-              className='h-[48px] w-[48px] rounded border text-3xl text-green-100'
+              className='h-[48px] w-[48px] rounded border bg-white text-3xl text-green-100'
             >
               −
             </button>
