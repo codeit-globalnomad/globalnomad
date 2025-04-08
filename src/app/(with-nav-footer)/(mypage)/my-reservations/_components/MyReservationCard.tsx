@@ -81,7 +81,7 @@ export default function MyReservationCard({ reservation }: MyReservationCardProp
                     setIsCancelModalOpen(true);
                   }}
                 >
-                  <Button variant='outline' className='!w-fit px-4 py-2 text-xs font-bold md:text-sm'>
+                  <Button variant='outline' className='!w-fit px-2 py-1 text-xs font-bold md:px-4 md:py-2 md:text-sm'>
                     예약 취소
                   </Button>
                 </div>
@@ -94,9 +94,7 @@ export default function MyReservationCard({ reservation }: MyReservationCardProp
                     setIsReviewModalOpen(true);
                   }}
                 >
-                  <Button variant='default' className='!w-fit px-4 py-2 text-xs font-bold md:text-sm'>
-                    후기 작성
-                  </Button>
+                  <Button className='!w-fit px-2 py-1 text-xs font-bold md:px-4 md:py-2 md:text-sm'>후기 작성</Button>
                 </div>
               )}
               {status === 'completed' && reviewSubmitted && (
