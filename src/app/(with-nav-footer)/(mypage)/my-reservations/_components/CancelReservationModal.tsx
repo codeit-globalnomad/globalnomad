@@ -33,7 +33,7 @@ export default function CancelReservationModal({
       },
       onError: (error) => {
         console.error('예약 취소 실패:', error);
-        toast.error('예약 취소에 실패했어요.');
+        toast.error('예약 취소에 실패했습니다.');
       },
     });
   };

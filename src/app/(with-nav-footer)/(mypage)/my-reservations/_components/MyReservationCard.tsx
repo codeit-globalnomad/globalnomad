@@ -50,35 +50,29 @@ export default function MyReservationCard({ reservation }: MyReservationCardProp
 
   return (
     <>
-      <Link
-        href={`/activities/${activity.id}`}
-        className='mb-6 block w-full max-w-[792px] min-w-[344px] rounded-2xl shadow-md hover:bg-gray-100'
-      >
-        <div className='flex'>
-          {/* 이미지 */}
-          <div className='relative aspect-[1/1] w-[128px] md:w-[156px] lg:w-[204px]'>
+      <Link href={`/activities/${activity.id}`}>
+        <div className='mt-[24px] mb-[24px] flex h-[136px] w-full max-w-full min-w-[344px] cursor-pointer rounded-2xl bg-white shadow-md hover:bg-gray-100 md:h-[156px]'>
+          <div className='relative aspect-[1/1] h-[136px] w-[136px] md:h-[156px] md:w-[156px]'>
             <Image
               src={activity.bannerImageUrl}
-              alt={activity.title}
+              alt={`${activity.title} 배너 이미지`}
               fill
-              sizes='(max-width: 768px) 128px, (max-width: 1024px) 156px, 204px'
+              sizes='(min-width: 1024px) 204px, (min-width: 768px) 156px, 128px'
               className='absolute rounded-tl-2xl rounded-bl-2xl object-cover'
             />
           </div>
-
-          {/* 텍스트 영역 */}
           <div className='flex w-full flex-col px-[24px] py-[10px] md:py-[14px]'>
             <div className='flex flex-col gap-1 leading-normal'>
-              <p className={`text-lg font-bold ${statusColorClass}`}>{statusLabel}</p>
-              <h3 className='text-black-200 md:text-2lg overflow-hidden text-lg font-bold text-ellipsis whitespace-nowrap lg:text-2xl'>
+              <p className={`text-md font-bold ${statusColorClass}`}>{statusLabel}</p>
+              <h3 className='text-black-200 text-2lg line-clamp-1 overflow-hidden font-bold break-keep text-ellipsis md:text-xl'>
                 {activity.title}
               </h3>
-              <p className='text-black-200 md:text-md lg:text-2lg font-regular text-xs'>{formattedDate}</p>
+              <p className='text-black-200 md:text-md font-regular line-clamp-1 text-sm break-keep'>{formattedDate}</p>
             </div>
-
-            <div className='mt-2 flex flex-row flex-wrap items-center justify-between gap-2'>
-              <p className='text-black-200 text-md font-medium md:text-xl'>₩ {totalPrice.toLocaleString()}</p>
-
+            <div className='flex flex-wrap items-center justify-between'>
+              <p className='md:text-2lg text-lg leading-[36px] font-medium text-gray-900'>
+                ₩ {totalPrice.toLocaleString()}
+              </p>
               {status === 'pending' && (
                 <div
                   onClick={(e) => {
@@ -92,7 +86,6 @@ export default function MyReservationCard({ reservation }: MyReservationCardProp
                   </Button>
                 </div>
               )}
-
               {status === 'completed' && !reviewSubmitted && (
                 <div
                   onClick={(e) => {
@@ -106,7 +99,6 @@ export default function MyReservationCard({ reservation }: MyReservationCardProp
                   </Button>
                 </div>
               )}
-
               {status === 'completed' && reviewSubmitted && (
                 <span className='text-xs font-bold text-green-100 md:text-sm'>후기 작성 완료</span>
               )}
@@ -114,8 +106,6 @@ export default function MyReservationCard({ reservation }: MyReservationCardProp
           </div>
         </div>
       </Link>
-
-      {/* 모달 */}
       <CancelReservationModal
         isOpen={isCancelModalOpen}
         onClose={() => setIsCancelModalOpen(false)}
