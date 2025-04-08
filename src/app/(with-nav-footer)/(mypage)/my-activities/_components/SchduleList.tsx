@@ -49,13 +49,13 @@ export default function ScheduleList({ value, onChange, error }: ScheduleListPro
         {DatepickerStyles}
       </style>
       <div className='mt-[16px] space-y-3'>
-        <div className='flex items-center gap-4'>
-          <div className='Datepickerstyles flex w-full max-w-[379px] min-w-[130px] flex-col'>
+        <div className='flex items-center gap-1 md:gap-4'>
+          <div className='Datepickerstyles flex w-full max-w-[379px] min-w-[110px] flex-col'>
             <label className='text-md mb-1'>날짜</label>
             <DatePicker
               selected={temp.date}
               onChange={(date) => setTemp({ ...temp, date })}
-              className='h-[48px] w-full max-w-[379px] min-w-[130px] rounded border px-4'
+              className='h-[48px] w-full max-w-[379px] min-w-[110px] rounded border px-2 md:px-4'
               placeholderText='YY/MM/DD'
               dateFormat='yy/MM/dd'
             />
@@ -87,8 +87,8 @@ export default function ScheduleList({ value, onChange, error }: ScheduleListPro
         <hr className='text-gray-400' />
 
         {value.map((item, idx) => (
-          <div key={idx} className='flex items-center gap-4'>
-            <div className='flex h-[48px] w-full max-w-[379px] min-w-[130px] flex-col rounded border bg-white px-3 leading-[48px]'>
+          <div key={idx} className='flex items-center gap-1 md:gap-4'>
+            <div className='flex h-[48px] w-full max-w-[379px] min-w-[110px] flex-col rounded border bg-white px-2 leading-[48px] whitespace-nowrap md:px-3'>
               {item.date}
             </div>
             <div className='flex h-[48px] w-full max-w-[140px] min-w-[79px] items-center rounded border px-3'>
