@@ -31,6 +31,7 @@ export default function MyReservation({ activity, monthData }: Props) {
   const [selectOption, setSelectOption] = useState<ActivitiesFilterOption | null>(null);
   const [selectedDate, setSelectedDate] = useState('');
   const [selectedActivityId, setSelectedActivityId] = useState<number | null>(null);
+  const [popupKey, setPopupKey] = useState(0);
   const [loading, setLoading] = useState(true);
 
   const activitiesFilterOption = activity.activities.map((act) => ({
@@ -74,6 +75,11 @@ export default function MyReservation({ activity, monthData }: Props) {
     [selectedActivityId],
   );
 
+  const handleDateClick = (date: string) => {
+    setSelectedDate(date);
+    setPopupKey((prev) => prev + 1);
+  };
+
   if (loading) {
     return <LoadingSpinner />;
   }
@@ -102,16 +108,12 @@ export default function MyReservation({ activity, monthData }: Props) {
         <MyCalendar
           onActiveStartDateChange={handleMonthChange}
           monthTotalData={monthData}
-          onDateChange={setSelectedDate}
-          initialDate={new Date(currentYear, Number(currentMonth) - 1, 1)}
+          onDateChange={handleDateClick}
+          initialDate={selectedDate ? new Date(selectedDate) : new Date()}
         />
       </div>
       {selectedDate && selectedActivityId && (
-        <MyActivitiesReservations
-          selectedDate={selectedDate}
-          setSelectedDate={setSelectedDate}
-          activityId={selectedActivityId}
-        />
+        <MyActivitiesReservations key={popupKey} selectedDate={selectedDate} activityId={selectedActivityId} />
       )}
     </div>
   );
