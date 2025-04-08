@@ -1,7 +1,7 @@
 'use client';
 
 import FilterDropdown from '@/components/FilterDropdown';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import MyCalendar from './_components/MyCalendar';
 import { useParams, useRouter, useSearchParams } from 'next/navigation';
 import arrowFilterDropdown2 from '@/assets/icons/arrow-filter-dropdown2.svg';
@@ -63,24 +63,28 @@ export default function MyReservation({ activity, monthData }: Props) {
     }
   };
 
-  const handleMonthChange = useCallback(
-    ({ activeStartDate }: { activeStartDate: Date | null }) => {
-      if (!activeStartDate || !selectedActivityId) return;
+  const handleMonthChange = ({ activeStartDate }: { activeStartDate: Date | null }) => {
+    if (!activeStartDate || !selectedActivityId) return;
 
-      const newYear = activeStartDate.getFullYear();
-      const newMonth = activeStartDate.getMonth() + 1;
+    const newYear = activeStartDate.getFullYear();
+    const newMonth = activeStartDate.getMonth() + 1;
 
-      router.push(
-        `/my-activities/${selectedActivityId}/reservation-dashboard?year=${newYear}&month=${newMonth.toString().padStart(2, '0')}`,
-      );
-    },
-    [selectedActivityId],
-  );
+    router.push(
+      `/my-activities/${selectedActivityId}/reservation-dashboard?year=${newYear}&month=${newMonth.toString().padStart(2, '0')}`,
+    );
+  };
 
   const handleDateClick = (date: string) => {
     setSelectedDate(date);
     setPopupKey((prev) => prev + 1);
   };
+
+  useEffect(() => {
+    if (currentYear && currentMonth) {
+      setSelectedDate('');
+      setPopupKey((prev) => prev + 1);
+    }
+  }, [currentYear, currentMonth]);
 
   if (!activity || !monthData || loading) {
     return <LoadingSpinner />;
@@ -108,6 +112,7 @@ export default function MyReservation({ activity, monthData }: Props) {
       </div>
       <div>
         <MyCalendar
+          key={selectedActivityId + '-' + currentYear + '-' + currentMonth}
           onActiveStartDateChange={handleMonthChange}
           monthTotalData={monthData}
           onDateChange={handleDateClick}

@@ -63,6 +63,7 @@ export default function MyCalendar({ monthTotalData, onDateChange, onActiveStart
       onDateChange(selectedDate.toLocaleDateString('sv-SE'));
     }
   };
+
   const renderTile = ({ date, view }: { date: Date; view: string }) => {
     if (view === 'month') {
       const formattedDate = date.toLocaleDateString('sv-SE');
