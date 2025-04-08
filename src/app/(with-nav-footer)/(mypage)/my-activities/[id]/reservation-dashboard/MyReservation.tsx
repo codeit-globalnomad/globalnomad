@@ -103,6 +103,7 @@ export default function MyReservation({ activity, monthData }: Props) {
           onActiveStartDateChange={handleMonthChange}
           monthTotalData={monthData}
           onDateChange={setSelectedDate}
+          initialDate={new Date(currentYear, Number(currentMonth) - 1, 1)}
         />
       </div>
       {selectedDate && selectedActivityId && (
