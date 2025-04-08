@@ -3,8 +3,8 @@
 import ReservationDetails from './ReservationDetails';
 import Image from 'next/image';
 import NoData from '@/assets/icons/No-data.svg';
-import { useEffect, useRef, useState } from 'react';
-import { getReservations } from '@/lib/apis/myActivities';
+import { useCallback } from 'react';
+import { useInfiniteTimeSlotReservations } from '@/lib/hooks/useMyActivities';
 
 type Reservation = {
   id: number;
@@ -37,86 +37,49 @@ type Props = {
 export default function ReservationCardList({
   status,
   activityId,
-  reservations: initialReservations,
   scheduleId,
   isSmallScreen,
-  firstCursorId,
   statusPatchError,
 }: Props) {
-  const cursorIdRef = useRef<number | undefined>(firstCursorId);
-  const [currentReservations, setCurrentReservations] = useState(initialReservations);
-  const observerRef = useRef<HTMLDivElement | null>(null);
-  const [hasMore, setHasMore] = useState(true);
-  const [isFetching, setIsFetching] = useState(false);
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteTimeSlotReservations(
+    activityId,
+    { status, scheduleId },
+    scheduleId !== undefined && !isNaN(scheduleId),
+  );
 
-  const fetchReservations = async () => {
-    if (isFetching || !hasMore) return;
+  const observerRef = useCallback(
+    (node: HTMLDivElement | null) => {
+      if (!node || !hasNextPage) return;
 
-    setIsFetching(true);
-    try {
-      const data = await getReservations(activityId, {
-        cursorId: cursorIdRef.current,
-        status,
-        scheduleId,
-        size: 3,
-      });
+      const observer = new IntersectionObserver(
+        (entries) => {
+          if (entries[0].isIntersecting) {
+            fetchNextPage();
+          }
+        },
+        { rootMargin: '100px', threshold: 0.1 },
+      );
 
-      if (!data?.reservations?.length) {
-        setHasMore(false);
-        return;
-      }
+      observer.observe(node);
+      return () => observer.disconnect();
+    },
+    [hasNextPage, fetchNextPage],
+  );
 
-      setCurrentReservations((prev) => {
-        const existingIds = new Set(prev.map((r) => r.id));
-        return [...prev, ...data.reservations.filter((r) => !existingIds.has(r.id))];
-      });
-
-      cursorIdRef.current = data.reservations.at(-1)?.id;
-    } finally {
-      setIsFetching(false);
-    }
-  };
-
-  useEffect(() => {
-    cursorIdRef.current = firstCursorId;
-    setCurrentReservations(initialReservations);
-    setHasMore(true);
-  }, [initialReservations, firstCursorId]);
-
-  useEffect(() => {
-    if (!observerRef.current || !hasMore || isFetching) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) fetchReservations();
-      },
-      { rootMargin: '100px', threshold: 0.1 },
-    );
-
-    observer.observe(observerRef.current);
-    return () => observer.disconnect();
-  }, [hasMore, isFetching]);
-
-  useEffect(() => {
-    if (cursorIdRef.current !== undefined) return;
-    setCurrentReservations([]);
-    cursorIdRef.current = undefined;
-    setHasMore(true);
-    fetchReservations();
-  }, [status, activityId, scheduleId]);
+  const allReservations = data?.pages.flatMap((page) => page.reservations) ?? [];
 
   return (
     <div
-      className={`${isSmallScreen ? (currentReservations.length > 0 ? 'h-[300px] min-h-[250px]' : 'h-auto') : currentReservations.length > 0 ? 'h-[340px]' : 'h-auto'} custom-scrollbar relative overflow-y-auto`}
+      className={`${isSmallScreen ? (allReservations.length > 0 ? 'h-[300px] min-h-[250px]' : 'h-auto') : allReservations.length > 0 ? 'h-[340px]' : 'h-auto'} custom-scrollbar relative overflow-y-auto`}
     >
       <style jsx>{`
         .custom-scrollbar::-webkit-scrollbar {
           display: none;
         }
       `}</style>
-      {currentReservations.length > 0 ? (
+      {allReservations.length > 0 ? (
         <div className='flex flex-col gap-[14px]'>
-          {currentReservations.map((info) => (
+          {allReservations.map((info) => (
             <ReservationDetails
               key={info.id}
               status={status}
@@ -127,12 +90,12 @@ export default function ReservationCardList({
               hasError={statusPatchError}
             />
           ))}
-          {isFetching && (
+          {isFetchingNextPage && (
             <div className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 py-4'>
               <div className='spinner-border h-7 w-7 animate-spin rounded-full border-4 border-solid border-green-100 border-t-transparent'></div>
             </div>
           )}
-          {hasMore && <div ref={observerRef} />}
+          <div ref={hasNextPage ? observerRef : null} />
         </div>
       ) : (
         <div className={`${isSmallScreen ? 'h-[300px]' : 'h-[340px]'} flex items-center justify-center`}>

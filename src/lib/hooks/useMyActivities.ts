@@ -90,3 +90,27 @@ export const useInfiniteMyActivities = () => {
     gcTime: 0,
   });
 };
+
+// 내 체험 예약 시간대별 예약 내역 조회 무한스크롤 훅
+export const useInfiniteTimeSlotReservations = (
+  activityId: number,
+  params: Omit<GetReservationsParams, 'cursorId'>,
+  enabled: boolean,
+) => {
+  return useInfiniteQuery({
+    queryKey: ['reservations', activityId, params],
+    queryFn: ({ pageParam = undefined }: { pageParam?: number }) =>
+      getReservations(activityId, {
+        ...params,
+        cursorId: pageParam ?? undefined,
+        size: 3,
+      }),
+    getNextPageParam: (lastPage) => {
+      if (!lastPage?.reservations?.length) return undefined;
+      return lastPage.reservations.at(-1)?.id;
+    },
+    initialPageParam: undefined,
+    enabled,
+    staleTime: 0,
+  });
+};
