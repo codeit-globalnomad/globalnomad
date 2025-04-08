@@ -29,16 +29,20 @@ export default function NotificationDetails({ content, createdAt, id, onDelete }
   ];
   const { mutate: deleteMyNotification } = useDeleteMyNotification();
 
-  const handleDelete = () => {
+  const handleDeleteTrigger = () => {
     setIsDeleting(true);
-    setTimeout(() => {
+  };
+
+  const handleDeleteTransitionEnd = () => {
+    if (isDeleting) {
       onDelete(id);
       deleteMyNotification(id);
-    }, 300);
+    }
   };
 
   return (
     <div
+      onTransitionEnd={handleDeleteTransitionEnd}
       className={`overflow-hidden transition-all duration-300 ease-in-out ${
         isDeleting ? 'm-0 max-h-0 translate-x-24 p-0 opacity-0' : 'max-h-[500px] translate-x-0 p-3 opacity-100'
       } text-black-100 flex flex-col gap-1 rounded-[5px] border-gray-400 bg-white text-[14px] leading-[24px] font-normal`}
@@ -50,7 +54,7 @@ export default function NotificationDetails({ content, createdAt, id, onDelete }
           )}
 
           <Image
-            onClick={handleDelete}
+            onClick={handleDeleteTrigger}
             className='cursor-pointer'
             src={CloseImage}
             width={20}

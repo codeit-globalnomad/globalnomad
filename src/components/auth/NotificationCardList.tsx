@@ -84,7 +84,7 @@ export default function NotificationCardList({ notifications, firstCursorId, isS
               <div className='spinner-border h-7 w-7 animate-spin rounded-full border-4 border-solid border-green-100 border-t-transparent'></div>
             </div>
           )}
-          {hasMore && <div className='h-6' ref={observerRef} />}
+          <div ref={hasMore ? observerRef : null} />
         </div>
       ) : (
         <p className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 transform text-sm text-gray-800'>

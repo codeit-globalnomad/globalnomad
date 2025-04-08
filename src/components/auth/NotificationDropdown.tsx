@@ -29,9 +29,8 @@ export default function NotificationDropdown() {
   const handleAllDelete = async () => {
     if (!notifications.length) return;
 
-    for (const notification of notifications) {
-      await deleteMyNotification(notification.id);
-    }
+    const deletePromises = notifications.map((n) => deleteMyNotification(n.id));
+    await Promise.all(deletePromises);
     setIsOpen(false);
   };
 
@@ -78,12 +77,14 @@ export default function NotificationDropdown() {
             />
           )}
 
-          <span
-            onClick={handleAllDelete}
-            className={`${isSmallScreen ? 'bottom-2' : 'bottom-6'} absolute right-6 mt-1 cursor-pointer text-sm text-gray-900`}
-          >
-            모두 삭제
-          </span>
+          {notifications.length > 0 && (
+            <span
+              onClick={handleAllDelete}
+              className={`${isSmallScreen ? 'bottom-2' : 'bottom-6'} absolute right-6 mt-1 cursor-pointer text-sm text-gray-900`}
+            >
+              모두 삭제
+            </span>
+          )}
         </div>
       )}
     </div>
