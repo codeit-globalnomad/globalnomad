@@ -30,6 +30,7 @@
   font-weight: 500;
   line-height: 100%;
   text-align: center;
+  background-color: #ffffff;
 }
 
 .my-calendar .react-calendar__month-view__weekdays {
