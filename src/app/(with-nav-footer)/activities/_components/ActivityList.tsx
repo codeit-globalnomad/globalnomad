@@ -13,7 +13,7 @@ import LoadingSpinner from '@/components/LoadingSpinner';
 import RetryError from '@/components/RetryError';
 import Image from 'next/image';
 import leftArrow from '@/assets/icons/left-arrow.svg';
-import empty from '@/assets/icons/empty.svg';
+import Empty from '@/components/Empty';
 
 export default function ActivityList() {
   const router = useRouter();
@@ -93,12 +93,7 @@ export default function ActivityList() {
           <p className='text-black-100 text-md md:text-lg'>총 {data?.totalCount}개의 결과</p>
 
           {!data?.activities.length ? (
-            <div className='mx-auto mt-[100px] flex w-full max-w-[1200px] flex-col items-center justify-center'>
-              <div className='relative h-[140px] w-[140px] md:h-[200px] md:w-[200px]'>
-                <Image src={empty} fill alt='검색 결과 0개' className='absolute' />
-              </div>
-              <p className='text-2lg mt-[24px] font-medium text-gray-800'>검색 결과가 없습니다.</p>
-            </div>
+            <Empty>검색 결과가 없습니다.</Empty>
           ) : (
             <>
               <div

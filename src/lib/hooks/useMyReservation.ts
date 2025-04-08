@@ -42,7 +42,7 @@ export const useWriteReviewForReservation = () => {
 
 // 내 예약 무한스크롤 조회 훅
 export const useInfiniteMyReservations = (status?: GetMyReservationsParams['status']) => {
-  const PAGE_SIZE = 10;
+  const PAGE_SIZE = 4;
 
   return useInfiniteQuery<GetMyReservationsResponse, Error>({
     queryKey: ['myReservations', status ?? 'all'],

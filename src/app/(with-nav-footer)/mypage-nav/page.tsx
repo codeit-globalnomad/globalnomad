@@ -37,7 +37,7 @@ export default function Page() {
   }, [pathname, router]);
 
   return (
-    <div className='px-4 pt-10'>
+    <div className='mb-[40%] px-4 pt-10'>
       <ProfileImageProvider>
         <MobileSideNavWrapper />
       </ProfileImageProvider>
