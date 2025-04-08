@@ -2,6 +2,7 @@ import axiosServerHelper from '@/lib/network/axiosServerHelper';
 import { MyActivitiesResponse, ReservationDashboardResponse } from '@/lib/types/myActivities';
 import MyReservation from './MyReservation';
 import { redirect } from 'next/navigation';
+import { cookies } from 'next/headers';
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -24,10 +25,23 @@ export default async function ReservationDashboard({ params, searchParams }: Pro
   const year = resolvedSearchParams.year || NowYear;
   const month = resolvedSearchParams.month || NowMonth;
 
-  const { data: myActivityData } = await axiosServerHelper<MyActivitiesResponse>(`/my-activities`);
-  const { data: myActivityMonthData } = await axiosServerHelper<ReservationDashboardResponse>(
-    `/my-activities/${activityId}/reservation-dashboard?year=${year}&month=${month}`,
-  );
+  const cookieStore = cookies();
+  const accessToken = (await cookieStore).get('accessToken')?.value;
 
-  return <MyReservation activity={myActivityData} monthData={myActivityMonthData} />;
+  if (!accessToken) {
+    redirect('/login');
+  }
+
+  try {
+    const { data: myActivityData } = await axiosServerHelper<MyActivitiesResponse>(`/my-activities`);
+    const { data: myActivityMonthData } = await axiosServerHelper<ReservationDashboardResponse>(
+      `/my-activities/${activityId}/reservation-dashboard?year=${year}&month=${month}`,
+    );
+
+    return <MyReservation activity={myActivityData} monthData={myActivityMonthData} />;
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      redirect('/login');
+    }
+  }
 }
