@@ -75,7 +75,7 @@ export default function AddressFind({ value, onChange, error }: AddressFindProps
       <Button
         type='button'
         onClick={handlePostcode}
-        className='text-md h-[48px] cursor-pointer rounded border bg-green-100 px-5 text-white'
+        className='text-md roundedpx-5 cursor-pointer px-6 leading-[48px] text-white'
         disabled={!isLoaded}
       >
         검색
