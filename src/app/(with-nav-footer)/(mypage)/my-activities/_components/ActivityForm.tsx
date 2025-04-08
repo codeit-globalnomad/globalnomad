@@ -70,7 +70,6 @@ export default function ActivityForm({
   return (
     <FormProvider {...methods}>
       <form
-        className='space-y-6'
         onSubmit={handleSubmit((data) =>
           onSubmit({
             ...data,
@@ -79,90 +78,97 @@ export default function ActivityForm({
           }),
         )}
       >
-        <div className='flex items-center justify-between'>
+        <div className='mb-4 flex items-center justify-between'>
           <h2 className='text-2xl font-bold'>{mode === 'create' ? '내 체험 등록' : '내 체험 수정'}</h2>
           <Button type='submit' disabled={isSubmitting || !isValid} className='px-[20px] py-[11px]'>
             {isSubmitting ? '처리 중...' : mode === 'create' ? '등록하기' : '수정하기'}
           </Button>
         </div>
+        <div className='space-y-6'>
+          <Input
+            label='제목'
+            className='bg-white'
+            placeholder='제목을 입력하세요'
+            {...register('title')}
+            error={errors.title?.message}
+          />
 
-        <Input label='제목' placeholder='제목을 입력하세요' {...register('title')} error={errors.title?.message} />
-
-        <label className='text-black-100 inline-flex items-center gap-1 text-lg font-medium'>카테고리</label>
-        <Controller
-          control={control}
-          name='category'
-          render={({ field }) => (
-            <FilterDropdown
-              label='카테고리'
-              options={categoryOptions}
-              onSelect={(option) => field.onChange(option?.label || '')}
-              icon={arrowFilterDropdown2}
-              buttonClassName='border lg:w-[792px] w-[343px] md:w-[429px] text-black-100 border-gray-800 rounded-lg md:justify-between px-[15px] py-[15px]'
-              dropdownClassName='rounded-xl lg:w-[792px] w-[343px] md:w-[429px] border border-gray-300 bg-white drop-shadow-sm'
-              optionClassName='text-md md:text-lg h-[41px] lg:w-[792px] w-[343px] md:w-[429px] leading-[41px] md:h-[58px] md:leading-[58px]'
-              includeAllOption={false}
-              iconVisibleOnMobile={false}
-              value={field.value}
-            />
-          )}
-        />
-        {errors.category && <p className='text-sm text-red-100'>{errors.category.message}</p>}
-
-        <label className='text-black-100 inline-flex items-center gap-1 text-lg font-medium'>설명</label>
-        <textarea
-          className='h-[260px] w-full rounded-[4px] border border-gray-800 px-4 py-3 focus:border-green-100 focus:ring-1 focus:ring-green-100 focus:outline-none'
-          placeholder='설명을 입력해주세요'
-          {...register('description')}
-        />
-        {errors.description && <p className='text-sm text-red-100'>{errors.description.message}</p>}
-
-        <Controller
-          control={control}
-          name='address'
-          render={({ field }) => (
-            <AddressFind value={field.value} onChange={field.onChange} error={errors.address?.message} />
-          )}
-        />
-
-        <Input
-          label='가격'
-          placeholder='숫자만 입력'
-          type='number'
-          onWheel={(e) => e.currentTarget.blur()}
-          {...register('price', { valueAsNumber: true })}
-          error={errors.price?.message}
-          className='appearance-none [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none'
-        />
-
-        <div>
-          <label className='text-black-100 inline-flex items-center gap-1 text-lg font-medium'>
-            예약 가능한 시간대
-          </label>
+          <label className='text-black-100 inline-flex items-center gap-1 text-lg font-medium'>카테고리</label>
           <Controller
             control={control}
-            name='schedules'
+            name='category'
             render={({ field }) => (
-              <ScheduleList value={field.value} onChange={field.onChange} error={errors.schedules?.message} />
+              <FilterDropdown
+                label='카테고리'
+                options={categoryOptions}
+                onSelect={(option) => field.onChange(option?.label || '')}
+                icon={arrowFilterDropdown2}
+                buttonClassName='border  w-full max-w-[792px]  text-black-100 border-gray-800 rounded-lg md:justify-between px-[15px] py-[15px]'
+                dropdownClassName='rounded-xl  w-full max-w-[792px]  border border-gray-300 bg-white drop-shadow-sm'
+                optionClassName='text-md md:text-lg h-[41px]  w-full max-w-[792px] leading-[41px] md:h-[58px] md:leading-[58px]'
+                includeAllOption={false}
+                iconVisibleOnMobile={false}
+                value={field.value}
+              />
             )}
           />
-        </div>
+          {errors.category && <p className='text-sm text-red-100'>{errors.category.message}</p>}
 
-        <div>
-          <label className='text-black-100 inline-flex items-center gap-1 text-lg font-medium'>배너 이미지</label>
-          <ImageUploader value={bannerImageUrl} onChange={(url) => setBannerImageUrl(url as string)} single />
-        </div>
-
-        <div className='mb-[32px]'>
-          <label className='text-black-100 inline-flex items-center gap-1 text-lg font-medium'>
-            소개 이미지 (최대 4장)
-          </label>
-          <ImageUploader
-            value={subImageUrls}
-            onChange={(urls) => setSubImageUrls(urls as string[])}
-            multiple
-            limit={4}
+          <label className='text-black-100 inline-flex items-center gap-1 text-lg font-medium'>설명</label>
+          <textarea
+            className='h-[260px] w-full rounded-[4px] border border-gray-800 bg-white px-4 py-3 focus:border-green-100 focus:ring-1 focus:ring-green-100 focus:outline-none'
+            placeholder='설명을 입력해주세요'
+            {...register('description')}
           />
+          {errors.description && <p className='text-sm text-red-100'>{errors.description.message}</p>}
+
+          <Controller
+            control={control}
+            name='address'
+            render={({ field }) => (
+              <AddressFind value={field.value} onChange={field.onChange} error={errors.address?.message} />
+            )}
+          />
+
+          <Input
+            label='가격'
+            placeholder='숫자만 입력'
+            type='number'
+            onWheel={(e) => e.currentTarget.blur()}
+            {...register('price', { valueAsNumber: true })}
+            error={errors.price?.message}
+            className='appearance-none bg-white [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none'
+          />
+
+          <div>
+            <label className='text-black-100 inline-flex items-center gap-1 text-lg font-medium'>
+              예약 가능한 시간대
+            </label>
+            <Controller
+              control={control}
+              name='schedules'
+              render={({ field }) => (
+                <ScheduleList value={field.value} onChange={field.onChange} error={errors.schedules?.message} />
+              )}
+            />
+          </div>
+
+          <div>
+            <label className='text-black-100 inline-flex items-center gap-1 text-lg font-medium'>배너 이미지</label>
+            <ImageUploader value={bannerImageUrl} onChange={(url) => setBannerImageUrl(url as string)} single />
+          </div>
+
+          <div className='mb-[32px]'>
+            <label className='text-black-100 inline-flex items-center gap-1 text-lg font-medium'>
+              소개 이미지 (최대 4장)
+            </label>
+            <ImageUploader
+              value={subImageUrls}
+              onChange={(urls) => setSubImageUrls(urls as string[])}
+              multiple
+              limit={4}
+            />
+          </div>
         </div>
       </form>
     </FormProvider>

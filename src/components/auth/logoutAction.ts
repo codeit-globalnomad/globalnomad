@@ -8,7 +8,7 @@ const logout = async () => {
     const cookieStore = await cookies();
     cookieStore.delete('accessToken');
     cookieStore.delete('refreshToken');
-    window.location.reload();
+
     return {
       status: true,
       error: '',

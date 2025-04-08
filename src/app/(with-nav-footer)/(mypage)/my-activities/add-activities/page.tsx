@@ -1,5 +1,5 @@
-import AddActivities from './_components/AddActivities';
+import CreateActivityPage from './_components/AddActivities';
 
 export default function Page() {
-  return <AddActivities />;
+  return <CreateActivityPage />;
 }

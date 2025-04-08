@@ -1,6 +1,6 @@
 'use client';
 
-import { startTransition, useActionState, useCallback, useEffect, useMemo } from 'react';
+import { useActionState, useEffect, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import logout from './logoutAction';
 import Link from 'next/link';
@@ -23,22 +23,18 @@ export default function LoggedInHeader({
 
   useEffect(() => {
     if (state?.status) {
-      toast.success('로그아웃');
+      toast.success('로그아웃 처리 되었습니다.');
       router.replace('/login');
     }
+    console.log(state);
   }, [state, router]);
 
-  const handleLogout = useCallback(() => {
-    startTransition(() => {
-      formAction();
-    });
-  }, []);
   const options = useMemo(
     () => [
       { label: '마이 페이지', onClick: () => router.push('/my-page') },
-      { label: '로그아웃', onClick: handleLogout },
+      { label: '로그아웃', formAction },
     ],
-    [router, handleLogout],
+    [router, formAction],
   );
   return (
     <div className='flex h-[70px] w-full justify-center border-b border-gray-300 bg-white'>
