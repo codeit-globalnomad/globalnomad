@@ -1,13 +1,11 @@
 'use client';
 
 import { toast } from 'react-toastify';
-import { useRouter } from 'next/navigation';
 import ActivityForm from '../../_components/ActivityForm';
 import { useCreateActivity } from '@/lib/hooks/useActivities';
 import { CreateActivityParams } from '@/lib/types/activities';
 
 export default function CreateActivityPage() {
-  const router = useRouter();
   const { mutate: createActivity, isPending } = useCreateActivity();
 
   const handleSubmit = (data: CreateActivityParams) => {
@@ -15,7 +13,7 @@ export default function CreateActivityPage() {
       onSuccess: () => {
         toast.success('체험이 등록되었습니다!');
         setTimeout(() => {
-          router.push('/my-activities');
+          window.location.href = '/my-activities';
         }, 2000);
       },
       onError: () => {

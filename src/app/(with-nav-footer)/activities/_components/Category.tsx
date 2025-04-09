@@ -95,7 +95,7 @@ export default function Category({
           {CATEGORIES.map((category, index) => (
             <Button
               variant='outline'
-              className={`text-2lg h-[53px] w-[120px] rounded-2xl text-center font-medium whitespace-nowrap ${
+              className={`text-2lg h-[53px] w-[120px] rounded-2xl bg-white text-center font-medium whitespace-nowrap ${
                 selectedCategory === category ? 'bg-black-200 text-white' : ''
               } ${isEnd && index === CATEGORIES.length - 1 ? 'opacity-50' : ''}`}
               key={category}
