@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import RetryError from '@/components/RetryError';
 import { useActivityDetail } from '@/lib/hooks/useActivities';
@@ -30,7 +30,7 @@ export default function ActivityDetailPage({ id }: { id: number }) {
   const [isLoading, setIsLoading] = useState(true);
   const [isProgrammaticScroll, setIsProgrammaticScroll] = useState(false);
 
-  const scrollToSection = (id: string) => {
+  const scrollToSection = useCallback((id: string) => {
     const el = document.getElementById(id);
     if (el) {
       setIsProgrammaticScroll(true);
@@ -41,7 +41,7 @@ export default function ActivityDetailPage({ id }: { id: number }) {
         setCurrentTab(id);
       }, 300);
     }
-  };
+  }, []);
 
   const scrollToTop = () => {
     window.requestAnimationFrame(() => {
@@ -122,7 +122,7 @@ export default function ActivityDetailPage({ id }: { id: number }) {
       <div className={`md:${wrapper} px-5 md:flex-row md:gap-[2%] lg:mb-16`}>
         <section className={`my-6 w-full ${!isSameUser ? 'md:w-[70%]' : 'md:w-full'}`}>
           <div className='sticky top-0 z-20 bg-gray-100'>
-            <ActivityTab tabs={tabItems} currentTab={currentTab} onTabClick={(id) => scrollToSection(id)} />
+            <ActivityTab tabs={tabItems} currentTab={currentTab} onTabClick={scrollToSection} />
           </div>
           <div className='w-full'>
             <DescriptionSection description={description} />
