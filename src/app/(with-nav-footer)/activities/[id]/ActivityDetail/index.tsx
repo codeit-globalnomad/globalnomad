@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import RetryError from '@/components/RetryError';
 import { useActivityDetail } from '@/lib/hooks/useActivities';
@@ -30,7 +30,7 @@ export default function ActivityDetailPage({ id }: { id: number }) {
   const [isLoading, setIsLoading] = useState(true);
   const [isProgrammaticScroll, setIsProgrammaticScroll] = useState(false);
 
-  const scrollToSection = (id: string) => {
+  const scrollToSection = useCallback((id: string) => {
     const el = document.getElementById(id);
     if (el) {
       setIsProgrammaticScroll(true);
@@ -41,7 +41,7 @@ export default function ActivityDetailPage({ id }: { id: number }) {
         setCurrentTab(id);
       }, 300);
     }
-  };
+  }, []);
 
   const scrollToTop = () => {
     window.requestAnimationFrame(() => {
@@ -52,11 +52,12 @@ export default function ActivityDetailPage({ id }: { id: number }) {
 
   useEffect(() => {
     scrollToTop();
+    refetch();
     const timer = setTimeout(() => {
       setIsLoading(false);
     }, 500);
     return () => clearTimeout(timer);
-  }, []);
+  }, [refetch]);
 
   useEffect(() => {
     const sectionIds = ['description', 'location', 'reviews'];
@@ -91,7 +92,7 @@ export default function ActivityDetailPage({ id }: { id: number }) {
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [currentTab]);
+  }, [currentTab, isProgrammaticScroll]);
 
   if (isLoading || !activityDetail) {
     return <LoadingSpinner />;
@@ -119,9 +120,9 @@ export default function ActivityDetailPage({ id }: { id: number }) {
         <ActivityGallery activityDetail={activityDetail} />
       </div>
       <div className={`md:${wrapper} px-5 md:flex-row md:gap-[2%] lg:mb-16`}>
-        <section className={`mt-6 mb-6 w-full ${!isSameUser ? 'md:w-[70%]' : 'md:w-full'}`}>
+        <section className={`my-6 w-full ${!isSameUser ? 'md:w-[70%]' : 'md:w-full'}`}>
           <div className='sticky top-0 z-20 bg-gray-100'>
-            <ActivityTab tabs={tabItems} currentTab={currentTab} onTabClick={(id) => scrollToSection(id)} />
+            <ActivityTab tabs={tabItems} currentTab={currentTab} onTabClick={scrollToSection} />
           </div>
           <div className='w-full'>
             <DescriptionSection description={description} />
@@ -131,7 +132,7 @@ export default function ActivityDetailPage({ id }: { id: number }) {
           </div>
         </section>
         {!isSameUser && (
-          <section className='md: fixed bottom-0 left-0 z-50 w-full md:relative md:top-0 md:right-0 md:w-[28%]'>
+          <section className='activity-calender fixed bottom-0 left-0 z-50 w-full md:relative md:top-0 md:right-0 md:w-[28%]'>
             <MobileReservation isLoggedIn={isLoggedIn} currentActivityId={currentActivityId} price={price} />
             <div className='sticky top-3 md:mt-6 md:mb-3'>
               <TabletReservation isLoggedIn={isLoggedIn} currentActivityId={currentActivityId} price={price} />
@@ -140,7 +141,7 @@ export default function ActivityDetailPage({ id }: { id: number }) {
           </section>
         )}
       </div>
-      <ScrollToTopButton onClick={scrollToTop} isSameUser={isSameUser} />
+      <ScrollToTopButton onClick={scrollToTop} isSameUser={isSameUser} isLoggedIn={isLoggedIn} />
     </div>
   );
 }

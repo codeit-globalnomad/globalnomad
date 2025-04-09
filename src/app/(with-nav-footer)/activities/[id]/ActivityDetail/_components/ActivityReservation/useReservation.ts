@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { format, isBefore, startOfDay, isSameDay, isAfter } from 'date-fns';
+import { format, isBefore, startOfDay, isAfter, parseISO, isToday } from 'date-fns';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { Swiper as SwiperType } from 'swiper/types';
@@ -22,8 +22,8 @@ export const useReservation = (currentActivityId: number, price: number) => {
     },
   });
 
-  const selectedYear = String(today.getFullYear());
-  const selectedMonth = String(today.getMonth() + 1).padStart(2, '0');
+  const selectedYear = format(today, 'yyyy');
+  const selectedMonth = format(today, 'MM');
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date() || today);
   const [selectedTimeId, setSelectedTimeId] = useState<number | null>(null);
   const [size, setSize] = useState<number>(10);
@@ -45,7 +45,7 @@ export const useReservation = (currentActivityId: number, price: number) => {
   });
   const { mutate: createReservation } = useCreateReservation(currentActivityId);
 
-  const availableDates = availableSchedule?.map((schedule) => new Date(schedule.date)) || [];
+  const availableDates = availableSchedule?.map((schedule) => parseISO(schedule.date)) || [];
   const isDateDisabled = (date: Date) => {
     return isBefore(startOfDay(date), startOfDay(today));
   };
@@ -58,6 +58,7 @@ export const useReservation = (currentActivityId: number, price: number) => {
     if (selectedDate) {
       refetchMyReservations();
       refetchSchedule();
+      setSelectedTimeId(null);
 
       const selectedDateStr = format(selectedDate, 'yyyy-MM-dd');
       setValue('date', selectedDateStr);
@@ -66,7 +67,7 @@ export const useReservation = (currentActivityId: number, price: number) => {
       const now = new Date();
       let filteredTimes = schedule?.times || [];
 
-      if (isSameDay(selectedDate, now)) {
+      if (isToday(selectedDate)) {
         filteredTimes = filteredTimes.filter((time) => {
           const [hour, minute] = time.startTime.split(':').map(Number);
           const startDateTime = new Date(selectedDate);

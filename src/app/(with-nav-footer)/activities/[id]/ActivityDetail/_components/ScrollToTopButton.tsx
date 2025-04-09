@@ -7,9 +7,10 @@ import arrowTop from '@/assets/icons/top-arrow.svg';
 type ScrollToTopButtonProps = {
   onClick: () => void;
   isSameUser: boolean;
+  isLoggedIn: boolean;
 };
 
-export default function ScrollToTopButton({ onClick, isSameUser }: ScrollToTopButtonProps) {
+export default function ScrollToTopButton({ onClick, isSameUser, isLoggedIn }: ScrollToTopButtonProps) {
   const [showButton, setShowButton] = useState(false);
 
   useEffect(() => {
@@ -26,7 +27,7 @@ export default function ScrollToTopButton({ onClick, isSameUser }: ScrollToTopBu
       <button
         onClick={onClick}
         className={`fixed right-5 z-45 cursor-pointer rounded-full border-1 border-gray-300 bg-white p-3 ${
-          isSameUser ? 'bottom-[20px]' : 'bottom-[100px] md:bottom-[20px]'
+          isLoggedIn === false ? 'bottom-24 md:bottom-5' : isSameUser ? 'bottom-5' : 'bottom-24.5 md:bottom-5'
         }`}
         aria-label='상단 이동'
       >

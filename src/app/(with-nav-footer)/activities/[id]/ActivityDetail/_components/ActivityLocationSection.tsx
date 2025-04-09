@@ -40,7 +40,7 @@ export default function LocationSection({ address }: LocationSectionProps) {
 
   return (
     <div id='location'>
-      <div className='pt-[40px] md:pt-[50px]'></div>
+      <div className='pt-[46px] md:pt-[50px]'></div>
       <div className='flex flex-col gap-3'>
         <h3 className='text-xl font-bold md:text-[22px]'>위치 안내</h3>
         <ActivityLocation address={address} latitude={latitude} longitude={longitude} />

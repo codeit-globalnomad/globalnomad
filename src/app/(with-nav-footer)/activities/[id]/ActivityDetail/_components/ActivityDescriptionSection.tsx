@@ -9,7 +9,7 @@ export default function DescriptionSection({ description }: ActivityDescriptionS
   const descriptionRef = useRef<HTMLDivElement>(null);
   return (
     <div id='description' ref={descriptionRef}>
-      <div className='pt-[40px] md:pt-[50px]'></div>
+      <div className='pt-[46px] md:pt-[50px]'></div>
       <ActivityDescription description={description} />
     </div>
   );

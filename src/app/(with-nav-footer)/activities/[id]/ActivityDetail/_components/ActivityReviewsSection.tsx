@@ -44,7 +44,7 @@ export default function ReviewsSection({ currentActivityId, reviewCount }: Activ
 
   return (
     <div id='reviews'>
-      <div className='pt-[40px] md:pt-[50px]'></div>
+      <div className='pt-[46px] md:pt-[50px]'></div>
       <div className='flex flex-col gap-3'>
         <div className='flex items-center justify-between'>
           <h3 className='text-xl font-bold md:text-[22px]'>체험 후기 {totalCount}개</h3>

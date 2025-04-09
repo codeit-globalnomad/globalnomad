@@ -37,9 +37,9 @@ export default function MoreOptions({ activityId, onDelete }: MoreOptionsProps) 
         trigger={
           <Image
             src={kebab}
-            width={40}
-            height={40}
-            className='relative h-[32px] w-[32px] md:top-[0.1rem] md:h-[39px] md:w-[40px]'
+            width={32}
+            height={32}
+            className='relative md:top-[0.15rem] md:h-[39px] md:w-[40px]'
             alt='더보기 아이콘'
           />
         }
@@ -66,7 +66,7 @@ export default function MoreOptions({ activityId, onDelete }: MoreOptionsProps) 
                   toast.success('체험이 삭제되었습니다.');
                   setIsDeleteModalOpen(false);
                   setTimeout(() => {
-                    window.location.href = '/activities';
+                    router.push('/activities');
                   }, 1000);
                 } catch (error) {
                   if (isAxiosError(error)) {

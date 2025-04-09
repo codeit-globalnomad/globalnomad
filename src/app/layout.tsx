@@ -4,6 +4,7 @@ import { Metadata } from 'next';
 import QueryClientProvider from '@/components/provider/queryProvider';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import 'react-calendar/dist/Calendar.css';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://globalnomad-9a8d.vercel.app/'),
