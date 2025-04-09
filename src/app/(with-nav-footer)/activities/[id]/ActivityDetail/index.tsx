@@ -57,7 +57,7 @@ export default function ActivityDetailPage({ id }: { id: number }) {
       setIsLoading(false);
     }, 500);
     return () => clearTimeout(timer);
-  }, []);
+  }, [refetch]);
 
   useEffect(() => {
     const sectionIds = ['description', 'location', 'reviews'];
