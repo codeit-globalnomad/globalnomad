@@ -13,10 +13,8 @@ import PeopleCounter from './PeopleCounter';
 import ReservationCalendar from './ReservationCalendar';
 import ReservationSubmitButton from './ReservationSubmitButton';
 import { useReservation } from './useReservation';
-import 'react-calendar/dist/Calendar.css';
 import 'swiper/css';
 import 'swiper/css/pagination';
-import './ActivityReservationStyles.css';
 
 type TabletReservationProps = {
   isLoggedIn: boolean;
