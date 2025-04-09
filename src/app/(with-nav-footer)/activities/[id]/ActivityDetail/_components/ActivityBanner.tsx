@@ -59,6 +59,8 @@ export default function ActivityBanner({ category, currentActivityId }: Activity
     setCurrentIndex(swiper.realIndex);
   };
 
+  const noBanners = selectedBanners.length === 0;
+
   return (
     <>
       <div className='pt-[40px] md:pt-[50px]'></div>
@@ -66,17 +68,13 @@ export default function ActivityBanner({ category, currentActivityId }: Activity
         <h3 className='text-xl font-bold md:text-[22px]'>{category} 추천 체험</h3>
         <ol className='z-10 mr-[-10px] flex cursor-pointer'>
           <li
-            className={`custom-prev-banner ${
-              currentIndex === 0 || selectedBanners.length === 0 ? 'pointer-events-none opacity-50' : ''
-            }`}
+            className={`custom-prev-banner ${currentIndex === 0 || noBanners ? 'pointer-events-none opacity-50' : ''}`}
           >
             <Image src={leftArrow} width={32} height={32} alt='이전 화살표 아이콘' />
           </li>
           <li
             className={`custom-next-banner ${
-              currentIndex === selectedBanners.length - 1 || selectedBanners.length === 0
-                ? 'pointer-events-none opacity-50'
-                : ''
+              currentIndex === selectedBanners.length - 1 || noBanners ? 'pointer-events-none opacity-50' : ''
             }`}
           >
             <Image src={leftArrow} width={32} height={32} className='scale-x-[-1] transform' alt='다음 화살표 아이콘' />
@@ -84,7 +82,7 @@ export default function ActivityBanner({ category, currentActivityId }: Activity
         </ol>
       </div>
       <div className='relative mt-3 h-[11rem] w-full overflow-hidden rounded-[12px] bg-gray-50 md:h-[12rem] lg:h-[9rem]'>
-        {selectedBanners.length === 0 ? (
+        {noBanners ? (
           <div className='flex h-full w-full items-center justify-center text-lg font-medium text-gray-500'>
             추천 체험 배너가 없습니다.
           </div>
@@ -121,6 +119,7 @@ export default function ActivityBanner({ category, currentActivityId }: Activity
                       fill
                       className='z-0 object-cover object-center'
                       priority={false}
+                      sizes='100%'
                       alt={banner.alt}
                     />
                     <div className='absolute z-10 h-full w-full bg-gradient-to-t from-black/70 to-transparent'></div>
