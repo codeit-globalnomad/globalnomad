@@ -28,7 +28,6 @@
   --text-xs: 12px;
   --text-xs--line-height: 20px;
 
-  /* 피그마에 있는 순서대로 */
   /* Black */
   --color-black-100: #1b1b1b;
   --color-black-200: #112211;
@@ -84,6 +83,16 @@
 
 .animate-glow {
   animation: glow-effect 4s infinite ease-in-out;
+}
+
+.custom-toast {
+  width: var(--toastify-toast-width);
+  max-width: var(--toastify-toast-max-width);
+}
+
+:root {
+  --toastify-toast-width: 320px;
+  --toastify-toast-max-width: 320px;
 }
 
 body {
