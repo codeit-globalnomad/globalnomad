@@ -59,7 +59,7 @@ const SideNavMenu = ({ activityId }: SideNavMenuProps) => {
   ];
 
   return (
-    <aside className='mx-auto h-[432px] w-full max-w-[344px] min-w-[251px] flex-none rounded-lg border border-gray-300 bg-white px-4 py-6 shadow-md max-[900px]:max-w-[251px]'>
+    <aside className='mx-auto h-[444px] w-full max-w-[344px] min-w-[251px] flex-none rounded-lg border border-gray-300 bg-white px-4 py-6 shadow-md max-[900px]:max-w-[251px]'>
       <div className='flex justify-center'>
         <div className='relative w-fit'>
           <ProfileImage size='large' src={previewImage || profileImageUrl} />
