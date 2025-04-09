@@ -46,6 +46,7 @@
 .activity-calender .react-calendar__tile:disabled {
   background-color: inherit!important;
   color:#4b4b4b ;
+  opacity: 0.54;
 }
 
 .activity-calender .react-calendar__navigation button:disabled {
