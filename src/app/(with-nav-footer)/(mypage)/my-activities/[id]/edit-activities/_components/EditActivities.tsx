@@ -51,7 +51,9 @@ export default function EditActivityPage({ activityId }: { activityId: number })
           updateActivity(transformedData.data, {
             onSuccess: () => {
               toast.success('수정이 완료되었습니다!');
-              window.location.href = '/my-activities';
+              setTimeout(() => {
+                window.location.href = '/my-activities';
+              }, 2000);
             },
             onError: () => {
               toast.error('수정에 실패했습니다.');
