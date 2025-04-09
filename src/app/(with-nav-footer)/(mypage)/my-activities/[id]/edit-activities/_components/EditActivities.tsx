@@ -4,8 +4,10 @@ import ActivityForm from '../../../_components/ActivityForm';
 import { useUpdateActivity } from '@/lib/hooks/useMyActivities';
 import { useActivityDetail } from '@/lib/hooks/useActivities';
 import { toast } from 'react-toastify';
+import { useRouter } from 'next/navigation';
 
 export default function EditActivityPage({ activityId }: { activityId: number }) {
+  const router = useRouter();
   const { data: activity } = useActivityDetail(activityId);
   const { mutate: updateActivity, isPending } = useUpdateActivity(activityId);
 
@@ -51,7 +53,9 @@ export default function EditActivityPage({ activityId }: { activityId: number })
           updateActivity(transformedData.data, {
             onSuccess: () => {
               toast.success('수정이 완료되었습니다!');
-              window.location.href = '/my-activities';
+              setTimeout(() => {
+                router.push('/my-activities');
+              }, 2000);
             },
             onError: () => {
               toast.error('수정에 실패했습니다.');
