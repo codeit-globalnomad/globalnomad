@@ -66,7 +66,7 @@ export default function MoreOptions({ activityId, onDelete }: MoreOptionsProps) 
                   toast.success('체험이 삭제되었습니다.');
                   setIsDeleteModalOpen(false);
                   setTimeout(() => {
-                    window.location.href = '/activities';
+                    router.push('/activities');
                   }, 1000);
                 } catch (error) {
                   if (isAxiosError(error)) {
