@@ -58,6 +58,7 @@ export const useReservation = (currentActivityId: number, price: number) => {
     if (selectedDate) {
       refetchMyReservations();
       refetchSchedule();
+      setSelectedTimeId(null);
 
       const selectedDateStr = format(selectedDate, 'yyyy-MM-dd');
       setValue('date', selectedDateStr);
