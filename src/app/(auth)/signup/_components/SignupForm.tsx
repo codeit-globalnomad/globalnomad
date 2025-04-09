@@ -6,12 +6,12 @@ import SocialButtons from './SocialButtons';
 import Link from 'next/link';
 import Button from '@/components/Button';
 import { useSignup } from '@/lib/hooks/useUsers';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { SignupParams, signupSchema } from '@/lib/types/users';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ClosedEye from '@/assets/icons/eye-hidden.svg';
 import OpendEye from '@/assets/icons/eye-visible.svg';
 import Input from '@/components/Input';
@@ -24,6 +24,7 @@ export default function SignupForm() {
   const { mutateAsync: signup } = useSignup();
   const { mutateAsync: signin } = useLogin();
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   const [isShowPassword, setIsShowPassword] = useState(true);
   const [isShowPasswordConfirm, setIsShowPasswordConfirm] = useState(true);
@@ -64,6 +65,19 @@ export default function SignupForm() {
       }
     }
   };
+
+  useEffect(() => {
+    const error = searchParams.get('error');
+    if (error) {
+      const decoded = decodeURIComponent(error);
+      setErrorMessage(decoded);
+      setIsModalOpen(true);
+
+      const url = new URL(window.location.href);
+      url.searchParams.delete('error');
+      window.history.replaceState({}, '', url.toString());
+    }
+  }, [searchParams]);
   return (
     <div className='my-32 flex items-center justify-center'>
       <div className='w-full max-w-xl px-4'>
@@ -87,6 +101,7 @@ export default function SignupForm() {
                 onBlur: () => trigger('email'),
               })}
               disabled={isSubmitting}
+              className='bg-white'
             />
           </div>
 
@@ -101,6 +116,7 @@ export default function SignupForm() {
                 onBlur: () => trigger('nickname'),
               })}
               disabled={isSubmitting}
+              className='bg-white'
             />
           </div>
 
@@ -115,6 +131,7 @@ export default function SignupForm() {
                 onBlur: () => trigger('password'),
               })}
               disabled={isSubmitting}
+              className='bg-white'
             />
             <Image
               src={isShowPassword ? ClosedEye : OpendEye}
@@ -134,6 +151,7 @@ export default function SignupForm() {
               required
               {...register('confirmPassword')}
               disabled={isSubmitting}
+              className='bg-white'
             />
             <Image
               src={isShowPasswordConfirm ? ClosedEye : OpendEye}

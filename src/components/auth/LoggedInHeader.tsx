@@ -24,7 +24,7 @@ export default function LoggedInHeader({
   useEffect(() => {
     if (state?.status) {
       toast.success('로그아웃 처리 되었습니다.');
-      router.replace('/login');
+      window.location.href = '/login';
     }
     console.log(state);
   }, [state, router]);
