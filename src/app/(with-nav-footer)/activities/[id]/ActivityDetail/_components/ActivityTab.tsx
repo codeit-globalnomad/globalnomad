@@ -14,7 +14,7 @@ export default function ActivityTab({ tabs, currentTab, onTabClick }: ActivityTa
   };
 
   return (
-    <div className='align-center flex h-[50px] justify-around border-b-1 border-b-gray-400 md:pt-0'>
+    <div className='align-center flex h-[46px] justify-around border-b-1 border-b-gray-400 md:h-[50px] md:pt-0'>
       {tabs.map((tab) => (
         <button
           key={tab.targetId}

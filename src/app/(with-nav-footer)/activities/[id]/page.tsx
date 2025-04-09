@@ -4,9 +4,9 @@ import axiosServerHelper from '@/lib/network/axiosServerHelper';
 import { Activity, activityDetailSchema } from '@/lib/types/activities';
 import ActivityDetailPage from './ActivityDetail';
 
-export async function generateMetadata({ params }: { params: Promise<{ id: number }> }) {
-  const resolvedParams = await params;
-  const { id } = resolvedParams;
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  if (isNaN(Number(id))) notFound();
 
   try {
     const response = await axiosServerHelper<Activity>(`/activities/${id}`);
@@ -40,9 +40,9 @@ export async function generateMetadata({ params }: { params: Promise<{ id: numbe
   }
 }
 
-export default async function Page({ params }: { params: Promise<{ id: number }> }) {
-  const resolvedParams = await params;
-  const { id } = resolvedParams;
+export default async function Page({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  if (isNaN(Number(id))) notFound();
 
-  return <ActivityDetailPage id={id} />;
+  return <ActivityDetailPage id={Number(id)} />;
 }
