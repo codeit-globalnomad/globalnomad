@@ -16,9 +16,7 @@ function WithProfileImageContext({ children }: { children: React.ReactNode }) {
   const activityId = useProfileInit();
   return (
     <div className='flex w-full max-w-[1140px] gap-4'>
-      <div className='mt-10'>
-        <SideNavMenu activityId={activityId} />
-      </div>
+      <SideNavMenu activityId={activityId} />
       <main className='flex-1'>{children}</main>
     </div>
   );
