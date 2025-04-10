@@ -8,12 +8,12 @@ import SocialButtons from '../../signup/_components/SocialButtons';
 import Link from 'next/link';
 import Button from '@/components/Button';
 import { useLogin } from '@/lib/hooks/useAuth';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { LoginParams, loginSchema } from '@/lib/types/auth';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import Input from '@/components/Input';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import Modal from '@/components/Modal';
 import { AxiosError } from 'axios';
@@ -22,6 +22,7 @@ import checkIcon from '@/assets/icons/check-circle-filled.svg';
 export default function LoginForm() {
   const { mutateAsync: signin } = useLogin();
   const router = useRouter();
+  const searchParams = useSearchParams();
 
   const [isShowPassword, setIsShowPassword] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -42,6 +43,19 @@ export default function LoginForm() {
       router.push('/signup');
     }
   };
+
+  useEffect(() => {
+    const error = searchParams.get('error');
+    if (error) {
+      const decoded = decodeURIComponent(error);
+      setErrorMessage(decoded);
+      setIsModalOpen(true);
+
+      const url = new URL(window.location.href);
+      url.searchParams.delete('error');
+      window.history.replaceState({}, '', url.toString());
+    }
+  }, [searchParams]);
 
   const onSubmit = async (data: LoginParams) => {
     try {
@@ -67,7 +81,7 @@ export default function LoginForm() {
         <div className='mb-[56px] flex justify-center'>
           <Link href='/'>
             <div className='relative h-[138px] w-[245px] md:h-[192px] md:w-[340px]'>
-              <Image src={logo} alt='로그인창 로고' layout='fill' objectFit='contain' />
+              <Image src={logo} alt='로그인창 로고' priority fill style={{ objectFit: 'contain' }} />
             </div>
           </Link>
         </div>
@@ -84,6 +98,7 @@ export default function LoginForm() {
                 onBlur: () => trigger('email'),
               })}
               disabled={isSubmitting}
+              className='bg-white'
             />
           </div>
 
@@ -98,6 +113,7 @@ export default function LoginForm() {
                 onBlur: () => trigger('password'),
               })}
               disabled={isSubmitting}
+              className='bg-white'
             />
             <Image
               src={isShowPassword ? ClosedEye : OpendEye}

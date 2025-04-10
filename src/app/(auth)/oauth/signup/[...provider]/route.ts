@@ -15,18 +15,22 @@ export interface User {
 
 export const GET = async (req: NextRequest) => {
   const { provider, code } = await extractProviderAndCode(req.url);
+  const url = new URL(req.url);
+  const state = url.searchParams.get('state') || 'signin';
 
   try {
-    console.log('OAuth 로그인 시도:', provider, code);
+    console.log(`OAuth ${state} 로그인 시도:`, provider, code);
+    const endpoint = state === 'signup' ? 'sign-up' : 'sign-in';
 
     const apiResponse = await axios.post<{ user: User; accessToken: string; refreshToken: string }>(
-      `${process.env.NEXT_PUBLIC_API_URL}/oauth/sign-in/${provider}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/oauth/${endpoint}/${provider}`,
       {
         redirectUri:
           provider === 'google'
             ? process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI
             : process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI,
         token: code,
+        ...(state === 'signup' ? { nickname: '코드잇' } : {}),
       },
     );
 
@@ -56,56 +60,6 @@ export const GET = async (req: NextRequest) => {
   } catch (error: unknown) {
     if (error instanceof AxiosError) {
       console.error('로그인 실패:', error);
-
-      if (error.response?.status === 403) {
-        console.log('403 상태 → 회원가입 시도');
-
-        try {
-          const signupResponse = await axios.post<{ user: User; accessToken: string; refreshToken: string }>(
-            `${process.env.NEXT_PUBLIC_API_URL}/oauth/sign-up/${provider}`,
-            {
-              redirectUri:
-                provider === 'google'
-                  ? process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI
-                  : process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI,
-              token: code,
-              nickname: '코드잇',
-            },
-          );
-
-          const accessTokenExp = getExpirationDate(signupResponse.data.accessToken);
-          const refreshTokenExp = getExpirationDate(signupResponse.data.refreshToken);
-
-          const response = NextResponse.redirect(new URL('/', req.url));
-
-          response.cookies.set('accessToken', signupResponse.data.accessToken, {
-            httpOnly: true,
-            sameSite: 'lax',
-            secure: process.env.NODE_ENV !== 'development',
-            path: '/',
-            expires: accessTokenExp || undefined,
-          });
-
-          response.cookies.set('refreshToken', signupResponse.data.refreshToken, {
-            httpOnly: true,
-            sameSite: 'lax',
-            secure: process.env.NODE_ENV !== 'development',
-            path: '/',
-            expires: refreshTokenExp || undefined,
-          });
-
-          console.log('회원가입 성공:', signupResponse.data.user);
-          return response;
-        } catch (signupError: unknown) {
-          if (signupError instanceof AxiosError) {
-            console.error('회원가입 실패:', signupError);
-
-            const errorMessage = getErrorMessage(signupError);
-            return NextResponse.redirect(new URL(`/login?error=${encodeURIComponent(errorMessage)}`, req.url));
-          }
-        }
-      }
-
       const errorMessage = getErrorMessage(error);
       return NextResponse.redirect(new URL(`/login?error=${encodeURIComponent(errorMessage)}`, req.url));
     } else {

@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-// 간편 로그인 App 등록, 수정 API 타입 
+// 간편 로그인 App 등록, 수정 API 타입
 export const oauthAppParamsSchema = z.object({
   appKey: z.string(),
   provider: z.enum(['kakao', 'google']),

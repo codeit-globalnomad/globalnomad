@@ -46,8 +46,7 @@ export default function ImageUploader({
         const updated = Array.isArray(value) ? [...value, activityImageUrl] : [activityImageUrl];
         onChange(updated);
       }
-    } catch (err) {
-      console.log(err);
+    } catch {
       toast.error('이미지 업로드에 실패했습니다.');
     }
   };
@@ -72,7 +71,7 @@ export default function ImageUploader({
       {(limit === undefined || images.length < limit) && (
         <div
           onClick={handleClick}
-          className='flex h-32 w-32 cursor-pointer flex-col items-center justify-center rounded border-2 border-dashed border-gray-400'
+          className='flex h-32 w-32 cursor-pointer flex-col items-center justify-center rounded border-2 border-dashed border-gray-400 bg-white'
         >
           <span className='text-3xl text-gray-400'>+</span>
           <span className='text-sm text-gray-500'>이미지 등록</span>

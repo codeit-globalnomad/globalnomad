@@ -8,7 +8,6 @@ export const GET = async (request: NextRequest) => {
   const url = new URL(request.url);
 
   const endPoint = url.pathname.replace(/^\/api/, '');
-  console.log(endPoint);
   const searchParams = Object.fromEntries(url.searchParams.entries());
   try {
     const apiResponse = await axiosServerHelper.get(
@@ -21,7 +20,6 @@ export const GET = async (request: NextRequest) => {
     );
     return NextResponse.json(apiResponse.data, { status: apiResponse.status });
   } catch (error) {
-    console.log(error);
     return errorResponse(error);
   }
 };
