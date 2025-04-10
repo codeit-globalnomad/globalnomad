@@ -2,8 +2,6 @@ import axios, { isAxiosError } from 'axios';
 import { cookies } from 'next/headers';
 import { getExpirationDate } from './getExpirationDate';
 
-import { getErrorMessage } from './errorMessage';
-
 const axiosServerHelper = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
 });
@@ -37,8 +35,8 @@ axiosServerHelper.interceptors.response.use(
             Authorization: `Bearer ${refreshToken}`,
           },
         }).then((value) => value.json());
-      } catch (e) {
-        console.log(getErrorMessage(e));
+      } catch {
+        return null;
       }
 
       const accessToken = res.accessToken;

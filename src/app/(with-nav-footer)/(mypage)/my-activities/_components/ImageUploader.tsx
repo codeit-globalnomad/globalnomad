@@ -46,8 +46,7 @@ export default function ImageUploader({
         const updated = Array.isArray(value) ? [...value, activityImageUrl] : [activityImageUrl];
         onChange(updated);
       }
-    } catch (err) {
-      console.log(err);
+    } catch {
       toast.error('이미지 업로드에 실패했습니다.');
     }
   };
