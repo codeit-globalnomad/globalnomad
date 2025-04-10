@@ -1,3 +1,5 @@
+'use client';
+
 import Calendar from 'react-calendar';
 import React, { useEffect, useState } from 'react';
 import './myCalendar.css';
