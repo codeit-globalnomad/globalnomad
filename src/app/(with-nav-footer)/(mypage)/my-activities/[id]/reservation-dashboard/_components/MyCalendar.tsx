@@ -1,10 +1,11 @@
+'use client';
+
 import Calendar from 'react-calendar';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import './myCalendar.css';
 import Image from 'next/image';
 import CalendarPrev from '@/assets/icons/calendar-prev.svg';
 import CalendarNext from '@/assets/icons/calendar-next.svg';
-import { useSearchParams } from 'next/navigation';
 
 type ValuePiece = Date | null;
 type Value = ValuePiece | [ValuePiece, ValuePiece];
@@ -24,16 +25,11 @@ export interface Props {
   monthTotalData?: MonthReservation[];
   onDateChange: (date: string) => void;
   onActiveStartDateChange?: ({ activeStartDate }: { activeStartDate: Date | null }) => void;
+  initialDate?: Date;
 }
 
-export default function MyCalendar({ monthTotalData, onDateChange, onActiveStartDateChange }: Props) {
-  const searchParams = useSearchParams();
-
-  const year = Number(searchParams.get('year')) || new Date().getFullYear();
-  const month = Number(searchParams.get('month')) || new Date().getMonth() + 1;
-
-  const initialDate = new Date(year, month - 1, 1);
-  const [calendarValue, setCalendarValue] = useState<Value>(initialDate);
+export default function MyCalendar({ monthTotalData, onDateChange, onActiveStartDateChange, initialDate }: Props) {
+  const [calendarValue, setCalendarValue] = useState<Value>(initialDate ?? new Date());
 
   const reservationStatusMap: Record<
     keyof ReservationStatus,
@@ -67,6 +63,7 @@ export default function MyCalendar({ monthTotalData, onDateChange, onActiveStart
       onDateChange(selectedDate.toLocaleDateString('sv-SE'));
     }
   };
+
   const renderTile = ({ date, view }: { date: Date; view: string }) => {
     if (view === 'month') {
       const formattedDate = date.toLocaleDateString('sv-SE');
@@ -100,10 +97,6 @@ export default function MyCalendar({ monthTotalData, onDateChange, onActiveStart
     }
     return null;
   };
-
-  useEffect(() => {
-    setCalendarValue(initialDate);
-  }, [year, month]);
 
   return (
     <Calendar
