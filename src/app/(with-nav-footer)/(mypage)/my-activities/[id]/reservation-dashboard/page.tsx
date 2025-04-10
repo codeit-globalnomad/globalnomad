@@ -32,12 +32,13 @@ export default function MyReservation() {
   const [selectedActivityId, setSelectedActivityId] = useState<number | null>(null);
   const [popupKey, setPopupKey] = useState(0);
 
-  const activityId = Number(id);
-  const isActivityIdMissing = !id || isNaN(activityId);
+  const activityIdFromParam = Number(id);
+  const isActivityIdMissing = !id || isNaN(activityIdFromParam);
 
-  const isValidActivityId = useMemo(() => {
-    return activities?.some((activity) => activity.id === activityId);
-  }, [activityId, activities]);
+  const isValidActivityId = useMemo(
+    () => activities?.some((a) => a.id === activityIdFromParam) ?? false,
+    [activities, activityIdFromParam],
+  );
 
   const { data: reservationDashboard, isError: isReservationDashboardError } = useReservationDashboard(
     Number(selectedActivityId),
@@ -63,12 +64,20 @@ export default function MyReservation() {
       return;
     }
 
-    if (activities && isValidActivityId && activityId) {
-      setSelectedActivityId(activityId);
-      const selected = activitiesFilterOption.find((a) => a.value === activityId);
+    if (activities && isValidActivityId && activityIdFromParam) {
+      setSelectedActivityId(activityIdFromParam);
+      const selected = activitiesFilterOption.find((a) => a.value === activityIdFromParam);
       setSelectOption(selected || null);
     }
-  }, [activities, activityId, isActivityIdMissing, isValidActivityId, activitiesFilterOption, isLoading, router]);
+  }, [
+    activities,
+    activityIdFromParam,
+    isActivityIdMissing,
+    isValidActivityId,
+    activitiesFilterOption,
+    isLoading,
+    router,
+  ]);
 
   const handleSelectActivity = (option: ActivitiesFilterOption | null) => {
     setSelectOption(option);
@@ -114,7 +123,7 @@ export default function MyReservation() {
     return <RetryError onRetry={refetch} className='py-20' />;
   }
 
-  if (!id || (activities && activities.length === 0)) {
+  if (!id || activities?.length === 0) {
     return null;
   }
 
