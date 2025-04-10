@@ -23,6 +23,7 @@ export const useReservationDashboard = (activityId: number, year: string, month:
   return useQuery({
     queryKey: ['reservationDashboard', activityId, year, month],
     queryFn: () => getReservationDashboard(activityId, year, month),
+    enabled: !!activityId && !!year && !!month,
   });
 };
 
