@@ -19,7 +19,27 @@ export const GET = async (req: NextRequest) => {
   const state = url.searchParams.get('state') || 'signin';
 
   try {
+    console.log(`OAuth ${state} 로그인 시도:`, provider, code);
     const endpoint = state === 'signup' ? 'sign-up' : 'sign-in';
+
+    // 환경 변수와 요청 정보 로깅
+    console.log('API_URL:', process.env.NEXT_PUBLIC_API_URL);
+    console.log(
+      'REDIRECT_URI:',
+      provider === 'google' ? process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI : process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI,
+    );
+
+    const requestBody = {
+      redirectUri:
+        provider === 'google'
+          ? process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI
+          : process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI,
+      token: code,
+      ...(state === 'signup' ? { nickname: '코드잇' } : {}),
+    };
+
+    console.log('요청 URL:', `${process.env.NEXT_PUBLIC_API_URL}/oauth/${endpoint}/${provider}`);
+    console.log('요청 본문:', JSON.stringify(requestBody, null, 2));
 
     const apiResponse = await axios.post<{ user: User; accessToken: string; refreshToken: string }>(
       `${process.env.NEXT_PUBLIC_API_URL}/oauth/${endpoint}/${provider}`,

@@ -39,7 +39,7 @@ export default function LoggedInHeader({
   return (
     <div className='flex h-[70px] w-full justify-center border-b border-gray-300 bg-white'>
       <div className='flex w-full justify-between px-5 md:w-full md:px-5 lg:mx-auto lg:w-[1200px]'>
-        <Link href='/'>
+        <Link href='/activities'>
           <Image src={logoMd} width={172} height={30} alt='로고' className='my-[21px] cursor-pointer' priority />
         </Link>
         <div className='flex gap-[25px] max-[430px]:gap-[10px] md:gap-[25px] lg:gap-[25px]'>

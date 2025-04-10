@@ -43,6 +43,19 @@ export default function SignupForm() {
     mode: 'onChange',
   });
 
+  useEffect(() => {
+    const error = searchParams.get('error');
+    if (error) {
+      const decoded = decodeURIComponent(error);
+      setErrorMessage(decoded);
+      setIsModalOpen(true);
+
+      const url = new URL(window.location.href);
+      url.searchParams.delete('error');
+      window.history.replaceState({}, '', url.toString());
+    }
+  }, [searchParams]);
+
   const onSubmit = async (data: SignupParams) => {
     try {
       await signup(data);
@@ -66,25 +79,13 @@ export default function SignupForm() {
     }
   };
 
-  useEffect(() => {
-    const error = searchParams.get('error');
-    if (error) {
-      const decoded = decodeURIComponent(error);
-      setErrorMessage(decoded);
-      setIsModalOpen(true);
-
-      const url = new URL(window.location.href);
-      url.searchParams.delete('error');
-      window.history.replaceState({}, '', url.toString());
-    }
-  }, [searchParams]);
   return (
     <div className='my-32 flex items-center justify-center'>
       <div className='w-full max-w-xl px-4'>
         <div className='mb-[56px] flex justify-center'>
           <Link href='/'>
             <div className='relative h-[138px] w-[245px] md:h-[192px] md:w-[340px]'>
-              <Image src={logo} alt='회원가입창 로고' layout='fill' objectFit='contain' />
+              <Image src={logo} alt='회원가입창 로고' fill style={{ objectFit: 'contain' }} />
             </div>
           </Link>
         </div>

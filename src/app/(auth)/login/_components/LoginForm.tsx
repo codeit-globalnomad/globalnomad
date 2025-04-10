@@ -81,7 +81,7 @@ export default function LoginForm() {
         <div className='mb-[56px] flex justify-center'>
           <Link href='/'>
             <div className='relative h-[138px] w-[245px] md:h-[192px] md:w-[340px]'>
-              <Image src={logo} alt='로그인창 로고' layout='fill' objectFit='contain' />
+              <Image src={logo} alt='로그인창 로고' fill style={{ objectFit: 'contain' }} />
             </div>
           </Link>
         </div>
