@@ -16,7 +16,20 @@ export default function EditActivityPage({ activityId }: { activityId: number })
     <>
       <ActivityForm
         mode='edit'
-        defaultValues={activity}
+        defaultValues={{
+          title: activity.title,
+          category: activity.category,
+          description: activity.description,
+          address: activity.address,
+          price: activity.price,
+          bannerImageUrl: activity.bannerImageUrl,
+          subImageUrls: activity.subImages.map((img) => img.imageUrl),
+          schedules: activity.schedules.map((s) => ({
+            date: s.date,
+            startTime: s.startTime,
+            endTime: s.endTime,
+          })),
+        }}
         isSubmitting={isPending}
         onSubmit={(formData) => {
           const prevSchedules = activity.schedules || [];
