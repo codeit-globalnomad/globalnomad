@@ -14,7 +14,6 @@ import RetryError from '@/components/RetryError';
 
 type Props = {
   selectedDate: string;
-  setSelectedDate: (date: string) => void;
   activityId: number;
 };
 
@@ -26,7 +25,7 @@ type FilterDropdownOption = {
 
 export type ReservationStatus = 'pending' | 'confirmed' | 'declined';
 
-export default function MyActivitiesReservations({ selectedDate, setSelectedDate, activityId }: Props) {
+export default function MyActivitiesReservations({ selectedDate, activityId }: Props) {
   const {
     data: dateSchedule,
     isLoading,
@@ -81,7 +80,6 @@ export default function MyActivitiesReservations({ selectedDate, setSelectedDate
 
   useClickOutside(popupRef, () => {
     setIsOpen(false);
-    setSelectedDate('');
   });
 
   useEffect(() => {
@@ -129,7 +127,6 @@ export default function MyActivitiesReservations({ selectedDate, setSelectedDate
             <h1 className='text-[24px] leading-[32px] font-bold'>예약 정보</h1>
             <Image
               onClick={() => {
-                setSelectedDate('');
                 setIsOpen(false);
               }}
               className='cursor-pointer'
