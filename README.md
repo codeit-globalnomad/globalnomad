@@ -20,7 +20,7 @@
   - **공통 컴포넌트화 및 코드 컨벤션** 정립을 통한 팀원 간 효율적인 협업 구조
 
  ### 🔗 배포 링크  
-👉 [GlobalNomad 서비스 바로가기](https://globalnomad-rho.vercel.app/))  
+👉 [GlobalNomad 서비스 바로가기](https://globalnomad-rho.vercel.app/)
 
 
 ---
