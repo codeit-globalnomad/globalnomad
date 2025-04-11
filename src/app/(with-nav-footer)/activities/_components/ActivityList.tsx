@@ -31,12 +31,13 @@ export default function ActivityList() {
     size: itemsPerPage,
   });
 
+  const keyword = searchParams.get('keyword');
+  const page = searchParams.get('page');
+
   useEffect(() => {
-    const keyword = searchParams.get('keyword');
-    const page = searchParams.get('page');
     if (keyword !== null) setSearchTerm(keyword);
     if (page !== null) setCurrentPage(Number(page));
-  }, [searchParams]);
+  }, [keyword, page]);
 
   const getEndingParticle = (keyword: string) => {
     const lastChar = keyword[keyword.length - 1];

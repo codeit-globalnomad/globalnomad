@@ -23,7 +23,7 @@ const buttonVariants = cva('cursor-pointer transition-all duration-200 flex item
 interface ButtonProps extends VariantProps<typeof buttonVariants> {
   type?: 'button' | 'submit' | 'reset';
   children: React.ReactNode;
-  onClick?: () => void;
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
   className?: string;
   disabled?: boolean;
 }

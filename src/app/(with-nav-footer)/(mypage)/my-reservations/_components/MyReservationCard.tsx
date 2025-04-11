@@ -81,7 +81,15 @@ export default function MyReservationCard({ reservation }: MyReservationCardProp
                     setIsCancelModalOpen(true);
                   }}
                 >
-                  <Button variant='outline' className='!w-fit px-2 py-1 text-xs font-bold md:px-4 md:py-2 md:text-sm'>
+                  <Button
+                    variant='outline'
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      setIsCancelModalOpen(true);
+                    }}
+                    className='!w-fit px-2 py-1 text-xs font-bold md:px-4 md:py-2 md:text-sm'
+                  >
                     예약 취소
                   </Button>
                 </div>
