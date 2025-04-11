@@ -13,13 +13,36 @@ export interface User {
   updatedAt: string;
 }
 
+function generateRandomNickname(): string {
+  const adjectives = ['빠른', '귀여운', '멋진', '영리한', '느린', '배고픈'];
+  const animals = ['고양이', '강아지', '판다', '너구리', '다람쥐', '곰', '여우', '뱀', '토끼'];
+
+  let nickname = '';
+  let tries = 0;
+
+  while (tries < 10) {
+    const adj = adjectives[Math.floor(Math.random() * adjectives.length)];
+    const animal = animals[Math.floor(Math.random() * animals.length)];
+    const number = Math.floor(Math.random() * 100);
+
+    const candidate = `${adj}${animal}${number}`;
+    if (candidate.length <= 8) {
+      nickname = candidate;
+      break;
+    }
+
+    tries++;
+  }
+
+  return nickname || '귀여운펭귄7';
+}
+
 export const GET = async (req: NextRequest) => {
   const { provider, code } = await extractProviderAndCode(req.url);
   const url = new URL(req.url);
   const state = url.searchParams.get('state') || 'signin';
 
   try {
-    console.log(`OAuth ${state} 로그인 시도:`, provider, code);
     const endpoint = state === 'signup' ? 'sign-up' : 'sign-in';
 
     const apiResponse = await axios.post<{ user: User; accessToken: string; refreshToken: string }>(
@@ -30,7 +53,7 @@ export const GET = async (req: NextRequest) => {
             ? process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI
             : process.env.NEXT_PUBLIC_KAKAO_REDIRECT_URI,
         token: code,
-        ...(state === 'signup' ? { nickname: '코드잇' } : {}),
+        ...(state === 'signup' ? { nickname: generateRandomNickname() } : {}),
       },
     );
 
@@ -55,7 +78,6 @@ export const GET = async (req: NextRequest) => {
       expires: refreshTokenExp || undefined,
     });
 
-    console.log('로그인 성공:', apiResponse.data.user);
     return response;
   } catch (error: unknown) {
     if (error instanceof AxiosError) {
